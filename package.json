@@ -1,0 +1,75 @@
+{
+  "name": "marketing-agent",
+  "version": "0.1.1",
+  "description": "Marketing Agent — AI marketing automation for Claude Code & Codex CLI. Audit, optimize, and launch campaigns across Google Ads, Meta (Facebook/Instagram), TikTok, LinkedIn, Bing Ads, GA4, Shopify, Klaviyo, and Search Console — via natural language. 36 expert-authored marketing playbooks, 8 morning-workflow slash commands, OAuth-secured live data. Powered by AI Ads OS, built by GoMarble.",
+  "type": "module",
+  "bin": {
+    "marketing-agent": "bin/install.mjs"
+  },
+  "files": [
+    "assets/",
+    "bin/",
+    "LICENSE",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "keywords": [
+    "marketing-agent",
+    "ai-marketing-agent",
+    "ai-marketing",
+    "ai-marketing-agency",
+    "ai-ads",
+    "ai-ads-agent",
+    "ai-ads-os",
+    "ai-advertising",
+    "marketing",
+    "advertising",
+    "ads",
+    "ad-agent",
+    "ads-agent",
+    "paid-media",
+    "performance-marketing",
+    "growth-marketing",
+    "media-buying",
+    "ads-automation",
+    "marketing-automation",
+    "ad-optimization",
+    "campaign-management",
+    "creative-analytics",
+    "claude-code",
+    "claude-code-plugin",
+    "claude-plugin",
+    "codex",
+    "codex-plugin",
+    "mcp",
+    "mcp-server",
+    "google-ads",
+    "meta-ads",
+    "facebook-ads",
+    "instagram-ads",
+    "tiktok-ads",
+    "linkedin-ads",
+    "bing-ads",
+    "ga4",
+    "shopify",
+    "klaviyo",
+    "search-console",
+    "seo",
+    "gomarble"
+  ],
+  "author": {
+    "name": "GoMarble",
+    "url": "https://gomarble.ai"
+  },
+  "homepage": "https://gomarble.ai",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gomarble-ai/marketing-agent.git"
+  },
+  "bugs": {
+    "url": "https://github.com/gomarble-ai/marketing-agent/issues"
+  },
+  "license": "MIT"
+}
