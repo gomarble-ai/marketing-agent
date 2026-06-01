@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "gomarble": {
+      "type": "http",
+      "url": "https://apps.gomarble.ai/mcp-api/mcp",
+      "oauth": {
+        "authServerMetadataUrl": "https://apps.gomarble.ai/.well-known/oauth-authorization-server"
+      }
+    }
+  },
+  "mcp_servers": {
+    "gomarble": {
+      "url": "https://apps.gomarble.ai/mcp-api/mcp"
+    }
+  }
+}

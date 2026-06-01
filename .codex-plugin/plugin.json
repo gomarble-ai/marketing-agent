@@ -1,0 +1,72 @@
+{
+  "name": "marketing-agent",
+  "version": "0.1.2",
+  "description": "Marketing Agent — AI marketing automation for Codex CLI. Audit, optimize, and launch campaigns across Google Ads, Meta (Facebook/Instagram), TikTok, LinkedIn, Bing, GA4, Shopify, Klaviyo & Search Console — with battle-tested GoMarble methodology built in. 36 model-invoked AI marketing playbooks.",
+  "author": {
+    "name": "GoMarble",
+    "url": "https://gomarble.ai"
+  },
+  "homepage": "https://gomarble.ai",
+  "repository": "https://github.com/gomarble-ai/marketing-agent",
+  "license": "MIT",
+  "keywords": [
+    "ai-ads",
+    "ai-ads-os",
+    "ai-ads-agent",
+    "ai-ads-tool",
+    "ai-marketing",
+    "ai-marketing-agent",
+    "ai-advertising",
+    "marketing",
+    "advertising",
+    "ads",
+    "ad-agent",
+    "marketing-agent",
+    "paid-media",
+    "performance-marketing",
+    "growth-marketing",
+    "media-buying",
+    "ads-automation",
+    "marketing-automation",
+    "ad-optimization",
+    "campaign-management",
+    "creative-analytics",
+    "google-ads",
+    "meta-ads",
+    "facebook-ads",
+    "instagram-ads",
+    "tiktok-ads",
+    "linkedin-ads",
+    "bing-ads",
+    "ga4",
+    "google-analytics",
+    "search-console",
+    "seo",
+    "klaviyo",
+    "shopify",
+    "gomarble"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "Marketing Agent",
+    "shortDescription": "AI marketing agent for paid media — Google Ads, Meta, TikTok, LinkedIn, Bing, GA4, Shopify, Klaviyo & Search Console. 36 AI marketing playbooks.",
+    "longDescription": "Marketing Agent connects Codex to your ad accounts and ships 36 expert-authored AI marketing playbooks so your agent reasons like a senior performance marketer — not a generic chatbot.\n\n• 36 model-invoked skills covering Google Ads (Search, Shopping, PMax), Meta (Facebook/Instagram), GA4, Shopify, Search Console, Klaviyo, TikTok, LinkedIn, Bing Ads, and document generation (DOCX, PPTX, PDF, XLSX).\n• Auto-loaded guardrails — recommendations follow the same constraints GoMarble uses internally (no synthetic data, no fabricated keywords, proper attribution discipline).\n• Audit, optimize, and create — pull insights, propose budget moves, build campaigns and ad sets from natural-language briefs.\n• OAuth in one click — authorize once via gomarble.ai, then every tool call uses your credentials securely.\n\nFree to install. Connects to your existing GoMarble account (or sign up free at gomarble.ai).",
+    "developerName": "GoMarble",
+    "category": "Productivity",
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "websiteURL": "https://gomarble.ai",
+    "defaultPrompt": [
+      "Audit my Meta Ads account for the last 30 days.",
+      "Pull a 7-day Google Ads performance report and flag campaigns to scale.",
+      "Build a new Meta ad set with this creative.",
+      "Generate a PPTX deck summarizing all my paid-media performance."
+    ],
+    "brandColor": "#1F3A8A",
+    "composerIcon": "./assets/icon.svg",
+    "logo": "./assets/logo-light.png"
+  }
+}
