@@ -1,0 +1,12 @@
+# Code owners for this public repository.
+#
+# Every pull request to the default branch needs an approving review from
+# someone on this list. Outside contributors can fork and open PRs, but only
+# these maintainers can satisfy the review requirement — and that stays true
+# even if someone outside the org is later granted write access, which a
+# plain "1 approval" rule would not guarantee.
+#
+# Every entry must have write access to the repo, or GitHub ignores it.
+# Keep this list in sync with the repository's internal maintainers.
+
+*  @palkush-marble @swapnil-gomarble @aditya-marble @sachingomarble @akashgomarble @dainil-savani @be-abhi @shared-gomarble
