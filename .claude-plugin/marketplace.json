@@ -8,7 +8,7 @@
     {
       "name": "marketing-agent",
       "source": "./",
-      "description": "Marketing Agent in your terminal — Meta strategists, Google Ads specialists, creative-fatigue analysts, GA4 attribution experts, Shopify ops leads. 36 expert-authored AI marketing playbooks across Google Ads, Meta (Facebook/Instagram), TikTok, LinkedIn, Bing, GA4, Shopify, Klaviyo & Search Console + 8 morning-workflow slash commands. OAuth-secured live data via the GoMarble MCP server.",
+      "description": "Marketing Agent in your terminal — Meta strategists, Google Ads specialists, creative strategists, GA4 attribution experts, Shopify ops leads. 42 expert-authored AI marketing playbooks across Google Ads, Meta (Facebook/Instagram), creative strategy, TikTok, LinkedIn, Bing, GA4, Shopify, Klaviyo & Search Console + 8 morning-workflow slash commands. OAuth-secured live data via the GoMarble MCP server.",
       "category": "productivity",
       "keywords": [
         "ai-ads",

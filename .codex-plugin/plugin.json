@@ -1,7 +1,7 @@
 {
   "name": "marketing-agent",
   "version": "0.1.2",
-  "description": "Marketing Agent — AI marketing automation for Codex CLI. Audit, optimize, and launch campaigns across Google Ads, Meta (Facebook/Instagram), TikTok, LinkedIn, Bing, GA4, Shopify, Klaviyo & Search Console — with battle-tested GoMarble methodology built in. 36 model-invoked AI marketing playbooks.",
+  "description": "Marketing Agent — AI marketing automation for Codex CLI. Audit, optimize, and launch campaigns across Google Ads, Meta (Facebook/Instagram), creative strategy, TikTok, LinkedIn, Bing, GA4, Shopify, Klaviyo & Search Console — with battle-tested GoMarble methodology built in. 42 model-invoked AI marketing playbooks.",
   "author": {
     "name": "GoMarble",
     "url": "https://gomarble.ai"
@@ -50,8 +50,8 @@
   "mcpServers": "./.mcp.json",
   "interface": {
     "displayName": "Marketing Agent",
-    "shortDescription": "AI marketing agent for paid media — Google Ads, Meta, TikTok, LinkedIn, Bing, GA4, Shopify, Klaviyo & Search Console. 36 AI marketing playbooks.",
-    "longDescription": "Marketing Agent connects Codex to your ad accounts and ships 36 expert-authored AI marketing playbooks so your agent reasons like a senior performance marketer — not a generic chatbot.\n\n• 36 model-invoked skills covering Google Ads (Search, Shopping, PMax), Meta (Facebook/Instagram), GA4, Shopify, Search Console, Klaviyo, TikTok, LinkedIn, Bing Ads, and document generation (DOCX, PPTX, PDF, XLSX).\n• Auto-loaded guardrails — recommendations follow the same constraints GoMarble uses internally (no synthetic data, no fabricated keywords, proper attribution discipline).\n• Audit, optimize, and create — pull insights, propose budget moves, build campaigns and ad sets from natural-language briefs.\n• OAuth in one click — authorize once via gomarble.ai, then every tool call uses your credentials securely.\n\nFree to install. Connects to your existing GoMarble account (or sign up free at gomarble.ai).",
+    "shortDescription": "AI marketing agent for paid media — Google Ads, Meta, creative strategy, TikTok, LinkedIn, Bing, GA4, Shopify, Klaviyo & Search Console. 42 AI marketing playbooks.",
+    "longDescription": "Marketing Agent connects Codex to your ad accounts and ships 42 expert-authored AI marketing playbooks so your agent reasons like a senior performance marketer — not a generic chatbot.\n\n• 42 model-invoked skills covering Google Ads (Search, Shopping, PMax), Meta (Facebook/Instagram), creative research and production, GA4, Shopify, Search Console, Klaviyo, TikTok, LinkedIn, Bing Ads, and document generation (DOCX, PPTX, PDF, XLSX).\n• Auto-loaded guardrails — recommendations follow the same constraints GoMarble uses internally (no synthetic data, no fabricated keywords, proper attribution discipline).\n• Audit, optimize, and create — pull insights, propose budget moves, build campaigns and ad sets from natural-language briefs.\n• OAuth in one click — authorize once via gomarble.ai, then every tool call uses your credentials securely.\n\nFree to install. Connects to your existing GoMarble account (or sign up free at gomarble.ai).",
     "developerName": "GoMarble",
     "category": "Productivity",
     "capabilities": [
