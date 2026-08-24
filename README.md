@@ -27,7 +27,7 @@
 **Marketing Agent** is the AI marketing agent for **Claude Code & Codex CLI** — it plugs your terminal into your ad accounts and turns it into a senior performance marketer across Google Ads, Meta, TikTok, LinkedIn, Bing, GA4, Shopify, Klaviyo & Search Console. Built by [GoMarble](https://gomarble.ai), the team that runs paid media for some of the fastest-growing DTC brands.
 
 - 🔌 **Live ad-platform data** via the GoMarble MCP server — OAuth, one-click sign-in
-- 🧠 **36 expert-authored skills** — Google Ads, Meta (Facebook/Instagram), GA4, Shopify, Search Console, Klaviyo, TikTok, LinkedIn, Bing Ads, document generation
+- 🧠 **42 expert-authored skills** — Google Ads, Meta (Facebook/Instagram), creative strategy, GA4, Shopify, Search Console, Klaviyo, TikTok, LinkedIn, Bing Ads, document generation
 - ⚡ **8 morning-workflow slash commands** — daily audits and decision matrices for Meta + Google
 - 🛡️ **Built-in guardrails** — no synthetic data, no fabricated keywords, proper attribution discipline
 
@@ -89,6 +89,7 @@ The skills auto-invoke based on what you ask — you don't have to remember anyt
 | _"How did my Google Ads Search campaigns do this week?"_ | Loads search-analysis skill, classifies queries Q1–Q5, diagnoses CPC inflation or rank pressure, returns a decision matrix. |
 | _"Create a Meta ad set for this creative targeting US iOS users."_ | Loads create/master + adset skills, verifies parent campaign, detects pixel, builds the propose payload, asks you to confirm before posting. |
 | _"Pull a 7d Shopify sales report and compare to GA4 conversions."_ | Loads Shopify order-discipline + GA4 source-of-truth skills, queries both, reconciles the difference. |
+| _"Find winning ad ideas for my brand and turn the best directions into shoot-ready briefs."_ | Runs competitor intelligence, own-creative diagnosis, hook psychology, pattern synthesis, and brief generation, adapting to the data available. |
 | _"Generate a PPTX summarizing all my paid-media performance."_ | Loads pptx skill + the relevant analytics skills, produces a deck. |
 
 ### ⚡ Slash commands (Claude Code only)
@@ -117,7 +118,7 @@ In Codex, just describe the task in natural language — the skills' `descriptio
 
 ---
 
-## 📦 Skills shipped (36)
+## 📦 Skills shipped (42)
 
 Click any skill name to view its `SKILL.md` source.
 
@@ -158,14 +159,25 @@ Click any skill name to view its `SKILL.md` source.
 | 🚀 Creation | [`meta-create-adset`](https://github.com/gomarble-ai/marketing-agent/blob/main/skills/meta-create-adset/SKILL.md) | Ad-set setup |
 | 🚀 Creation | [`meta-create-ad-with-creative`](https://github.com/gomarble-ai/marketing-agent/blob/main/skills/meta-create-ad-with-creative/SKILL.md) | Ad + creative pairing |
 
-### 📈 Other platforms (4)
+### 📈 Other platforms (3)
 
 | Platform | Skill | What it does |
 |---|---|---|
 | 📊 GA4 | [`ga4-source-of-truth`](https://github.com/gomarble-ai/marketing-agent/blob/main/skills/ga4-source-of-truth/SKILL.md) | Conversions ≠ transactions, channel-subset-sum traps, attribution discipline |
 | 🛍️ Shopify | [`shopify-order-discipline`](https://github.com/gomarble-ai/marketing-agent/blob/main/skills/shopify-order-discipline/SKILL.md) | No `financial_status` filter, gross-vs-net, refunds, multi-currency |
 | 🔎 Search Console | [`search-console-master-skill`](https://github.com/gomarble-ai/marketing-agent/blob/main/skills/search-console-master-skill/SKILL.md) | Organic search analysis + opportunity scoring |
-| 🎨 Creative | [`creative-research`](https://github.com/gomarble-ai/marketing-agent/blob/main/skills/creative-research/SKILL.md) | Competitor research, evergreen + breakout winners, pattern analysis |
+
+### 🎨 Creative strategy (7)
+
+| Type | Skill | What it does |
+|---|---|---|
+| 🔁 Orchestration | [`winning-ads-orchestrator`](https://github.com/gomarble-ai/marketing-agent/blob/main/skills/winning-ads-orchestrator/SKILL.md) | Routes competitor research, first-party diagnosis, hook analysis, synthesis, and brief generation |
+| 🔎 Research | [`creative-research`](https://github.com/gomarble-ai/marketing-agent/blob/main/skills/creative-research/SKILL.md) | Competitor discovery plus evergreen and breakout investment signals |
+| 🔎 Research | [`competitor-ad-intelligence`](https://github.com/gomarble-ai/marketing-agent/blob/main/skills/competitor-ad-intelligence/SKILL.md) | Live competitor-ad patterns and investment proxies through GoMarble MCP |
+| 📊 Analysis | [`own-creative-diagnosis`](https://github.com/gomarble-ai/marketing-agent/blob/main/skills/own-creative-diagnosis/SKILL.md) | First-party Meta creative diagnosis with explicit evidence gates |
+| 🧠 Ideation | [`creative-psychology-hooks`](https://github.com/gomarble-ai/marketing-agent/blob/main/skills/creative-psychology-hooks/SKILL.md) | Structured hook generation and psychological hypothesis grading |
+| 🧩 Synthesis | [`winning-pattern-synthesis`](https://github.com/gomarble-ai/marketing-agent/blob/main/skills/winning-pattern-synthesis/SKILL.md) | Cross-source patterns, own-account test gaps, and market whitespace |
+| 🎬 Production | [`ad-brief-generator`](https://github.com/gomarble-ai/marketing-agent/blob/main/skills/ad-brief-generator/SKILL.md) | Shoot-ready UGC, static, carousel, and creator briefs |
 
 ### 📄 Document generation (5)
 
@@ -229,7 +241,7 @@ marketing-agent/
 ├── hooks/
 │   ├── hooks.json               # registers SessionStart hook
 │   └── session-start.mjs        # MCP probe + version check + today's-date injection
-├── skills/                      # 36 SKILL.md folders — both hosts read from here
+├── skills/                      # 42 discoverable skills — both hosts read from here
 └── README.md
 ```
 

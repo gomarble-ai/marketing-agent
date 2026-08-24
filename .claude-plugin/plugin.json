@@ -1,6 +1,6 @@
 {
   "name": "marketing-agent",
-  "description": "Marketing Agent — AI marketing automation for Claude Code. 36 expert-authored playbooks across Google Ads, Meta (Facebook/Instagram), TikTok, LinkedIn, Bing, GA4, Shopify, Klaviyo & Search Console + 8 morning-workflow slash commands. OAuth-secured live data via the GoMarble MCP server.",
+  "description": "Marketing Agent — AI marketing automation for Claude Code. 42 expert-authored playbooks across Google Ads, Meta (Facebook/Instagram), creative strategy, TikTok, LinkedIn, Bing, GA4, Shopify, Klaviyo & Search Console + 8 morning-workflow slash commands. OAuth-secured live data via the GoMarble MCP server.",
   "repository": "https://github.com/gomarble-ai/marketing-agent",
   "version": "0.1.2",
   "author": {
