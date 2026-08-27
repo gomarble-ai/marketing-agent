@@ -1,3 +1,8 @@
+---
+name: winning-ads-engine
+description: The complete winning-ads methodology in a single reference — competitor ad intelligence, own-creative diagnosis, psychological hook grading, cross-source pattern synthesis, and shoot-ready brief generation, plus the orchestration logic that sequences all five. Use when the user wants the full end-to-end pipeline from market research to production brief, asks how the winning-ads process works as a whole, or needs the combined methodology in one place rather than a single narrow step. For a single step — just competitor ads, just a hook list, just a brief — the individual skills in this pack are the better fit.
+---
+
 # Winning Ads Skill Pack
 
 Six Claude Skills for GoMarble that take you from "what's working in the market" to a shoot-ready ad brief: competitor intelligence, your own creative diagnosis, a psychological hook framework, pattern synthesis across both, brief generation, and one orchestrator that routes the whole pipeline.
