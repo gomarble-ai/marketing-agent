@@ -1,3 +1,8 @@
+---
+name: gomarble-skills-creative-strategists
+description: "Use for creative strategy frameworks across platforms: ad fatigue detection, hook and hold analysis, creative performance ranking, design and copy audits, A/B test interpretation, audience-to-creative mapping, creative lift forecasts, messaging theme classification, and a weekly creative brief. Pairs with analyse-creative and brief-creative for live GoMarble data."
+---
+
 # Claude Skills for Creative Strategists
 
 **9 Core Skills + Weekly Brief** for analyzing and optimizing creative performance across platforms.
