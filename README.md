@@ -1,35 +1,159 @@
 <p align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/gomarble-ai/marketing-agent/main/assets/logo-dark.png">
-    <img alt="Marketing Agent — by GoMarble" src="https://raw.githubusercontent.com/gomarble-ai/marketing-agent/main/assets/logo-light.png" width="320">
+    <img alt="GoMarble" src="https://raw.githubusercontent.com/gomarble-ai/marketing-agent/main/assets/logo-light.png" width="320">
   </picture>
 </p>
 
-<h1 align="center">Marketing Agent</h1>
+<h1 align="center">GoMarble for Claude</h1>
 
 <p align="center">
-  <i>An AI marketing agent in your terminal.</i><br/>
-  Built by <a href="https://gomarble.ai"><b>GoMarble</b></a>.
-</p>
-
-<p align="center">
-  <a href="https://www.npmjs.com/package/marketing-agent"><img src="https://img.shields.io/npm/v/marketing-agent?color=1F3A8A&label=npm" alt="npm version"></a>
-  <a href="https://www.npmjs.com/package/marketing-agent"><img src="https://img.shields.io/npm/dm/marketing-agent?color=1F3A8A&label=downloads" alt="npm downloads"></a>
-  <img src="https://img.shields.io/npm/l/marketing-agent?color=1F3A8A&label=license" alt="MIT License">
-  <img src="https://img.shields.io/badge/Claude_Code-supported-1F3A8A" alt="Claude Code">
-  <img src="https://img.shields.io/badge/Codex_CLI-supported-1F3A8A" alt="Codex CLI">
+  <b>The AI agent for paid media teams, inside Claude and Codex.</b><br/>
+  Built by <a href="https://www.gomarble.ai">GoMarble</a>.
 </p>
 
 ---
 
-> **An AI marketing agent at your fingertips.** Meta strategists, Google Ads specialists, creative-fatigue analysts, GA4 attribution experts, Shopify ops leads — each a specialized agent with battle-tested processes, not a generic chatbot.
+GoMarble connects Claude to your ad accounts, analytics and store data. It explains what changed and why, and prepares the next move for your approval.
 
-**Marketing Agent** is the AI marketing agent for **Claude Code & Codex CLI** — it plugs your terminal into your ad accounts and turns it into a senior performance marketer across Google Ads, Meta, TikTok, LinkedIn, Bing, GA4, Shopify, Klaviyo & Search Console. Built by [GoMarble](https://gomarble.ai), the team that runs paid media for some of the fastest-growing DTC brands.
+Ask about any account in plain language. GoMarble pulls the data across channels, finds the root cause, and recommends what to do. When you say yes, it makes the change. You can also hand the routine work to agents that watch your accounts on a schedule and report back by email or Slack.
 
-- 🔌 **Live ad-platform data** via the GoMarble MCP server — OAuth, one-click sign-in
-- 🧠 **42 expert-authored skills** — Google Ads, Meta (Facebook/Instagram), creative strategy, GA4, Shopify, Search Console, Klaviyo, TikTok, LinkedIn, Bing Ads, document generation
-- ⚡ **8 morning-workflow slash commands** — daily audits and decision matrices for Meta + Google
-- 🛡️ **Built-in guardrails** — no synthetic data, no fabricated keywords, proper attribution discipline
+GoMarble agents manage more than $3B in annualized ad spend for in-house brand teams and agencies.
+
+---
+
+## What you can do
+
+| Job | Ask Claude | Skill |
+|---|---|---|
+| **Diagnose performance** | "Why did ROAS drop on my Meta account last week? Find the root cause and what to do next." | `diagnose-performance` |
+| **Analyze creative** | "Break down my top 10 Meta ads by spend. Which hooks, formats and angles are winning, and which are fatiguing?" | `analyse-creative` |
+| **Research competitors** | "Find the longest-running ads from my top 3 competitors and summarize the angles they keep testing." | `research-competitors` |
+| **Brief new creative** | "Write a creative brief for next week's tests using our winning hooks and the gaps in competitor ads." | `brief-creative` |
+| **Cut wasted spend** | "Find wasted spend across my Google Search campaigns and propose the negatives." | `clean-wasted-spend` |
+| **Shift budget** | "Where can we move $12k without pushing CAC above target? Show me the changes before applying." | `shift-budget` |
+| **Launch campaigns** | "Launch a Meta sales campaign for our new bundle with these 3 creatives. Keep the ads paused until I review." | `launch-campaigns` |
+| **Make any change** | "Pause these ad sets and lower the tCPA on Brand Search to $40." | `manage-campaigns` |
+| **Report** | "Build my Monday performance review across Meta, Google and Shopify." | `build-reports` |
+| **Automate** | "Every weekday at 9am, check all my accounts for spend spikes and ROAS drops, and email me only when something needs attention." | `automate-with-agents` |
+
+The use-case skills follow [gomarble.ai/use-cases](https://www.gomarble.ai/use-cases/diagnose-performance). Skills load automatically from what you ask; you don't need to name them.
+
+---
+
+## Works with your whole stack
+
+| Channel | What Claude can do through GoMarble |
+|---|---|
+| **Meta Ads** | Analyze, diagnose, creative analysis, audits. Launch Sales campaigns, edit, clone, pause and change budgets, with approval. |
+| **Google Ads** | Analyze with GAQL, search terms, Shopping, PMax, keyword research. Launch Search and Performance Max, edit, negatives, bid modifiers, experiments, with approval. |
+| **TikTok Ads** | Reports, audience and creative breakdowns, review status. For accounts in GoMarble's TikTok beta, launches and edits are prepared and validated in Claude, then applied in TikTok Ads Manager. |
+| **LinkedIn Ads, Microsoft Ads** | Performance, campaigns, keywords, targeting. Read-only: changes come back as instructions. |
+| **GA4, Shopify** | The business source of truth for sessions, conversions, orders and revenue. |
+| **Klaviyo** | Campaign and flow performance, lists and segments. |
+| **Search Console** | Organic queries, pages, indexing and sitemaps. |
+| **Facebook Pages, Instagram** | Organic content performance, comments, tagged UGC. |
+| **impact.com** | Affiliate partners, commissions, conversions and invoices. |
+| **Snowflake, Google Drive** | Your warehouse (read-only queries), and docs, sheets and media in Drive. |
+| **Ad library** | Competitor ads by brand, domain, keyword or niche. |
+
+GoMarble supports 80+ integrations. Claude can reach the ones you connect in GoMarble.
+
+---
+
+## You approve every change
+
+- **Analysis never changes anything.** Diagnosing, creative analysis, competitor research and reporting are read-only.
+- **Changes are proposed first.** GoMarble validates each change as a dry run, and Claude shows you each edit, from the current value to the new one. Nothing is applied until you approve, and you can approve some edits and reject others.
+- **New ads start paused.** By default, ads in a campaign built from Claude are created paused (TikTok entities start disabled), so nothing spends until you turn them on.
+- **Agents start as drafts.** A new agent doesn't run until you activate it. Agents that can make changes ask for approval by default. Auto-apply is available only if you turn it on.
+- **Guardrails for teams.** On plans with agent governance, you can limit which kinds of changes an agent may make and cap the size of any budget change.
+
+## Built for teams
+
+Claude works inside your GoMarble team's access rules, so agencies and in-house teams can give everyone Claude without giving everyone every account.
+
+- **Roles:** owners and admins reach every account. Members reach only the accounts granted to them.
+- **View or Act, per account:** a member with View can analyze an account; changing it (even proposing a change) needs Act.
+- **Opt-in write access for Claude:** a Claude connection can read by default. Applying changes on Meta or Google Ads is a permission each person turns on.
+- **Clear answers when access is missing:** Claude says what's needed and who can grant it, instead of failing silently.
+
+Admins manage roles and access at Settings → Team management, and connections at Settings → Integrations.
+
+---
+
+## What's inside
+
+**52 skills** and **8 slash commands**.
+
+### Start here
+
+| Skill | What it does |
+|---|---|
+| `get-started` | Connect accounts, find what's connected, use GoMarble's memory, and how approvals work. |
+| `accounts-and-connections` | See, add, remove or reconnect ad accounts and data sources, connect other tools and Slack, and switch read-only / read & write. |
+| `access-and-permissions` | Team roles, View vs Act account access, Claude's permissions, and what to do when a tool is denied. |
+
+### Use cases
+
+| Skill | What it does |
+|---|---|
+| `diagnose-performance` | Traces a performance move to its driver across channels, then proposes the smallest fix. |
+| `analyse-creative` | Ranks creative by hook, hold, CTR, CPA and ROAS, reads the creative itself, and flags fatigue. |
+| `research-competitors` | Finds competitors, pulls their ads from the ad library, groups angles, and flags what's new. |
+| `brief-creative` | Turns winning patterns, customer language and market gaps into a production-ready brief. |
+| `launch-campaigns` | Builds Meta, Google Search, PMax and TikTok (beta) launches for review before anything goes live. |
+| `shift-budget` | Finds headroom from pacing, efficiency and targets, and proposes exact budget moves. |
+| `clean-wasted-spend` | Quantifies waste in search terms, placements, audiences and creative, and proposes the clean-up. |
+| `manage-campaigns` | Any other change: status, bids, targeting, copy, assets, modifiers, experiments. |
+| `build-reports` | Cross-channel reports with drivers, decisions and a 7-day plan, saved to Drive or scheduled. |
+| `automate-with-agents` | Creates and manages GoMarble agents that run on a schedule and deliver by email or Slack. |
+
+### Channels
+
+`tiktok-ads`, `linkedin-ads`, `microsoft-ads`, `email-marketing` (Klaviyo), `organic-social` (Facebook Pages and Instagram), `affiliate-marketing` (impact.com), `search-console-master-skill`, `ga4-source-of-truth`, `shopify-order-discipline`.
+
+### GoMarble playbooks
+
+The same methodology GoMarble's own agent uses, synced from the GoMarble server:
+
+- **Meta:** `meta-performance-analysis`, `meta-creative-analysis`, `meta-depth-of-analysis`, `meta-guardrails`, `meta-tool-fundamentals`, `meta-agent-operations`, `meta-custom-event-interpretation`, `meta-create-master-skill`
+- **Google Ads:** `google-ads-search-analysis`, `google-ads-search-execution`, `google-ads-shopping`, `google-ads-pmax-evaluation`, `google-ads-pmax-scaling`, `google-ads-keywordplanner`, `google-ads-depth-of-analysis`, `google-ads-guardrails`, `google-ads-tool-fundamentals`, `google-ads-create-master-skill`
+- **TikTok:** `tiktok-create-master-skill`
+
+### Creative strategy
+
+`winning-ads-orchestrator` runs the full pipeline from market research to a shoot-ready brief, through `competitor-ad-intelligence`, `creative-research`, `own-creative-diagnosis`, `creative-psychology-hooks`, `winning-pattern-synthesis` and `ad-brief-generator`. `winning-ads-engine` holds the whole method in one reference.
+
+### Business frameworks
+
+`gomarble-skills-ecommerce-brands`, `gomarble-skills-saas-companies`, `gomarble-skills-creative-strategists`.
+
+### Slash commands (Claude Code)
+
+Read-only morning workflows. Each produces analysis and recommendations and never changes the account.
+
+| Command | What it does |
+|---|---|
+| `/gomarble:meta-daily-optimization <acct>` | Yesterday vs 3-day vs 7-day, change-log gate, and root-cause actions. |
+| `/gomarble:meta-ads-audit <acct>` | 30-day audit: pixel and CAPI, fatigue, audience split, ROAS outliers, budget allocation. |
+| `/gomarble:meta-creative-fatigue-detection <acct>` | Per-ad fatigue scoring with refresh recommendations. |
+| `/gomarble:meta-creative-strategy <acct>` | Winners and losers, patterns, test plan, and a 12-creative production spec. |
+| `/gomarble:google-search-audit <acct>` | Daily Search briefing with brand vs non-brand, and CUT / FIX / SCALE. |
+| `/gomarble:google-pmax-pulse <acct>` | 3-day vs 3-day PMax anomaly check, disciplined against overcorrection. |
+| `/gomarble:google-search-term-audit <acct>` | Forensic search term waste audit with suggested negatives. |
+| `/gomarble:google-impression-share <acct>` | Lost impression share: budget vs rank, gated on profitability. |
+
+---
+
+## Plans
+
+A GoMarble account is required. MCP access is included in every plan.
+
+- **Free:** 1 ad account per connector, 1 seat and 1 read-only agent. No card required.
+- **Paid plans** add more accounts, seats and agents. Plans with write actions add approved changes (launch and edit campaigns, manage keywords, adjust budgets, pause ads) and agents that can make changes.
+
+Paid plans come with a 7-day trial. See [gomarble.ai/pricing](https://www.gomarble.ai/pricing) for current plans and limits.
 
 ---
 
@@ -37,23 +161,17 @@
 
 ### Claude Code
 
-In a Claude Code session, paste these three commands:
-
 ```text
 /plugin marketplace add https://github.com/gomarble-ai/marketing-agent.git
-/plugin install marketing-agent@marketing-agent
+/plugin install gomarble@gomarble
 /reload-plugins
 ```
 
-> Using the **full HTTPS URL** (not the `owner/repo` shorthand) avoids SSH-key errors on machines where git is configured to rewrite GitHub HTTPS URLs to SSH.
+Using the full HTTPS URL avoids SSH-key errors on machines where git rewrites GitHub URLs to SSH.
 
-Then connect the MCP server:
+### Claude and Claude Cowork
 
-```text
-/mcp
-```
-
-Pick `gomarble`, click **Authenticate** — the browser opens, you sign in to GoMarble, you're done.
+Install **GoMarble** from the plugin directory once it's listed. You can also upload the plugin from your organization's plugin settings.
 
 ### Codex CLI
 
@@ -61,222 +179,94 @@ Pick `gomarble`, click **Authenticate** — the browser opens, you sign in to Go
 codex plugin marketplace add https://github.com/gomarble-ai/marketing-agent.git
 ```
 
-Start Codex, open the **Plugins** panel, find `Marketing Agent`, and install. Then:
+Start Codex, open the **Plugins** panel, find **GoMarble**, and install. Then run `codex mcp login gomarble`.
 
-```bash
-codex mcp login gomarble
-```
-
-Same OAuth flow, one-time.
-
-### One-command install for both (via npm)
+### One command for both (npm)
 
 ```bash
 npx marketing-agent
 ```
 
-This wraps the official commands above and works on macOS / Linux / Windows.
+This runs the official install commands above on macOS, Linux and Windows, and removes an earlier `marketing-agent` install if there is one.
 
----
+### Upgrading from `marketing-agent`
 
-## 🗣️ What you can ask the agent
-
-The skills auto-invoke based on what you ask — you don't have to remember anything. Some examples:
-
-| Ask | What happens |
-|---|---|
-| _"Audit my Meta account act_12345 for the last 30 days."_ | Loads performance + creative + depth-of-analysis skills, pulls 30d data, runs Pareto analysis, flags fatiguing creatives, surfaces ROAS outliers, produces a report. |
-| _"How did my Google Ads Search campaigns do this week?"_ | Loads search-analysis skill, classifies queries Q1–Q5, diagnoses CPC inflation or rank pressure, returns a decision matrix. |
-| _"Create a Meta ad set for this creative targeting US iOS users."_ | Loads create/master + adset skills, verifies parent campaign, detects pixel, builds the propose payload, asks you to confirm before posting. |
-| _"Pull a 7d Shopify sales report and compare to GA4 conversions."_ | Loads Shopify order-discipline + GA4 source-of-truth skills, queries both, reconciles the difference. |
-| _"Find winning ad ideas for my brand and turn the best directions into shoot-ready briefs."_ | Runs competitor intelligence, own-creative diagnosis, hook psychology, pattern synthesis, and brief generation, adapting to the data available. |
-| _"Generate a PPTX summarizing all my paid-media performance."_ | Loads pptx skill + the relevant analytics skills, produces a deck. |
-
-### ⚡ Slash commands (Claude Code only)
-
-8 read-only morning-workflow commands. Each produces analysis + recommendations — **never executes mutations**. Mutations happen separately via Agent Mode if the user explicitly opts in. Click any command name to view its source.
-
-**📊 Meta (4)**
-
-| Command | What it does |
-|---|---|
-| [`/marketing-agent:meta-daily-optimization <acct>`](https://github.com/gomarble-ai/marketing-agent/blob/main/commands/meta-daily-optimization.md) | Morning briefing: 1D vs 3D vs 7D, change-log gate, root-cause action recommendations (pause / cut / reallocate / scale candidates) |
-| [`/marketing-agent:meta-ads-audit <acct>`](https://github.com/gomarble-ai/marketing-agent/blob/main/commands/meta-ads-audit.md) | 30-day comprehensive audit — pixel/CAPI, fatigue, audience split, ROAS outliers, budget allocation |
-| [`/marketing-agent:meta-creative-fatigue-detection <acct>`](https://github.com/gomarble-ai/marketing-agent/blob/main/commands/meta-creative-fatigue-detection.md) | Per-ad scoring (Healthy / Early Warning / Fatigued / Dead) with refresh recommendations |
-| [`/marketing-agent:meta-creative-strategy <acct>`](https://github.com/gomarble-ai/marketing-agent/blob/main/commands/meta-creative-strategy.md) | Winners + losers, pattern extraction, test plan, scaling plan, 12-creative production spec |
-
-**🎯 Google (4)**
-
-| Command | What it does |
-|---|---|
-| [`/marketing-agent:google-search-audit <acct>`](https://github.com/gomarble-ai/marketing-agent/blob/main/commands/google-search-audit.md) | Daily Search briefing: brand-vs-non-brand segmentation, CUT / FIX / SCALE recommendations |
-| [`/marketing-agent:google-pmax-pulse <acct>`](https://github.com/gomarble-ai/marketing-agent/blob/main/commands/google-pmax-pulse.md) | 3d-vs-3d PMax anomaly check — Critical / Alert / Monitor classification, disciplined against overcorrection |
-| [`/marketing-agent:google-search-term-audit <acct>`](https://github.com/gomarble-ai/marketing-agent/blob/main/commands/google-search-term-audit.md) | Forensic waste audit using 80/80 Pareto + campaign-relative triggers; suggested negative keywords and root negatives |
-| [`/marketing-agent:google-impression-share <acct>`](https://github.com/gomarble-ai/marketing-agent/blob/main/commands/google-impression-share.md) | Lost-IS analysis → scaling opportunities (Budget) vs bid/quality work (Rank), gated on profitability |
-
-In Codex, just describe the task in natural language — the skills' `description` fields handle routing.
-
----
-
-## 📦 Skills shipped (42)
-
-Click any skill name to view its `SKILL.md` source.
-
-### 🎯 Google Ads (17)
-
-| Type | Skill | What it does |
-|---|---|---|
-| 🏗️ Foundations | [`google-ads-tool-fundamentals`](https://github.com/gomarble-ai/marketing-agent/blob/main/skills/google-ads-tool-fundamentals/SKILL.md) | Tool-call patterns, GAQL basics, account structure |
-| 🏗️ Foundations | [`google-ads-guardrails`](https://github.com/gomarble-ai/marketing-agent/blob/main/skills/google-ads-guardrails/SKILL.md) | Mutation safety, attribution rules, what never to fabricate |
-| 🔍 Analysis | [`google-ads-search-analysis`](https://github.com/gomarble-ai/marketing-agent/blob/main/skills/google-ads-search-analysis/SKILL.md) | Q1–Q5 query classification, CPC inflation diagnostics |
-| 🔍 Analysis | [`google-ads-shopping`](https://github.com/gomarble-ai/marketing-agent/blob/main/skills/google-ads-shopping/SKILL.md) | Shopping / Merchant Center performance audits |
-| 🔍 Analysis | [`google-ads-pmax-evaluation`](https://github.com/gomarble-ai/marketing-agent/blob/main/skills/google-ads-pmax-evaluation/SKILL.md) | PMax 3d-vs-3d anomaly detection |
-| 🔍 Analysis | [`google-ads-pmax-scaling`](https://github.com/gomarble-ai/marketing-agent/blob/main/skills/google-ads-pmax-scaling/SKILL.md) | PMax scaling decisions, disciplined against overcorrection |
-| 🔍 Analysis | [`google-ads-keywordplanner`](https://github.com/gomarble-ai/marketing-agent/blob/main/skills/google-ads-keywordplanner/SKILL.md) | Keyword discovery without fabrication |
-| 🔍 Analysis | [`google-ads-depth-of-analysis`](https://github.com/gomarble-ai/marketing-agent/blob/main/skills/google-ads-depth-of-analysis/SKILL.md) | Multi-layer drill-down methodology |
-| ⚡ Execution | [`google-ads-search-execution`](https://github.com/gomarble-ai/marketing-agent/blob/main/skills/google-ads-search-execution/SKILL.md) | Bid / budget / structure changes (gated on profitability) |
-| 🚀 Creation | [`google-ads-create-master-skill`](https://github.com/gomarble-ai/marketing-agent/blob/main/skills/google-ads-create-master-skill/SKILL.md) | Master orchestrator for new campaign builds |
-| 🚀 Creation | [`google-ads-create-campaign`](https://github.com/gomarble-ai/marketing-agent/blob/main/skills/google-ads-create-campaign/SKILL.md) | Campaign-level setup |
-| 🚀 Creation | [`google-ads-create-ad-group`](https://github.com/gomarble-ai/marketing-agent/blob/main/skills/google-ads-create-ad-group/SKILL.md) | Ad-group creation |
-| 🚀 Creation | [`google-ads-create-ad`](https://github.com/gomarble-ai/marketing-agent/blob/main/skills/google-ads-create-ad/SKILL.md) | Ad-level creation |
-| 🚀 Creation | [`google-ads-create-asset`](https://github.com/gomarble-ai/marketing-agent/blob/main/skills/google-ads-create-asset/SKILL.md) | Asset uploads |
-| 🚀 Creation | [`google-ads-create-experiment`](https://github.com/gomarble-ai/marketing-agent/blob/main/skills/google-ads-create-experiment/SKILL.md) | Experiment / draft setup |
-| 🚀 Creation | [`google-ads-create-negative-keyword-list`](https://github.com/gomarble-ai/marketing-agent/blob/main/skills/google-ads-create-negative-keyword-list/SKILL.md) | Negative-keyword list management |
-| 🚀 Creation | [`google-ads-create-bid-modifiers`](https://github.com/gomarble-ai/marketing-agent/blob/main/skills/google-ads-create-bid-modifiers/SKILL.md) | Bid-modifier setup |
-
-### 📊 Meta — Facebook + Instagram (10)
-
-| Type | Skill | What it does |
-|---|---|---|
-| 🏗️ Foundations | [`meta-tool-fundamentals`](https://github.com/gomarble-ai/marketing-agent/blob/main/skills/meta-tool-fundamentals/SKILL.md) | Tool-call patterns, account / campaign / ad-set / ad taxonomy |
-| 🏗️ Foundations | [`meta-guardrails`](https://github.com/gomarble-ai/marketing-agent/blob/main/skills/meta-guardrails/SKILL.md) | Mutation safety, attribution discipline |
-| 🔍 Analysis | [`meta-performance-analysis`](https://github.com/gomarble-ai/marketing-agent/blob/main/skills/meta-performance-analysis/SKILL.md) | Account-level performance audits |
-| 🔍 Analysis | [`meta-creative-analysis`](https://github.com/gomarble-ai/marketing-agent/blob/main/skills/meta-creative-analysis/SKILL.md) | Creative-fatigue scoring (Healthy / Warning / Fatigued / Dead) |
-| 🔍 Analysis | [`meta-depth-of-analysis`](https://github.com/gomarble-ai/marketing-agent/blob/main/skills/meta-depth-of-analysis/SKILL.md) | Multi-layer drill-down for Meta accounts |
-| ⚙️ Operations | [`meta-agent-operations`](https://github.com/gomarble-ai/marketing-agent/blob/main/skills/meta-agent-operations/SKILL.md) | Agentic-loop patterns for Meta workflows |
-| 🚀 Creation | [`meta-create-master-skill`](https://github.com/gomarble-ai/marketing-agent/blob/main/skills/meta-create-master-skill/SKILL.md) | Master orchestrator for new Meta campaign builds |
-| 🚀 Creation | [`meta-create-campaign`](https://github.com/gomarble-ai/marketing-agent/blob/main/skills/meta-create-campaign/SKILL.md) | Campaign-level setup |
-| 🚀 Creation | [`meta-create-adset`](https://github.com/gomarble-ai/marketing-agent/blob/main/skills/meta-create-adset/SKILL.md) | Ad-set setup |
-| 🚀 Creation | [`meta-create-ad-with-creative`](https://github.com/gomarble-ai/marketing-agent/blob/main/skills/meta-create-ad-with-creative/SKILL.md) | Ad + creative pairing |
-
-### 📈 Other platforms (3)
-
-| Platform | Skill | What it does |
-|---|---|---|
-| 📊 GA4 | [`ga4-source-of-truth`](https://github.com/gomarble-ai/marketing-agent/blob/main/skills/ga4-source-of-truth/SKILL.md) | Conversions ≠ transactions, channel-subset-sum traps, attribution discipline |
-| 🛍️ Shopify | [`shopify-order-discipline`](https://github.com/gomarble-ai/marketing-agent/blob/main/skills/shopify-order-discipline/SKILL.md) | No `financial_status` filter, gross-vs-net, refunds, multi-currency |
-| 🔎 Search Console | [`search-console-master-skill`](https://github.com/gomarble-ai/marketing-agent/blob/main/skills/search-console-master-skill/SKILL.md) | Organic search analysis + opportunity scoring |
-
-### 🎨 Creative strategy (7)
-
-| Type | Skill | What it does |
-|---|---|---|
-| 🔁 Orchestration | [`winning-ads-orchestrator`](https://github.com/gomarble-ai/marketing-agent/blob/main/skills/winning-ads-orchestrator/SKILL.md) | Routes competitor research, first-party diagnosis, hook analysis, synthesis, and brief generation |
-| 🔎 Research | [`creative-research`](https://github.com/gomarble-ai/marketing-agent/blob/main/skills/creative-research/SKILL.md) | Competitor discovery plus evergreen and breakout investment signals |
-| 🔎 Research | [`competitor-ad-intelligence`](https://github.com/gomarble-ai/marketing-agent/blob/main/skills/competitor-ad-intelligence/SKILL.md) | Live competitor-ad patterns and investment proxies through GoMarble MCP |
-| 📊 Analysis | [`own-creative-diagnosis`](https://github.com/gomarble-ai/marketing-agent/blob/main/skills/own-creative-diagnosis/SKILL.md) | First-party Meta creative diagnosis with explicit evidence gates |
-| 🧠 Ideation | [`creative-psychology-hooks`](https://github.com/gomarble-ai/marketing-agent/blob/main/skills/creative-psychology-hooks/SKILL.md) | Structured hook generation and psychological hypothesis grading |
-| 🧩 Synthesis | [`winning-pattern-synthesis`](https://github.com/gomarble-ai/marketing-agent/blob/main/skills/winning-pattern-synthesis/SKILL.md) | Cross-source patterns, own-account test gaps, and market whitespace |
-| 🎬 Production | [`ad-brief-generator`](https://github.com/gomarble-ai/marketing-agent/blob/main/skills/ad-brief-generator/SKILL.md) | Shoot-ready UGC, static, carousel, and creator briefs |
-
-### 📄 Document generation (5)
-
-| Format | Skill | What it does |
-|---|---|---|
-| 📝 DOCX | [`documents-docx-skill`](https://github.com/gomarble-ai/marketing-agent/blob/main/skills/documents-docx-skill/SKILL.md) | Word document generation |
-| 🎯 PPTX | [`documents-pptx-skill`](https://github.com/gomarble-ai/marketing-agent/blob/main/skills/documents-pptx-skill/SKILL.md) | PowerPoint deck generation |
-| 📑 PDF | [`documents-pdf-skill`](https://github.com/gomarble-ai/marketing-agent/blob/main/skills/documents-pdf-skill/SKILL.md) | PDF report generation |
-| 📊 XLSX | [`documents-xlsx-skill`](https://github.com/gomarble-ai/marketing-agent/blob/main/skills/documents-xlsx-skill/SKILL.md) | Excel spreadsheet generation |
-| 🐍 Python | [`python-sandbox-skill`](https://github.com/gomarble-ai/marketing-agent/blob/main/skills/python-sandbox-skill/SKILL.md) | Foundation for all document generation |
-
----
-
-## 🔄 How it works
-
-```
-You ask:  "Audit my Meta account"
-    ↓
-Claude / Codex auto-invokes the right skills by description
-    ↓
-Skill instructs the agent to call GoMarble MCP tools (meta_get_account_insights, etc.)
-    ↓
-GoMarble MCP → live Meta Ads API call (with your OAuth token)
-    ↓
-Agent applies the methodology + guardrails to interpret the data
-    ↓
-You get the answer
-```
-
-The plugin ships only the methodology. All live data comes from the GoMarble MCP server you authorized with `/mcp` (Claude) or `codex mcp login gomarble`.
-
----
-
-## 🔁 Updating
+The plugin was renamed from `marketing-agent` to `gomarble`. If you installed it before, remove the old one first:
 
 ```text
-# Claude Code
-/plugin marketplace update marketing-agent
-
-# Codex CLI
-codex plugin marketplace update marketing-agent
+/plugin uninstall marketing-agent@marketing-agent
+/plugin marketplace remove marketing-agent
 ```
 
-The SessionStart hook also surfaces an "update available" prompt automatically the first time you start a session on an outdated version.
+Then install as above. `npx marketing-agent` does this for you.
 
 ---
 
-## 📁 Repo layout
+## Connect your ad accounts
 
-This is what gets installed when you run any of the install commands above:
+1. The first time Claude uses GoMarble, you'll be asked to sign in. In Claude Code, run `/mcp`, pick the GoMarble server, and choose **Authenticate**. In Codex, run `codex mcp login gomarble`.
+2. Log in at [apps.gomarble.ai](https://apps.gomarble.ai) with your work email.
+3. Add your ad accounts and data sources at [apps.gomarble.ai/settings/integrations](https://apps.gomarble.ai/settings/integrations).
+4. Come back and ask about your accounts.
 
-```
+**Already added GoMarble as a custom connector?** If you set it up by hand earlier (for example at `https://apps.gomarble.ai/mcp-api/sse`), you'll see two GoMarble connectors after installing the plugin. Remove the old custom one in your connector settings and keep the plugin's.
+
+---
+
+## Data and privacy
+
+- **What the plugin runs locally:** nothing. It has no hooks and no local servers. It contains markdown skills and commands, and one connector setting. The `scripts/` folder holds maintainer tools that the plugin never runs.
+- **What it connects to:** one remote MCP server, `https://apps.gomarble.ai/mcp-api/mcp`, over HTTPS. You sign in with OAuth. The plugin stores no credentials.
+- **What data moves:** when Claude calls a GoMarble tool, GoMarble reads from the ad platforms and data sources you connected in your GoMarble account and returns the results to Claude. Tool requests and their results pass through GoMarble's servers. Approved changes are applied to your ad accounts by GoMarble through each platform's official API.
+- **Access control:** Claude can only reach accounts your GoMarble login can reach, at the permission level your workspace grants. You can disconnect data sources in GoMarble, or disconnect the connector in Claude, at any time.
+
+GoMarble's privacy policy: [gomarble.ai/privacy](https://www.gomarble.ai/privacy). Security: [gomarble.ai/security](https://www.gomarble.ai/security).
+
+---
+
+## Repo layout
+
+```text
 marketing-agent/
 ├── .claude-plugin/
-│   ├── plugin.json              # Claude Code manifest
-│   └── marketplace.json         # marketplace declaration
+│   ├── plugin.json          # Claude manifest (plugin name: gomarble)
+│   └── marketplace.json     # marketplace for /plugin marketplace add
 ├── .codex-plugin/
-│   └── plugin.json              # Codex manifest with rich install metadata
-├── .mcp.json                    # remote MCP wiring (Streamable HTTP + OAuth)
-├── commands/                    # 8 slash commands (Claude reads; Codex ignores)
-├── hooks/
-│   ├── hooks.json               # registers SessionStart hook
-│   └── session-start.mjs        # MCP probe + version check + today's-date injection
-├── skills/                      # 42 discoverable skills — both hosts read from here
+│   └── plugin.json          # Codex manifest
+├── .mcp.json                # GoMarble connector (Claude reads mcpServers, Codex reads mcp_servers)
+├── commands/                # 8 slash commands (Claude Code)
+├── skills/                  # 52 skills, read by both Claude and Codex
+├── scripts/                 # maintainer tools: skill sync and coverage check
+├── bin/install.mjs          # the npx installer
 └── README.md
 ```
 
-### Why one folder works for both hosts
+---
 
-Each host looks for its manifest in a dedicated subfolder; everything else is shared.
+## Contributing
 
-| Host | Manifest | Reads | Ignores |
-|---|---|---|---|
-| Claude Code | `.claude-plugin/plugin.json` | `skills/`, `commands/`, `.mcp.json` (`mcpServers` key) | `.codex-plugin/` |
-| Codex | `.codex-plugin/plugin.json` | `skills/`, `.mcp.json` (`mcp_servers` key) | `.claude-plugin/plugin.json`, `commands/` |
+**GoMarble playbooks come from the server.** The Meta, Google Ads, TikTok, GA4, Shopify, Search Console and creative-research skills are synced from GoMarble's server-side skill catalog, the same source the connector's `load_skill` tool serves. Don't edit them here; change them on the server, then re-sync:
 
-`.mcp.json` ships **both** wrapper keys with identical content so each host finds its preferred form.
+```bash
+git -C ../mcp-server-sse show origin/main:ads-mcp-server/src/lib/langfuse/langfuse.json > /tmp/langfuse.json
+node scripts/sync-server-skills.mjs /tmp/langfuse.json
+node scripts/check-coverage.mjs
+```
+
+`scripts/skill-map.json` maps each server skill to a plugin skill. The sync adds frontmatter, rewrites server paths to plugin skill names, and adds a short note wherever the server text assumes GoMarble's own app.
+
+**Every connector tool has a skill.** `scripts/check-coverage.mjs` fails if a tool in `scripts/connector-tools.json` isn't covered by a skill, or a skill names a tool the connector doesn't expose. Update that list when the connector's tools change.
+
+**Other skills** (use cases, channels, creative strategy, business frameworks) live here. Keep each `SKILL.md` under about 3,000 words and put detail in `references/`.
+
+Raise `version` in `.claude-plugin/plugin.json`, `.codex-plugin/plugin.json` and `package.json` with every release.
 
 ---
 
 ## Support
 
-- **Docs & examples:** https://gomarble.ai
-- **Issues & feature requests:** https://github.com/gomarble-ai/marketing-agent/issues
-- **Account / billing:** https://apps.gomarble.ai
+- **Product and docs:** [gomarble.ai](https://www.gomarble.ai)
+- **Issues and feature requests:** [github.com/gomarble-ai/marketing-agent/issues](https://github.com/gomarble-ai/marketing-agent/issues)
+- **Account and billing:** [apps.gomarble.ai](https://apps.gomarble.ai)
 
----
-
-<p align="center">
-  <a href="https://gomarble.ai">
-    <img src="https://raw.githubusercontent.com/gomarble-ai/marketing-agent/main/assets/icon.svg" alt="GoMarble" height="40">
-  </a>
-</p>
-
-<p align="center">
-  <b>Built with care by <a href="https://gomarble.ai">GoMarble</a></b><br/>
-  <sub>The AI marketing agent for performance marketers — Google Ads, Meta, TikTok, LinkedIn, Bing, GA4, Shopify, Klaviyo & more.</sub>
-</p>
-
-<p align="center">
-  <sub>© GoMarble. MIT licensed.</sub>
-</p>
+<p align="center"><sub>© GoMarble. MIT licensed.</sub></p>
