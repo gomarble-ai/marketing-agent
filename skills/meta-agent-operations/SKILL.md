@@ -1,42 +1,37 @@
 ---
 name: meta-agent-operations
 description: "Use when proposing or executing Meta Ads changes: propose/execute workflow, campaign/adset/ad update rules, currency in cents."
----
----
-path: meta-agent-operations
-label: production
-version: 1
-chars: 4824
-estimated_tokens: ~1206
-fetched_at: 2026-03-16T05:33:37.413Z
+metadata:
+  source: "prompts/skills/meta/agent-operations"
 ---
 
 # Meta Ads - Agent Operations
 
-Rules for proposing and executing changes on Meta Ads via propose/execute tools.
+Rules for proposing and executing changes on Meta Ads via propose tools (they auto-execute on user approval).
 
 ## General Workflow
 1. Describe the intended change in plain language to the user
 2. Call the appropriate propose tool to create pending operations
 3. Wait for user approval (up to 2.5 minutes active, then approvable via panel for 24 hours)
-4. Call `facebook_execute_approved_operation` for each approved operation
+4. Approved operations execute AUTOMATICALLY — there is NO separate execute tool (`facebook_execute_approved_operation` no longer exists; never call it). The propose tool's response includes the execution result and any new/updated IDs.
 5. Confirm outcome to the user
 
 ## Currency Rules
-- All Meta budgets are in **cents** (integer). $50 = 5000 cents
+- ALL Meta propose tools — the create launch AND every update tool — take budgets/bids in **account currency, human-readable** (50 means $50, 300 means ₹300). The SERVER converts to cents. Never pass cents (5000 for $50 would set a 100× budget).
+- Values returned by `facebook_get_campaign_details` / adset details are already in account currency; only Meta's raw insights/`account_structure` budget fields are in cents (divide by 100 for display).
 - Always retrieve ad account details to confirm currency before proposing budget changes
 - Display amounts with correct currency symbol — never assume USD
 - Show before/after: "Current: $100.00/day → Proposed: $120.00/day (+20%)"
 
 ## Campaign Updates (`facebook_propose_update_campaigns`)
-**Supported fields**: name, status (ACTIVE/PAUSED), objective, daily_budget (cents), lifetime_budget (cents), bid_strategy, spend_cap (cents), pacing_type
+**Supported fields**: name, status (ACTIVE/PAUSED), objective, daily_budget, lifetime_budget, bid_strategy, spend_cap, pacing_type — all money fields in ACCOUNT CURRENCY (server converts to cents)
 - `buying_type` is read-only after creation — will fail if changed
 - `daily_budget` and `lifetime_budget` cannot coexist
-- Set `spend_cap` to 922337203685478 to remove cap
+- Pass `spend_cap: 0` (or `null`) to REMOVE the cap — the server substitutes Meta's max-int sentinel itself. Never pass the sentinel directly (it would be currency-converted and overflow)
 - One array entry per field change for independent user approval
 
 ## Ad Set Updates (`facebook_propose_update_adsets`)
-**Supported fields**: name, status, daily_budget (cents), lifetime_budget (cents), targeting, bid_strategy, bid_amount (cents), optimization_goal, billing_event, destination_type, start_time, end_time, frequency_control_specs, attribution_spec
+**Supported fields**: name, status, daily_budget, lifetime_budget, targeting, bid_strategy, bid_amount, optimization_goal, billing_event, destination_type, start_time, end_time, frequency_control_specs, attribution_spec — money fields in ACCOUNT CURRENCY (server converts)
 
 **CRITICAL — Targeting is full-replacement**: When changing targeting, `new_state` must contain the COMPLETE targeting object (geo_locations, age_min, age_max, genders, flexible_spec, custom_audiences, etc.) — not just changed parts. Omitted fields get removed.
 
@@ -44,7 +39,7 @@ Rules for proposing and executing changes on Meta Ads via propose/execute tools.
 
 **Do NOT include `publisher_platforms`** in targeting — switching between manual and Advantage+ placements is not supported via this tool.
 
-**Product set**: `promoted_object` (including `product_set_id`) is immutable on ad sets. To change product set for catalog ads, use `facebook_propose_update_ads` with `creative.product_set_id`.
+**Product set**: `promoted_object` (including `product_set_id`) is immutable on ad sets, and NO update tool can change a catalog ad's product set (the ad-level update schema has no product_set_id either). Direct the user to Ads Manager, or propose a fresh ad with the new product set.
 
 ## Ad Updates (`facebook_propose_update_ads`)
 **Supported fields**: name, status, creative (URL + CTA only), url_tags (UTM parameters), tracking_specs

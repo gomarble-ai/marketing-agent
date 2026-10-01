@@ -1,15 +1,17 @@
----
-name: meta-create-adset
-description: "Use when creating a Meta ad set. Parent campaign verification, pixel detection, targeting patterns, attribution spec, bid amount rules, placement/optimization guardrails. Loaded after the create master skill."
----
+<!-- Synced from GoMarble server skill: prompts/skills/meta/create/adset -->
+
+> **In Claude.** This methodology is GoMarble's own, kept in sync with the GoMarble connector.
+> - Where this says changes appear as approval cards or rows: in Claude, call the propose tool with `mode: "dryrun"` first. That validates the change without touching the account. Show the user each proposed change (entity, current value, new value), and only after an explicit yes call the same tool with `mode: "live"` and just the approved `operation_ids`.
+> - Where this says to call `user_input`: that tool exists only in GoMarble's own app. Ask the user the same question in chat instead. Where it says not to call `user_input`, don't ask — decide from the data.
+
 # Meta Ads - Create Ad Set
 
-## CRITICAL: Do NOT combine with other creation steps
-Each creation step (campaign → ad set → ad+creative) has its own separate flow. The ad set step happens AFTER campaign has been created and executed.
+## This skill defines the `adset` SLOT of the launch call
+The whole launch — campaign, ad set, and ads — is ONE call to `facebook_propose_create_campaign_structure`. This skill covers the `adset` object of that call. **ONE ad set per call** — additional ad sets go in their own launch calls with top-level `campaign_id`. Include the slot only when creating a NEW ad set; to add ads to an existing ad set pass top-level `adset_id` instead (mutually exclusive).
 
 ## user_input Rules
 
-Do NOT call `user_input` for ad set creation. Auto-detect and auto-configure ALL fields. Show a brief summary in chat, then call `facebook_propose_create_adset` directly. The user can review and edit everything in the approval UI.
+Do NOT call `user_input` for ad set creation. Auto-detect and auto-configure ALL fields, then fill the `adset` slot of the single `facebook_propose_create_campaign_structure` launch call. The user can review and edit everything in the approval UI.
 
 **Auto-configure ALL fields silently:**
 
@@ -19,16 +21,14 @@ Do NOT call `user_input` for ad set creation. Auto-detect and auto-configure ALL
 | `target_countries` | Auto-detect | Most common countries from Step 4. If no existing ad sets, use account's default country. |
 | `daily_budget` | Auto-detect or ASK (ABO only) | Median budget from Step 4. **If no existing ad sets with budgets → ASK the user for budget.** NEVER invent a number. Skip if CBO. |
 | `bid_amount` | Auto-detect or ASK (if needed) | Only if campaign uses COST_CAP or BID_CAP. Use median from existing ad sets. **If no existing bid data → ASK the user.** NEVER invent a number. |
-| `campaign_id` | From prior step | Just-executed campaign's `new_campaign_id` |
-| `campaign_name` | From prior step | Campaign name used during creation — UI breadcrumb only |
+| `campaign_id` / `campaign_name` | Do NOT pass inside the slot | The server links the ad set to the sibling `campaign` slot (or to top-level `campaign_id`) automatically |
 | `billing_event` | `IMPRESSIONS` | Fixed for Sales |
 | `destination_type` | `WEBSITE` | Default for Sales |
 | `optimization_goal` | `OFFSITE_CONVERSIONS` | Default for Sales — optimize for conversions. Do NOT use VALUE unless user explicitly asks AND pixel is eligible. |
 | `status` | `ACTIVE` | Default — ad set goes live as soon as an active ad is attached |
 | `promoted_object` | `{ pixel_id: <from Step 3>, custom_event_type: "PURCHASE" }` | Auto-detect pixel. If 1 pixel → use it. If multiple → show in chat, ask user to pick (this is the ONE exception where user input is needed). |
 | `attribution_spec` | `[{ event_type: "CLICK_THROUGH", window_days: 7 }, { event_type: "VIEW_THROUGH", window_days: 1 }]` | Standard 7d click + 1d view |
-| `is_campaign_cbo` | `true` if campaign has budget | From Step 2 |
-| `campaign_bid_strategy` | From Step 2 | `facebook_get_campaign_details` → bid_strategy |
+| `is_campaign_cbo` / `campaign_bid_strategy` | Do NOT pass | The server derives campaign context from the sibling `campaign` slot, or fetches it when top-level `campaign_id` points at an existing campaign |
 | `bid_strategy` | Do NOT set | Inherits from campaign |
 | `is_dynamic_creative` | `false` (default) | Leave `false` in most cases. For multiple headlines/texts, prefer `creative_asset_groups_spec` (Flexible Ads) at the ad level instead — it does NOT need this flag. Only set to `true` if specifically using `asset_feed_spec` (legacy DCO) or placement-specific `asset_customization_rules`. |
 | `targeting.age_min` | `18` | Default performant range |
@@ -36,7 +36,7 @@ Do NOT call `user_input` for ad set creation. Auto-detect and auto-configure ALL
 | `targeting.genders` | Do NOT set | All genders |
 | `targeting.publisher_platforms` | Do NOT set | Advantage+ Placements (automatic) |
 
-**Workflow:** Fetch account details (Step 1) → get campaign details (Step 2) → list pixels (Step 3) → detect patterns (Step 4) → build targeting with interest search (Step 5) → call `facebook_propose_create_adset` directly with all auto-configured values. Do NOT call `user_input`. Do NOT show a summary before proposing — the user reviews and edits everything in the approval UI.
+**Workflow:** Fetch account details (Step 1) → list pixels (Step 3) → detect patterns (Step 4) → build targeting with interest search (Step 5) → put the result in the `adset` slot of the launch call. The server derives all campaign context itself (see Step 2). Do NOT call `user_input`. Do NOT show a summary before proposing — the user reviews and edits everything in the approval UI.
 
 **EMPTY ACCOUNT (no existing adsets to detect patterns from):** If `account_structure.adsets` is empty, this is a NEW account. Do NOT stop and ask the user what to do. Proceed with creation using these defaults:
 - `target_countries`: Use the account's timezone/locale to infer country (e.g., INR currency → `["IN"]`, USD → `["US"]`). If unsure, ASK the user.
@@ -59,19 +59,10 @@ Extract:
 | `currency` | Response root | `currency_code` param |
 | `account_structure.adsets` | Response root | Detect targeting patterns, conversion events, budget ranges |
 
-**Step 2: Get Parent Campaign Details** (MANDATORY)
-Call `facebook_get_campaign_details` with `campaign_id` and `act_id`.
-Extract:
-| Field | Where to Find | Use For |
-|-------|--------------|---------|
-| `daily_budget` or `lifetime_budget` | Campaign response | `is_campaign_cbo` = true if either exists |
-| `bid_strategy` | Campaign response | `campaign_bid_strategy` — determines if bid_amount is needed |
-| `special_ad_categories` | Campaign response | Pass as `campaign_special_ad_categories` |
-| `special_ad_category_country` | Campaign response | Pass as `campaign_special_ad_category_country` |
-| `objective` | Campaign response | Must be OUTCOME_SALES for V1 |
-| `status` | Campaign response | Verify not DELETED/ARCHIVED |
+**Step 2: Campaign context — handled by the SERVER, not you**
+Do NOT call `facebook_get_campaign_details` for CBO / bid-strategy / special-ad-category context, and do NOT pass `is_campaign_cbo`, `campaign_bid_strategy`, `campaign_special_ad_categories`, or `campaign_special_ad_category_country` — the server derives them from the sibling `campaign` slot, or fetches them itself when top-level `campaign_id` points at an existing campaign.
 
-**STOP** if `facebook_get_campaign_details` fails — tell user campaign does not exist.
+The ONLY reason to look up an existing campaign yourself: it may use `COST_CAP` or `LOWEST_COST_WITH_BID_CAP`, where YOU must decide `bid_amount` (see Bid Amount Rules). Budget placement still follows CBO/ABO: campaign slot has a budget → no ad-set budget; no campaign budget (ABO) → the ad set MUST carry `daily_budget` or `lifetime_budget`.
 
 **Step 3: Get Pixel**
 Call `facebook_list_pixels` with `act_id`.
@@ -219,10 +210,7 @@ Call `facebook_list_custom_audiences` with `act_id`.
 | `optimization_goal` | `OFFSITE_CONVERSIONS` | Default for Sales — optimize for Purchase |
 | `status` | `ACTIVE` | Default — goes live when an active ad is attached |
 | `promoted_object` | `{ pixel_id: from Step 3, custom_event_type: "PURCHASE" }` | Pixel shown to user for confirmation in Step 3 |
-| `is_campaign_cbo` | From Step 2 | true if campaign has budget |
-| `campaign_bid_strategy` | From Step 2 | Pass the campaign's bid_strategy |
-| `campaign_special_ad_categories` | From Step 2 | Pass the campaign's special_ad_categories |
-| `campaign_special_ad_category_country` | From Step 2 | Pass the campaign's special_ad_category_country |
+| campaign context (`is_campaign_cbo`, `campaign_bid_strategy`, `campaign_special_ad_categories`, `campaign_special_ad_category_country`) | Do NOT pass | Server derives from the `campaign` slot / existing campaign |
 | `attribution_spec` | `[{ event_type: "CLICK_THROUGH", window_days: 7 }, { event_type: "VIEW_THROUGH", window_days: 1 }]` | Default 7d click + 1d view for conversions |
 | `bid_strategy` | Do NOT set | Unless optimization_goal is IMPRESSIONS/REACH → then MUST set LOWEST_COST_WITHOUT_CAP |
 | `is_dynamic_creative` | `false` (default) | Leave `false` — prefer `creative_asset_groups_spec` for text variations |
@@ -241,7 +229,7 @@ Call `facebook_list_custom_audiences` with `act_id`.
 
 ### Phase 4: Propose Directly
 
-Call `facebook_propose_create_adset` immediately with all auto-configured values. Do NOT show a summary or ask for confirmation — the user reviews and edits everything in the approval UI.
+Place the finished object in the `adset` slot of the `facebook_propose_create_campaign_structure` launch call (made together with the `campaign` and `ads` slots). Do NOT show a summary or ask for confirmation — the user reviews and edits everything in the approval UI.
 
 ---
 
@@ -307,11 +295,11 @@ If user wants ABO + multiple ad sets under same campaign:
 | Optimization Goal | Attribution Spec |
 |-------------------|-----------------|
 | OFFSITE_CONVERSIONS / VALUE | `[{ event_type: "CLICK_THROUGH", window_days: 7 }, { event_type: "VIEW_THROUGH", window_days: 1 }]` |
-| IMPRESSIONS / REACH | `[{ event_type: "CLICK_THROUGH", window_days: 1 }, { event_type: "VIEW_THROUGH", window_days: 0 }]` — Meta rejects anything else |
-| LINK_CLICKS / LANDING_PAGE_VIEWS | `[{ event_type: "CLICK_THROUGH", window_days: 1 }, { event_type: "VIEW_THROUGH", window_days: 0 }]` |
+| IMPRESSIONS / REACH | REQUIRED: `[{ event_type: "CLICK_THROUGH", window_days: 1 }, { event_type: "VIEW_THROUGH", window_days: 1 }]` — the server requires both entries for these goals |
+| LINK_CLICKS / LANDING_PAGE_VIEWS | `[{ event_type: "CLICK_THROUGH", window_days: 1 }, { event_type: "VIEW_THROUGH", window_days: 1 }]` |
 
-**ENGAGED_VIDEO_VIEW** (optional, video ads only): Add `{ event_type: "ENGAGED_VIDEO_VIEW", window_days: 1 }` to attribution_spec for video creatives. Valid window_days: 0 (none) or 1.
-**CLICK_THROUGH** window_days: 1 or 7. **VIEW_THROUGH**: 0 or 1.
+**ENGAGED_VIDEO_VIEW** (optional, video ads only): Add `{ event_type: "ENGAGED_VIDEO_VIEW", window_days: 1 }` to attribution_spec for video creatives.
+Valid window_days — **CLICK_THROUGH**: 1, 7, or 28. **VIEW_THROUGH**: 1 or 7. **ENGAGED_VIDEO_VIEW**: 1 or 7. **Never send window_days 0 — the server rejects it.**
 
 ### Bid Amount Rules
 
@@ -340,6 +328,6 @@ Transient Meta API errors (code 2 "Please retry your request later", network err
 | "Dynamic creative ad sets allow for one active ad at most" | Ad set needs `is_dynamic_creative: true` to use `asset_feed_spec` creatives. Re-create ad set with the flag set. |
 | "Only dynamic creative ads can be created as the ad set is a dynamic creative ad set" | The ad set has `is_dynamic_creative: true` but the ad used flat fields. Use `asset_feed_spec` format for DCO ad sets. |
 
-## Call the Tool
+## Slot Shape
 
-Pass `adset_configs` as a 1-element array. Never call the tool multiple times — batch all ad sets in one call.
+The `adset` slot is a single OBJECT — ONE ad set per launch call. Required keys: `name`, `destination_type`, `optimization_goal`, `billing_event`, `status`, `targeting`. Never put `campaign_id` or campaign context inside the slot. Additional ad sets → separate launch calls with top-level `campaign_id`.

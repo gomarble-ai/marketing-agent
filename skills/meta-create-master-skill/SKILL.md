@@ -1,33 +1,33 @@
 ---
 name: meta-create-master-skill
-description: "MUST load FIRST for any Meta ad creation, launch, campaign setup, ad set creation, or creative push. Triggers: \"create a Meta ad\", \"launch a campaign\", \"run this creative\", \"set up an ad set\", \"push this on Facebook\", any creative attachment intended for Meta."
+description: "MUST load FIRST for any Meta ad creation, launch, campaign setup, ad set creation, or creative push. Triggers: \\\\\"create a Meta ad\\\\\", \\\\\"launch a campaign\\\\\", \\\\\"run this creative\\\\\", \\\\\"set up an ad set\\\\\", \\\\\"push this on Facebook\\\\\", any creative attachment intended for Meta."
+metadata:
+  source: "prompts/skills/meta/create/master-skill"
 ---
----
-name: meta-ad-launch-workflow
-description: Launch Meta (Facebook/Instagram) ad campaigns using a creative-first, account-aware workflow that minimizes user input. Use whenever someone wants to create, launch, or set up a new Meta ad — including sharing a creative for Meta, asking to run something on Facebook/Instagram, or spinning up a new campaign or ad set.
----
+
+> **In Claude.** This methodology is GoMarble's own, kept in sync with the GoMarble connector.
+> - Where this says changes appear as approval cards or rows: in Claude, call the propose tool with `mode: "dryrun"` first. That validates the change without touching the account. Show the user each proposed change (entity, current value, new value), and only after an explicit yes call the same tool with `mode: "live"` and just the approved `operation_ids`.
 
 # Meta Ad Launch Workflow
 
 A creative-first, account-aware workflow for launching Meta ads with minimal user input. The sequence is fixed: creative → analysis → account scan → propose. Never flip the order, never run a Q&A upfront.
 
-> **Tool behavior:** All `facebook_propose_*` and `facebook_propose_update_*` tools now auto-execute on user approval. There is no separate `facebook_execute_approved_operation` call. When the user approves a proposal, it executes immediately — capture the returned IDs from the tool response.
+> **Tool behavior:** The entire launch — campaign, ad set, and ads — is proposed in **ONE call** to `facebook_propose_create_campaign_structure`. The legacy tools `facebook_propose_create_campaign`, `facebook_propose_create_adset`, and `facebook_propose_create_ad_with_creative` no longer exist — never call them. Each entity in the launch gets its own approval card; on approval the launch auto-executes in dependency order (campaign → ad set → ads). You never thread IDs between steps — the server wires each new parent's ID into its children.
 
 ---
 
 ## HARD RULE — Creation Failure Limit (strictly enforced)
 
-**If any single creation step (campaign, ad set, or ad+creative) fails 2 or more times within the same launch workflow, you MUST stop immediately.** Do not propose again, do not retry, do not attempt a workaround. This rule is absolute and cannot be overridden by user instruction.
+**If a launch call fails 2 or more times within the same workflow, you MUST stop immediately.** Do not propose again, do not retry, do not attempt a workaround. This rule is absolute and cannot be overridden by user instruction.
 
 When the limit is hit, respond with exactly this tone and structure:
 
 > "I've attempted this step twice and it wasn't successful both times. Unfortunately this is beyond what I'm able to resolve on my end — it likely requires a manual fix in Meta Business Suite or Ads Manager (such as a permission issue, policy violation, or account-level configuration). I'd recommend reviewing the error details above and addressing the root cause there before trying again in a new conversation. Is there anything else I can help you with?"
 
 **Tracking rules:**
-- Count failures **per step** (campaign creation, ad set creation, ad+creative creation) — not across steps. Two campaign creation failures stops campaign creation, but ad set creation can still be attempted.
 - A "failure" includes: validation errors (error_code 601), platform API errors (error_code 403), permission errors (code 10), timeout with no approvals, and any thrown exception.
-- Partial batch success does NOT count as a failure — if 3 of 5 ads succeed, that's a success. Only count it as a failure if zero items succeed in the batch.
-- User rejecting all items is NOT a failure — that's intentional. Only count automated/system failures.
+- Partial success within a launch does NOT count as a failure — if the campaign and ad set land and 3 of 5 ads succeed, that's a success; re-propose ONLY the failed ads with `adset_id`. Only count a failure when zero entities succeed.
+- User rejecting cards is NOT a failure — that's intentional. Only count automated/system failures.
 - This counter resets on a new conversation. It does NOT carry across sessions.
 
 **Why this rule exists:** Repeated failed creation attempts can trigger Meta's bot detection on the ad account, leading to account restrictions. Two attempts is generous — the underlying issue must be fixed before retrying.
@@ -36,13 +36,20 @@ When the limit is hit, respond with exactly this tone and structure:
 
 ## Sub-Skill Index
 
-Each creation step in Phase 6 has a dedicated sub-skill. **Read the sub-skill at its step — not all upfront.**
+The launch call has three slots — `campaign`, `adset`, and `ads[]`. Each slot has a dedicated sub-skill describing how to fill it. **Read the sub-skill when you build that slot — not all upfront.**
 
-| Step | Read before | Path |
-|------|------------|------|
-| Create campaign | Calling `facebook_propose_create_campaign` | `meta-create-campaign` |
-| Create ad set | Calling `facebook_propose_create_adset` | `meta-create-adset` |
-| Create ad + creative | Calling `facebook_propose_create_ad_with_creative` | `meta-create-ad-with-creative` |
+| Slot | Read before filling | Path |
+|------|---------------------|------|
+| `campaign` object | Building the campaign slot | `references/campaign.md` |
+| `adset` object | Building the ad set slot | `references/adset.md` |
+| `ads` array | Building the ads | `references/ad-with-creative.md` |
+
+**Slot combinations** (each parent is a config to create XOR an existing ID):
+- `campaign` + `adset` + `ads` → full launch from scratch
+- `campaign_id` + `adset` + `ads` → new ad set + ads under an existing campaign
+- `adset_id` + `ads` → just add ads to an existing ad set (no campaign needed)
+- `campaign` + `adset` → structure now, ads later (a later call adds ads with `adset_id`)
+- **ONE ad set per call.** Several ad sets → one call for the campaign + first ad set + its ads, then one call per additional ad set passing `campaign_id`.
 
 ---
 
@@ -77,6 +84,7 @@ Output a 4–6 line readout of what you saw. Keep going — don't pause for conf
 Pull everything needed to propose without asking. Synthesize into 1–2 lines — never dump raw data at the user.
 
 Collect:
+- **`account_status` — must be 1 (ACTIVE).** If it is 3 (UNSETTLED), 2 (DISABLED), or anything else, STOP the launch immediately and tell the user: the account has a billing/status issue that must be fixed in Ads Manager → Billing & payments before anything can be created. Do not attempt the launch anyway.
 - Top 1–3 campaigns by performance (last 30 days) — objective, optimization event, bid strategy, geos, age range, placements
 - Top performing creatives — format, hook style, copy length (what's already resonating)
 - Active pixel(s)
@@ -139,27 +147,36 @@ Then send the proposal. The proposal itself handles user confirmation — don't 
 
 ---
 
-## Phase 6 — Execute & Enable
+## Phase 6 — Launch (ONE call) & Enable
 
-Execution order is strict: campaign → ad set → ad+creative. Each step is propose → approve (auto-executes). Never merge steps.
+Build the three slots per their sub-skills, then make **ONE call** to `facebook_propose_create_campaign_structure`:
 
-> **Reminder:** Proposals auto-execute on approval. Capture IDs from the tool response after each approval. Do not call a separate execute tool.
+```json
+facebook_propose_create_campaign_structure({
+  "act_id": "act_XXX",
+  "currency_code": "USD",
+  "description": "Launching Summer Sale: 1 campaign, 1 ad set, 2 ads",
+  "campaign": { ...per references/campaign.md... },
+  "adset":    { ...per references/adset.md... },
+  "ads":      [ ...per references/ad-with-creative.md... ]
+})
+```
 
-> **Reminder — failure limit:** If any step below fails twice (zero items succeed), stop the entire workflow. See the HARD RULE section above.
+- **Never split into separate calls per entity.** One launch = one call. Batch ALL ads into the `ads` array.
+- **Never pass IDs between slots.** No `campaign_id` inside the `adset` slot, no `adset_id` inside the ads — the server creates the campaign, feeds its new ID to the ad set, and the ad set's new ID to every ad. Only use top-level `campaign_id` / `adset_id` when that parent already exists.
+- Each entity gets its own approval card. On approval the launch executes in dependency order; capture `new_campaign_id`, `new_adset_id`, and every `new_ad_id` from the tool response.
 
-### 6.1 — Create Campaign
--> **Read `meta-create-campaign` now.**
-Follow its workflow exactly. Propose campaign -> user approves -> executes automatically -> capture `new_campaign_id` from the tool response.
+**Rejection semantics (know these — don't fight them):**
+- User rejects **every ad** of a launch that proposed ads → the WHOLE launch is cancelled; nothing is created (a campaign/ad set with no ads cannot serve).
+- User rejects the **ad set** but approves campaign + ads → the launch is cancelled; nothing is created.
+- If the campaign fails at Meta, the ad set and ads are skipped (reported as "parent not created"). If a parent from an earlier wave already landed (e.g. campaign created, ad set then failed), the parent stays — re-propose the ad set + ads with `campaign_id`.
+- Partial ad failures: the successful ads stay; re-propose only the failed ones with `adset_id`.
 
-### 6.2 — Create Ad Set
--> **Read `meta-create-adset` now.**
-Follow its workflow exactly. Propose ad set (using `new_campaign_id`) -> user approves -> executes automatically -> capture `new_adset_id` from the tool response.
+> **Reminder — failure limit:** If the launch fails twice (zero entities succeed), stop the entire workflow. See the HARD RULE section above.
 
-### 6.3 — Create Ad + Creative
--> **Read `meta-create-ad-with-creative` now.**
-Follow its workflow exactly. Propose all ads in ONE batched call (using `new_adset_id`) -> user approves -> executes automatically -> capture all `new_ad_id` values from the tool response.
+Campaigns and ad sets are created as **ACTIVE**. Ads are created as **PAUSED** — they are the user's final gate before spending begins. After the launch succeeds, enable only the ads.
 
-Campaigns and ad sets are created as **ACTIVE**. Ads are created as **PAUSED** — they are the user's final gate before spending begins. After all creations succeed, enable only the ads.
+**If the launch is still awaiting approval** (operations pending): do NOT call the tool again and do NOT re-propose — that creates duplicate approval cards. Tell the user the proposal is ready and ask them to Approve or Reject it on the card in the chat.
 
 ---
 
@@ -206,15 +223,32 @@ facebook_propose_update_ads({
 
 ---
 
+## Media Setup — Manual Upload vs Catalogue (mutually exclusive)
+
+A creative's media comes from **exactly one** source. These two setups can never coexist in the same ad — Meta has no manual equivalent for the combination, so a creative that mixes them cannot be reproduced or edited in Ads Manager (and the server rejects it, V-CAT5):
+
+- **Manual upload** — the user's uploaded image(s)/video(s), carried in `asset_feed_spec` (or flat `image_url`/`video_url`). This is the default for a creative-first launch.
+- **Catalogue (Advantage+ Catalogue / DPA)** — Meta pulls product media dynamically from a `product_set_id`, using `object_story_spec.template_data`. There is **no** uploaded image — never attach `asset_feed_spec`, `image_url`, or `video_url` to a catalogue creative.
+
+Rules:
+- **Never set `product_set_id` on a creative that also has manually uploaded media.** Pick one setup.
+- **Honor an explicit "keep manual upload" (or "manual" / "don't change the media") instruction as a hard constraint.** Even if the user mentions a catalogue or product set in the same message, do NOT attach `product_set_id` — launch the uploaded asset as a manual ad and say in one line that the catalogue was left off to keep the media manual.
+- Only build a catalogue ad when the user clearly wants the catalogue to *be* the media (no uploaded creative). Then use `object_story_spec.template_data` + `product_set_id` and omit all uploaded media.
+- If a request is genuinely ambiguous between the two, ask one tappable question ("Manual upload" vs "Catalogue / Advantage+ Catalogue") rather than guessing.
+
+---
+
 ## Edge Cases
 
 - **No active campaigns, paused exist:** Use best paused campaign as reference. Label source as "Paused ref" in the table.
 - **No campaigns at all:** Cold-start defaults — $20/day, broad targeting, Advantage+ placements, objective from CTA. Flag once, briefly.
-- **Multiple creatives at once:** One campaign, one ad set, multiple ads. If funnel stages clearly differ -> separate ad sets.
-- **"Just launch it":** Fast version — one reference lookup, then propose. Never skip the scan.
+- **Multiple creatives at once:** One campaign, one ad set, multiple ads — still ONE launch call with N items in `ads`. If funnel stages clearly differ -> separate ad sets (first ad set in the launch call, each additional one in its own call with `campaign_id`).
+- **"Just launch it":** Fast version — one reference lookup, then propose. Never skip the scan (including the `account_status` check).
 - **Cloning an existing ad:** Pull structure, swap creative, only surface what's changing in the table.
 - **Off-brand creative:** One sentence flag in the readout. Still propose.
+- **Catalogue requested with an uploaded creative:** Manual upload and a product catalogue (`product_set_id`) are mutually exclusive media setups — see "Media Setup" above. Default to the uploaded asset (manual); never bolt a `product_set_id` onto it. If the user explicitly asked to keep manual upload, drop the catalogue silently except for a one-line note. Only run a true catalogue ad (`template_data` + `product_set_id`, no uploaded media) when that is unambiguously what they want.
 - **"Launch it live" / "Make it active":** Campaigns and ad sets are created ACTIVE. Ads are always created PAUSED first — the enable step is the user's final gate before spending begins.
+- **Account is UNSETTLED / DISABLED (`account_status` ≠ 1):** Stop before proposing. Tell the user to settle the outstanding balance / resolve the account issue in Ads Manager → Billing & payments, then retry in a new conversation. Do not propose "to see if it works" — the server rejects it.
 
 ---
 

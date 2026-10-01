@@ -1,24 +1,26 @@
----
-name: meta-create-campaign
-description: "Use when creating a Meta campaign. ABO/CBO detection, budget guardrails, special_ad_categories, structure defaults. Loaded after the create master skill."
----
+<!-- Synced from GoMarble server skill: prompts/skills/meta/create/campaign -->
+
+> **In Claude.** This methodology is GoMarble's own, kept in sync with the GoMarble connector.
+> - Where this says changes appear as approval cards or rows: in Claude, call the propose tool with `mode: "dryrun"` first. That validates the change without touching the account. Show the user each proposed change (entity, current value, new value), and only after an explicit yes call the same tool with `mode: "live"` and just the approved `operation_ids`.
+> - Where this says to call `user_input`: that tool exists only in GoMarble's own app. Ask the user the same question in chat instead. Where it says not to call `user_input`, don't ask — decide from the data.
+
 # Meta Ads - Create Campaign
 
-## CRITICAL: Do NOT combine with other creation steps
-Each creation step (campaign → ad set → ad+creative) has its own separate flow. The ad set step happens AFTER campaign has been created and executed.
+## This skill defines the `campaign` SLOT of the launch call
+The whole launch — campaign, ad set, and ads — is ONE call to `facebook_propose_create_campaign_structure`. This skill covers the `campaign` object of that call. Include the slot only when creating a NEW campaign; to attach new children to an existing campaign pass top-level `campaign_id` instead (the two are mutually exclusive).
 
 ## CRITICAL: NEVER give up on empty accounts
 If the user asks to "launch creatives" or "create a campaign" and `account_structure` is empty — this means it's a new/fresh account. Do NOT stop, ask for an adset_id, or say "I can't find existing structure." Proceed with creating everything from scratch: Campaign → Ad Set → Ad+Creative. The full flow MUST complete.
 
 ## user_input Rules
 
-Do NOT call `user_input` for campaign creation. Auto-detect and auto-configure ALL fields. Show a brief summary in chat, then call `facebook_propose_create_campaign` directly. The user can review and edit everything in the approval UI.
+Do NOT call `user_input` for campaign creation. Auto-detect and auto-configure ALL fields, then fill the `campaign` slot of the single `facebook_propose_create_campaign_structure` launch call. The user can review and edit everything in the approval UI.
 
 **Auto-configure ALL fields silently:**
 
 | Field | Fixed Value | Source |
 |-------|------------|--------|
-| `campaign_name` | Auto-generate | Follow existing naming convention from Step 4 (e.g., "[Brand] \| [Product] \| [Goal] \| [Date]"). If no pattern, generate from product/context + objective. |
+| `name` | Auto-generate | Follow existing naming convention from Step 4 (e.g., "[Brand] \| [Product] \| [Goal] \| [Date]"). If no pattern, generate from product/context + objective. |
 | `budget_type` | Auto-detect | CBO if most existing campaigns have campaign-level budgets, ABO otherwise. Default to CBO if no existing campaigns. |
 | `daily_budget` | Auto-detect or ASK | Midpoint of detected budget range from Step 3. **If no existing campaigns with budgets found → ASK the user for budget.** NEVER invent a number. |
 | `objective` | `OUTCOME_SALES` | V1 only supports Sales — server rejects anything else |
@@ -31,12 +33,12 @@ Do NOT call `user_input` for campaign creation. Auto-detect and auto-configure A
 | `end_time` | Only set if `lifetime_budget` chosen | Must be >24h after start_time |
 | `spend_cap` | Do NOT set | Only set if user explicitly asks |
 
-**Workflow:** Call `facebook_get_details_of_ad_account` FIRST → extract `currency`, detect ABO/CBO pattern, detect budget range, detect naming convention → call `facebook_propose_create_campaign` directly with all auto-configured values. Do NOT call `user_input`. Do NOT show a summary before proposing — the user reviews everything in the approval UI.
+**Workflow:** Call `facebook_get_details_of_ad_account` FIRST → **check `account_status` is 1 (ACTIVE) — if not, STOP: the launch is rejected until the billing/status issue is fixed in Ads Manager** → extract `currency`, detect ABO/CBO pattern, detect budget range, detect naming convention → build the `campaign` slot with all auto-configured values (the launch call is made once the `adset` and `ads` slots are ready too). Do NOT call `user_input`. Do NOT show a summary before proposing — the user reviews everything in the approval UI.
 
 **EMPTY ACCOUNT (no existing campaigns/adsets/ads):** If `account_structure` returns empty (`campaigns: {}, adsets: {}, ads: {}`), this is a NEW account. Do NOT stop and ask the user what to do. Proceed with creation using these defaults:
 - `budget_type`: CBO (simpler for new accounts)
 - `daily_budget`: **ASK the user** — you have no data to infer from. Use `user_input` with a single `daily_budget` number field.
-- `campaign_name`: Generate from context (e.g., product name, brand name, user's request). E.g., "GoMarble | Sales | Apr 2026"
+- `name`: Generate from context (e.g., product name, brand name, user's request). E.g., "GoMarble | Sales | Apr 2026"
 - Everything else: use standard auto-configured values (OUTCOME_SALES, ACTIVE, etc.)
 
 ## Structure Default
@@ -114,6 +116,6 @@ Short crisp summary of the created campaigns.
 
 Transient Meta API errors (code 2 "Please retry your request later", network errors) are automatically retried up to 2 times with backoff. No action needed from the LLM.
 
-## Call the Tool
+## Slot Shape
 
-Pass `campaign_configs` as a 1-element array. Never call the tool multiple times — batch all campaigns in one call.
+The `campaign` slot is a single OBJECT — one campaign per launch call. Required keys: `name`, `objective`, `status`, `special_ad_categories`. Never put `campaign_id` or any ID inside the slot. To create several campaigns, run one launch call per campaign.

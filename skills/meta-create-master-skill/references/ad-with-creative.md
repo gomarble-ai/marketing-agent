@@ -1,11 +1,13 @@
----
-name: meta-create-ad-with-creative
-description: "Use when creating a Meta ad with its creative in one shot. Auto-detect landing page/CTA/UTM, creative analysis for copy, object_story_spec vs asset_feed_spec, text length guardrails, video thumbnail auto-gen. Loaded after the create master skill."
----
+<!-- Synced from GoMarble server skill: prompts/skills/meta/create/ad-with-creative -->
+
+> **In Claude.** This methodology is GoMarble's own, kept in sync with the GoMarble connector.
+> - Where this says changes appear as approval cards or rows: in Claude, call the propose tool with `mode: "dryrun"` first. That validates the change without touching the account. Show the user each proposed change (entity, current value, new value), and only after an explicit yes call the same tool with `mode: "live"` and just the approved `operation_ids`.
+> - Where this says to call `user_input`: that tool exists only in GoMarble's own app. Ask the user the same question in chat instead. Where it says not to call `user_input`, don't ask — decide from the data.
+
 # Meta Ads - Create Ad with Creative
 
-## CRITICAL: Do NOT combine with other creation steps
-Each creation step (campaign → ad set → ad+creative) has its own separate flow. The ad+creative step happens AFTER campaign and ad set have been created and executed.
+## This skill defines the `ads` ARRAY of the launch call
+The whole launch — campaign, ad set, and ads — is ONE call to `facebook_propose_create_campaign_structure`. This skill covers each item of the `ads` array. Ads are created together with the campaign/ad set in the same call, or attached to an existing ad set via top-level `adset_id`.
 
 ## Branch decision (read FIRST)
 
@@ -79,6 +81,21 @@ If the user requests any of these, **stop immediately**, explain the limitation,
 
 ---
 
+## Creative Enhancements (user-only — you CANNOT apply them)
+
+Advantage+ creative enhancements are toggles only the **user** can flip, under "Advanced settings" on the ad's approval card. No tool parameter exists for them — you can never set, enable or apply one. **NEVER say you applied, enabled or turned on an enhancement.**
+
+The only ten that exist — never invent or promise another:
+
+- **Advantage+ creative enhancements** — Add animation *(image only)*, Text improvements, Add overlays, Visual touch-ups, Add music
+- **Essential enhancements** — Relevant comments, Enhance CTA, Adjust brightness and contrast *(image only)*, Reveal details over time, Show spotlights
+
+**If the user asks for one:** name it using the label above, then say you cannot apply it yourself. Enhancements need a standard single image/video creative — they are NOT available on Flexible Ads (`creative_asset_groups_spec`), which is what this flow builds, so the toggles are greyed out on the card. Say that plainly rather than telling the user to go flip a toggle they cannot reach.
+
+**After approval:** every ad in the tool response carries `creative_enhancements`. Report `enabled` exactly as listed and nothing beyond it. `enabled: []` means NO enhancement was applied — say so. If `available` is false, say enhancements were not available for this ad format.
+
+---
+
 ## Complete Workflow (follow in exact order)
 
 ### Phase 1: Gather Information
@@ -126,7 +143,7 @@ Build primary texts and headlines per the **Quality Framework** at the end of th
 
 ⚠️ **MANDATORY: Always generate exactly 3 headlines and 4 primary texts per ad.** Every ad uses `creative_asset_groups_spec` so Meta tests all 12 combinations (4 × 3) and optimizes delivery. Single-text ads waste optimization opportunity.
 
-- **4 Primary texts** (max 125 chars each): each must use a **different hook archetype** (Relatability, Confession, Contrast, Curiosity, Bold Claim, Imperative). Hook → Proof → CTA. Reader-first voice. Source from `key_message`, `text_hook`.
+- **4 Primary texts** (aim ~125 chars for the mobile "See more" fold; Meta hard limit 1024 — keep the user's full copy if longer): each must use a **different hook archetype** (Relatability, Confession, Contrast, Curiosity, Bold Claim, Imperative). Hook → Proof → CTA. Reader-first voice. Source from `key_message`, `text_hook`.
 - **3 Headlines** (max 40 chars each): each must use a **different angle** (benefit-in-time, built-for-audience, action-without-pain). Sharp specific promise. No emoji.
 - **Ad name**: first headline + format. **Creative name**: first headline + CTA.
 - **User-provided text verbatim in conversation** → use as one variation; generate the rest.
@@ -154,10 +171,10 @@ If the file upload result includes a `placements` object:
 
 ### Phase 3: Propose Directly
 
-**Step 9: Call `facebook_propose_create_ad_with_creative` immediately**
+**Step 9: Put every ad into the `ads` array of the `facebook_propose_create_campaign_structure` launch call**
 Do NOT show a summary in chat. Do NOT ask for confirmation. The user reviews and edits everything in the approval UI.
 
-**CRITICAL: Batch ALL ads in a SINGLE call.** Pass all of them as multiple items in the `ad_with_creative_configs` array — do NOT call the tool N times. One call with N items, not N separate calls. Each item gets its own approval card.
+**CRITICAL: Batch ALL ads into the ONE launch call.** Pass all of them as items in the `ads` array — never one call per ad. Each ad gets its own approval card. Know the rejection rule: if the user rejects EVERY ad (or rejects the ad set), the whole launch is cancelled and nothing — not even the campaign — is created.
 
 **Every ad MUST use `creative_asset_groups_spec` with exactly 4 primary texts and 3 headlines.** Each primary text uses a different hook archetype; each headline a different angle. Do NOT use flat fields. For multiple ads, vary the text variations per ad — do NOT reuse the same copy.
 
@@ -169,14 +186,14 @@ Do NOT show a summary in chat. Do NOT ask for confirmation. The user reviews and
 |-------|-------|--------|
 | `name` (ad) | Auto-generate | first headline + format |
 | `creative_config.name` | Auto-generate | first headline + CTA |
-| `creative_asset_groups_spec.groups[0].texts` (primary_text) | **4 variations** (≤125 chars, different hook archetypes) | Creative analysis `key_message` / `text_hook` |
+| `creative_asset_groups_spec.groups[0].texts` (primary_text) | **4 variations** (~125 chars recommended, Meta hard limit 1024, different hook archetypes) | Creative analysis `key_message` / `text_hook` |
 | `creative_asset_groups_spec.groups[0].texts` (headline) | **3 variations** (≤40 chars, different angles) | Creative analysis `text_hook` / `visual_hook` |
 | `landing_page_url` | Auto-detect | Most common URL from active ads, or infer from brand |
 | `page_id` | **REQUIRED** | Resolution chain: (1) existing ads → (2) `facebook_page_list` → (3) `facebook_list_ads` + `facebook_get_ad_creative_details` → (4) ask user. Server rejects if missing. |
 | `instagram_user_id` | **REQUIRED** | Existing ads → page's linked IG → ask user. Server rejects if missing. |
 | `cta_type` | Detected or `SHOP_NOW` | Existing ad patterns |
 | `url_tags` | Detected UTM pattern | Existing ad patterns |
-| `adset_id` | From prior step | `new_adset_id` from ad set execution |
+| `adset_id` | Do NOT pass per-ad | Ad set created in the same call → omit entirely (the server wires the new ID in). Existing ad set → pass TOP-LEVEL `adset_id` on the launch call. |
 | `status` | `PAUSED` | Safety default |
 
 ---
@@ -186,8 +203,8 @@ Do NOT show a summary in chat. Do NOT ask for confirmation. The user reviews and
 ### Text Length
 | Field | Limit | Action |
 |-------|-------|--------|
-| Primary text | > 125 chars | **BLOCK** — shorten before proposing |
-| Headline | > 40 chars | **BLOCK** — shorten before proposing |
+| Primary text | > 1024 chars | **BLOCK** — over Meta's hard limit, shorten before proposing |
+| Headline | > 40 chars | **Shorten before proposing** (quality guardrail — Meta's hard limit is 255, but headlines over ~40 get truncated in most placements) |
 
 ### Image/Video Specs
 | Format | Recommended Size | Max Size | Formats |
@@ -292,7 +309,7 @@ Meta tests all 12 combinations (4 primary texts × 3 headlines) and optimizes de
 - Each group requires: at least 1 image or video, `texts` array, `call_to_action` with `type` and `value.link`
 - Each text entry requires `text` and `text_type` ("primary_text", "headline", or "description")
 - Per-group limits: primary_text ≤ 5, headline ≤ 5, description ≤ 5, images ≤ 10, videos ≤ 10
-- Character limits: primary_text ≤ 125, headline ≤ 40
+- Character limits: primary_text ≤ 1024 (aim ~125 for the mobile fold), headline ≤ 40
 - **No `is_dynamic_creative` needed** — works with any standard ad set
 - Cannot be combined with `asset_feed_spec`
 
@@ -315,7 +332,7 @@ For multiple text variations, prefer `creative_asset_groups_spec` above. Only us
 
 ## Quality Framework (Step 6)
 
-Address the reader, not the product. Primary text structure: **Hook → Proof → CTA** (125 chars). Line 1 must make the reader say "that's me"; never open with product name or "Introducing...". One emoji per line, max 3, none on proof line, none in headlines. Premium brands (existing winning ads have zero emojis) → drop emojis entirely.
+Address the reader, not the product. Primary text structure: **Hook → Proof → CTA** (~125 chars keeps it above the mobile fold; up to 1024 allowed). Line 1 must make the reader say "that's me"; never open with product name or "Introducing...". One emoji per line, max 3, none on proof line, none in headlines. Premium brands (existing winning ads have zero emojis) → drop emojis entirely.
 
 **Hook archetypes** (use a different one per ad in batched variants):
 
@@ -332,7 +349,7 @@ Address the reader, not the product. Primary text structure: **Hook → Proof �
 
 **Example (118 chars):** "Tired of a brittle beard? Aloe & Shea stops breakage at the root. Ready for a fuller look?"
 
-**Before calling propose, verify:** exactly 4 primary texts + 3 headlines · ≤125/≤40 chars · each primary text uses a different hook archetype · each headline uses a different angle · Line 1 is a hook (not product description) · one concrete proof (ingredient/feature/number) · reader-first voice · user-provided text kept as one variation.
+**Before calling propose, verify:** exactly 4 primary texts + 3 headlines · primary_text ≤ 1024 (aim ~125), headline ≤ 40 · each primary text uses a different hook archetype · each headline uses a different angle · Line 1 is a hook (not product description) · one concrete proof (ingredient/feature/number) · reader-first voice · user-provided text kept as one variation.
 
 ---
 
@@ -397,7 +414,7 @@ Catalog ads use `object_story_spec.template_data` — NOT `creative_asset_groups
 
 ### Step C5 — Propose
 
-Same `facebook_propose_create_ad_with_creative` call. All catalog-specific fields (`product_set_id`, `product_set_name`, `template_data`) render as non-editable rows in the approval UI.
+Same launch call — the catalog ad goes into the `ads` array of `facebook_propose_create_campaign_structure` like any other ad. All catalog-specific fields (`product_set_id`, `product_set_name`, `template_data`) render as non-editable rows in the approval UI.
 
 ---
 

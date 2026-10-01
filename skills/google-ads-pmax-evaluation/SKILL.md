@@ -1,7 +1,10 @@
 ---
 name: google-ads-pmax-evaluation
 description: "Use when evaluating Google Ads Performance Max campaigns: maturity gate, PMax vs Search comparison, asset performance labels, device/location thresholds."
+metadata:
+  source: "prompts/skills/google_ads/pmax-evaluation"
 ---
+
 # Google Ads PMax — Evaluation & Optimization
 
 Evaluate PMax campaign readiness, compare to Search, analyze assets and segments.
@@ -91,6 +94,6 @@ Always check for technical/usability issues before excluding a device or locatio
 
 ## Next Steps
 
-If campaign is profitable and ready to scale, load `google_ads/pmax-scaling` for budget scaling, location expansion, and asset expansion rules.
+If campaign is profitable and ready to scale, load `google_ads/pmax-scaling` via `load_skill` for budget scaling, location expansion, and asset expansion rules.
 
 Output must include: maturity status, PMax vs Search comparison, asset label summary (BEST/GOOD/LOW counts), device/location flags, scaling eligibility assessment.

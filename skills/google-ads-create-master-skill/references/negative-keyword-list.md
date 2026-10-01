@@ -1,7 +1,5 @@
----
-name: google-ads-create-negative-keyword-list
-description: "Use when creating a Google Ads shared negative keyword list. Loaded after the create master skill."
----
+<!-- Synced from GoMarble server skill: prompts/skills/google_ads/create/negative-keyword-list -->
+
 # Google Ads — Create / Update Shared Negative Keyword List
 
 Tools: `google_ads_propose_create_negative_keyword_list`, `google_ads_propose_update_negative_keyword_list`. Tool schemas describe shape; this skill covers the business rules.
@@ -10,7 +8,7 @@ Tools: `google_ads_propose_create_negative_keyword_list`, `google_ads_propose_up
 
 | You want | Use |
 |---|---|
-| Negatives that apply to a single campaign only | `negative_keywords[]` on `propose_create_campaign`, or `negative_keyword_changes[]` on `propose_update_campaigns`. See `google-ads-create-campaign`. |
+| Negatives that apply to a single campaign only | `negative_keywords[]` on `propose_create_campaign`, or `negative_keyword_changes[]` on `propose_update_campaigns`. See `references/campaign.md`. |
 | Negatives shared across multiple campaigns | This skill (Shared Negative Keyword List / SharedSet). |
 
 ## Create — One-Shot Pattern

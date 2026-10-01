@@ -1,10 +1,16 @@
 ---
 name: google-ads-pmax-scaling
 description: "Use when scaling Google Ads Performance Max campaigns: budget scaling rules, pause triggers, location/audience/asset expansion. Loads PMax evaluation first."
+metadata:
+  source: "prompts/skills/google_ads/pmax-scaling"
 ---
+
+> **In Claude.** This methodology is GoMarble's own, kept in sync with the GoMarble connector.
+> - Where this names `google_ads_update_entity`: use the matching propose tool instead — `google_ads_propose_update_campaigns`, `google_ads_propose_update_adgroups`, `google_ads_propose_update_ads`, `google_ads_propose_update_asset`, `google_ads_propose_update_bid_modifiers`, `google_ads_propose_update_negative_keyword_list` or `google_ads_propose_update_pmax_asset_group`.
+
 # Google Ads PMax — Scaling & Expansion
 
-Rules for scaling PMax campaigns that have passed evaluation. Only load after confirming profitability via `pmax-evaluation`.
+Rules for scaling PMax campaigns that have passed evaluation. Only load after confirming profitability via `google-ads-pmax-evaluation`.
 
 ## Scaling Prerequisites
 

@@ -1,13 +1,11 @@
----
-name: google-ads-create-campaign
-description: "Use when creating a Google Ads campaign. Loaded after the create master skill."
----
+<!-- Synced from GoMarble server skill: prompts/skills/google_ads/create/campaign -->
+
 # Google Ads — Create / Update Campaign
 
-Tools: `google_ads_propose_create_campaign`, `google_ads_propose_update_campaigns`. The tool schemas describe shape and types; this skill covers the business rules they don't.
+Tools: the `campaign` slot of `google_ads_propose_create_campaign_structure` (create), `google_ads_propose_update_campaigns` (update). The tool schemas describe shape and types; this skill covers the business rules they don't.
 
-## CRITICAL: Do NOT combine with other creation steps
-Each entity type has its own propose call. Capture new campaign IDs from the execution result before moving to ad-group.
+## Create = one SLOT of one call
+Campaign, ad group and ads are created in ONE `google_ads_propose_create_campaign_structure` call (atomic — all or nothing). The `campaign` slot is a single object; never capture/thread IDs between create steps. Pass top-level `campaign_id` (instead of the slot) only when attaching new children to an EXISTING campaign.
 
 ## Status Convention
 
@@ -16,8 +14,8 @@ Each entity type has its own propose call. Capture new campaign IDs from the exe
 
 ## V1 Capability Surface
 
-- `advertising_channel_type`: `SEARCH` only.
-- `bidding_strategy_type`: `MAXIMIZE_CLICKS`, `MAXIMIZE_CONVERSIONS`, `MAXIMIZE_CONVERSION_VALUE`, `TARGET_CPA`, `TARGET_ROAS`, `TARGET_SPEND`, `MANUAL_CPC`.
+- Campaign type: `SEARCH` only — the create slot's input key is `campaign_type` (the GAQL read field is `campaign.advertising_channel_type`).
+- `bidding_strategy_type` (create): `MAXIMIZE_CLICKS` (alias — the server normalizes it to `TARGET_SPEND`), `TARGET_SPEND`, `MAXIMIZE_CONVERSIONS`, `MAXIMIZE_CONVERSION_VALUE`, `TARGET_CPA`, `TARGET_ROAS`. `MANUAL_CPC` is **update-only** — the create call rejects it.
 
 ## Auto-Detect Before Proposing (GAQL probes)
 
@@ -36,17 +34,17 @@ Each entity type has its own propose call. Capture new campaign IDs from the exe
 
 ## Budget & Date Guardrails
 
-- **Below currency floor** (USD: $0.01, INR: ₹1) → block, cite the floor.
+- **Below the propose-layer floor** (~0.01 in account currency) → block. Google's own server may enforce higher per-currency minimums on top.
 - **Below $5 USD equivalent** → warn: "Very low budget; learning may stall."
 - **`end_date` after 2037-12-30** → block, cite Google's sentinel.
-- **`end_date` ≤ `start_date`** → block.
+- **`end_date` before `start_date`** → block (same-day start/end is allowed).
 - Pass `daily_budget` as a number; the propose tool converts to micros.
 
 ## Direct Campaign-Level Negatives (create)
 
 `negative_keywords[]` seeds CampaignCriterion negatives at creation time. Two non-schema rules:
 - Case-insensitive dedupe on `(text, match_type)` — duplicates rejected.
-- For negatives shared across multiple campaigns, route to `google-ads-create-negative-keyword-list` instead.
+- For negatives shared across multiple campaigns, route to `references/negative-keyword-list.md` instead.
 
 ## Update Semantics
 

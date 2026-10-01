@@ -1,7 +1,13 @@
 ---
 name: google-ads-tool-fundamentals
 description: "Foundation tool reference for any Google Ads task — GAQL syntax, common entity relationships, default reporting windows. Used internally when working with Google Ads tools."
+metadata:
+  source: "prompts/skills/google_ads/tool-fundamentals"
 ---
+
+> **In Claude.** This methodology is GoMarble's own, kept in sync with the GoMarble connector.
+> - Where this names `google_ads_update_entity`: use the matching propose tool instead — `google_ads_propose_update_campaigns`, `google_ads_propose_update_adgroups`, `google_ads_propose_update_ads`, `google_ads_propose_update_asset`, `google_ads_propose_update_bid_modifiers`, `google_ads_propose_update_negative_keyword_list` or `google_ads_propose_update_pmax_asset_group`.
+
 # Google Ads - Tool Fundamentals
 
 How to use Google Ads tools effectively, plus the canonical metric definitions used across all Google Ads skills. Auto-loaded with every Google Ads skill request.
@@ -51,7 +57,7 @@ Always run `google_ads_list_accounts` first to confirm the customer ID and check
 
 ## Metric Glossary
 
-Canonical definitions used across all Google Ads skills. Workflow skills (`search-analysis`, `pmax-evaluation`, `shopping`, `depth-of-analysis`) reference these — they do NOT redefine them.
+Canonical definitions used across all Google Ads skills. Workflow skills (`google-ads-search-analysis`, `google-ads-pmax-evaluation`, `google-ads-shopping`, `google-ads-depth-of-analysis`) reference these — they do NOT redefine them.
 
 ### Direct Metrics (GAQL `metrics.*`)
 
@@ -124,7 +130,7 @@ Google returns `performance_label` per asset (NOT cost / conversion data per ass
 | `LOW` | Underperforming | Remove; replace with `BEST` variations |
 | `PENDING` / `UNSPECIFIED` | Insufficient data | Wait 14+ days |
 
-### Shopping Item Classification (definitions only — workflow in `shopping` skill)
+### Shopping Item Classification (definitions only — workflow in `google-ads-shopping` skill)
 
 | Classification | Trigger |
 |---|---|
@@ -140,3 +146,23 @@ Decompose Quality Score into:
 - Landing page experience
 
 Identify which dragged and recommend fixes for that component — do NOT recommend bid changes alone to compensate for low QS.
+
+
+## Account-Purpose Classification (CRITICAL — must run before any KPI application)
+
+Before computing or presenting CPA / ROAS / Conv. Value:
+
+1. Check chat title for keywords: "GMB", "footfall", "store visits", "calls",
+   "directions", "awareness", "reach"
+2. Check campaign objectives loaded via google_ads_run_gaql:
+   - ,  → footfall account
+   - ,  → awareness account
+   - ,  → conversion-tracking-capable
+3. Check conversion actions in the account: are they store visits, phone
+   calls, directions — or actual purchases / leads?
+
+If the account is footfall / awareness / local-service:
+- REPLACE CPA / ROAS in headline metrics with: Cost Per Footfall Action,
+  Cost Per Call, Cost Per Direction, CPM, Reach, Frequency
+- State explicitly: "This account is configured for [footfall/awareness];
+  purchase-derived CPA/ROAS do not apply."

@@ -1,7 +1,10 @@
 ---
 name: google-ads-keywordplanner
 description: "Use when planning Google Ads keywords: keyword discovery, evaluating intent/volume/bid, match-type selection."
+metadata:
+  source: "prompts/skills/google_ads/keywordPlanner"
 ---
+
 # Google Ads Keyword Planner Protocol
 
 ## When to Use Keyword Planner

@@ -1,13 +1,11 @@
----
-name: google-ads-create-ad
-description: "Use when creating a Google Ads ad (RSA, expanded text, etc.). Loaded after the create master skill."
----
+<!-- Synced from GoMarble server skill: prompts/skills/google_ads/create/ad -->
+
 # Google Ads — Create / Update Ad (RSA)
 
-Tools: `google_ads_propose_create_ad`, `google_ads_propose_update_ads`. Tool schemas describe shape; this skill covers the business rules.
+Tools: the `ads` array of `google_ads_propose_create_campaign_structure` (create), `google_ads_propose_update_ads` (update). Tool schemas describe shape; this skill covers the business rules.
 
-## CRITICAL: Parent ad group must exist
-Capture `ad_group_id` from the previous propose-create-adgroup execution result. Never invent it.
+## Parent linkage
+Creating the ad group in the SAME launch call → do NOT set `adgroup_id` anywhere; the server links via temp IDs inside the atomic mutate. Attaching to an EXISTING ad group → pass top-level `adgroup_id` on the launch call. All ads in one call land in that call's SINGLE ad group — ads for different ad groups need separate calls. Batch all ads for the ad group into the one `ads` array; never one call per ad.
 
 ## V1 Capability Surface
 
@@ -24,7 +22,7 @@ Capture `ad_group_id` from the previous propose-create-adgroup execution result.
 - Headlines and descriptions are case-insensitive deduped on the trimmed text. "Boost ROAS" and "boost roas" count as duplicates and reject.
 - `path2` requires `path1`. The path fields live on `responsive_search_ad`, not the Ad root — the propose tool handles placement, but agent should not invent its own path-only payload.
 - URLs must be http(s). `javascript:`, `data:`, and other non-http schemes reject up front.
-- No headline pinning via this tool — pinning is set in the Ads UI after creation.
+- Headline/description pinning IS supported: pass objects instead of strings — `{ "text": "...", "pinned_field": "HEADLINE_1" }` (HEADLINE_1–3) or `{ "text": "...", "pinned_field": "DESCRIPTION_1" }` (DESCRIPTION_1–2). Plain strings are fine when nothing needs pinning.
 
 ## Update Semantics
 

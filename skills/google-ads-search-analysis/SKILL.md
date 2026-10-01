@@ -1,7 +1,10 @@
 ---
 name: google-ads-search-analysis
 description: "Use when analyzing Google Ads Search campaigns: Q1–Q5 query classification, CPC inflation diagnosis, rank/budget pressure, decision matrix, scaling prerequisites."
+metadata:
+  source: "prompts/skills/google_ads/search-analysis"
 ---
+
 # Google Ads Search — Analysis & Optimization
 
 > Metric definitions (CPA, ROAS, CVR, CPC, micros conversion, CPC trend formulas, Smart Bidding minimums, scaling cap) live in `google_ads/tool-fundamentals` and auto-load with this skill. Do NOT redefine them here. This skill is the workflow: classify queries → diagnose auction pressure → decide action.
@@ -119,7 +122,7 @@ Scale ONLY if ALL true:
 
 If CPC rising faster than CVR → false scale signal. Do not increase budget.
 
-Scaling step caps come from `tool-fundamentals → Scaling step cap` and `guardrails`.
+Scaling step caps come from `tool-fundamentals → Scaling step cap` and `google-ads-guardrails`.
 
 ---
 
@@ -154,6 +157,6 @@ Scaling step caps come from `tool-fundamentals → Scaling step cap` and `guardr
 
 ## Next Steps
 
-If changes need to be executed, load `google_ads/search-execution` for tool parameters and implementation details.
+If changes need to be executed, load `google_ads/search-execution` via `load_skill` for tool parameters and implementation details.
 
 Output must include: query mix breakdown with spend shares, pressure diagnosis with IS metrics, CPC trend analysis with root cause, recommended actions in execution order, expected 7-day impact.

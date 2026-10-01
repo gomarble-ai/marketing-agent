@@ -1,7 +1,5 @@
----
-name: google-ads-create-bid-modifiers
-description: "Use when adjusting Google Ads bid modifiers (device, location, audience). Loaded after the create master skill."
----
+<!-- Synced from GoMarble server skill: prompts/skills/google_ads/create/bid-modifiers -->
+
 # Google Ads — Update Bid Modifiers / Ad Schedule
 
 Tool: `google_ads_propose_update_bid_modifiers`. Tool schema describes shape; this skill covers the business rules.

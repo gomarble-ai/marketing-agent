@@ -1,13 +1,11 @@
----
-name: google-ads-create-ad-group
-description: "Use when creating a Google Ads ad group. Loaded after the create master skill."
----
+<!-- Synced from GoMarble server skill: prompts/skills/google_ads/create/ad-group -->
+
 # Google Ads — Create / Update Ad Group
 
-Tools: `google_ads_propose_create_adgroup`, `google_ads_propose_update_adgroups`. Tool schemas describe shape; this skill covers the business rules.
+Tools: the `adgroup` slot of `google_ads_propose_create_campaign_structure` (create), `google_ads_propose_update_adgroups` (update). Tool schemas describe shape; this skill covers the business rules.
 
-## CRITICAL: Parent campaign must exist
-Capture `campaign_id` from the prior propose-create-campaign execution result. Never invent it.
+## Parent linkage
+Creating the campaign in the SAME launch call → do NOT set `campaign_id` anywhere; the server links via temp IDs inside the atomic mutate. Attaching to an EXISTING campaign → pass top-level `campaign_id` on the launch call. Never invent IDs. **ONE ad group per launch call.**
 
 ## Status Convention
 
@@ -20,7 +18,7 @@ Capture `campaign_id` from the prior propose-create-campaign execution result. N
 
 ## Keyword Rules (non-schema)
 
-- Per-ad-group positive count is capped at 30 in V1 — if the user gives more, propose splitting across multiple ad groups in one batched call rather than truncating.
+- Per-ad-group positive count is capped at 30 in V1 — if the user gives more, split across multiple ad groups: ONE ad group per launch call, so propose additional launch calls (with `campaign_id`) rather than truncating.
 - Case-insensitive dedupe on `(text, match_type)` across both `keywords[]` and `negative_keywords[]`.
 
 ## Update Semantics

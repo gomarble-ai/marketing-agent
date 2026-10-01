@@ -1,7 +1,5 @@
----
-name: google-ads-create-experiment
-description: "Use when launching a Google Ads experiment. Loaded after the create master skill."
----
+<!-- Synced from GoMarble server skill: prompts/skills/google_ads/create/experiment -->
+
 # Google Ads — Create / Update Experiment
 
 Tools: `google_ads_propose_create_experiment`, `google_ads_propose_update_experiment`. Tool schemas describe shape; this skill covers the business rules.
