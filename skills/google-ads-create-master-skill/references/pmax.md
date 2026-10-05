@@ -8,7 +8,7 @@ Use `google_ads_propose_create_pmax_asset_group`. Do not put PMax into the Searc
 
 This tool supports standard PMax for online sales or lead generation. It does not create Merchant Center retail/feed campaigns, listing-group filters, local-services PMax, or travel-goal PMax.
 
-Each `asset_groups[]` item is independently approved and becomes one atomic `googleAds:mutate` request. Pass exactly one of:
+Each `asset_groups[]` item is independently approved and becomes one atomic `googleAds:mutate` request. Provide exactly one of:
 
 - `campaign`: create a new PMax campaign and its first asset group.
 - `campaign_id`: add an asset group to an existing PMax campaign.
@@ -18,7 +18,7 @@ Batch multiple asset groups in one call when useful. A failure in one item does 
 ## Before proposing
 
 1. Resolve the 10-digit customer ID and manager ID.
-2. Call `google_ads_get_currency`; pass `currency_code`, and express `daily_budget` and `target_cpa` in that currency.
+2. Call `google_ads_get_currency`; send `currency_code`, and express `daily_budget` and `target_cpa` in that currency.
 3. For a new campaign, confirm the account has conversion tracking. PMax only supports `MAXIMIZE_CONVERSIONS` or `MAXIMIZE_CONVERSION_VALUE`; it cannot fall back to Maximize Clicks.
 4. For an existing campaign, the tool verifies that it is PMax, is not removed, and that the supplied `brand_guidelines_enabled` matches the campaign.
 5. Default both campaign and asset group to `PAUSED` unless the user explicitly asks to enable them.
@@ -38,7 +38,7 @@ Optional: up to 20 `portrait_marketing_images` (4:5, minimum 480×600), up to 15
 
 ## Brand guidelines
 
-Always pass `brand_guidelines_enabled` explicitly.
+Always set `brand_guidelines_enabled` explicitly.
 
 For a new campaign, always provide exactly one `business_name` (maximum 25 characters) and 1–5 square `logo_images`.
 

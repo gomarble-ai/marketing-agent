@@ -17,9 +17,9 @@ Analyze Klaviyo through GoMarble: what email and SMS earn, which flows and campa
 
 | Need | Tool |
 |---|---|
-| Campaign performance: opens, clicks, conversions, revenue, audiences, send info | `klaviyo_get_campaign_report` (pass `conversionMetricId`) |
+| Campaign performance: opens, clicks, conversions, revenue, audiences, send info | `klaviyo_get_campaign_report` (set `conversionMetricId`) |
 | List campaigns, or one campaign's setup | `klaviyo_get_campaigns`, `klaviyo_get_campaign`. Not for performance; use the report. |
-| Flow performance by flow, with trigger | `klaviyo_get_flow_report` (pass `conversionMetricId`) |
+| Flow performance by flow, with trigger | `klaviyo_get_flow_report` (set `conversionMetricId`) |
 | List flows, or one flow's setup | `klaviyo_get_flows`, `klaviyo_get_flow`. Not for performance; use the report. |
 | Lists and their size | `klaviyo_get_lists`, `klaviyo_get_list` (optionally with profile count). To filter by tag, read the `tags` property. |
 | Segments and their size | `klaviyo_get_segments`, `klaviyo_get_segment` |
