@@ -1,19 +1,18 @@
 {
   "name": "marketing-agent",
-  "version": "0.1.2",
-  "description": "Marketing Agent — AI marketing automation for Claude Code & Codex CLI. Audit, optimize, and launch campaigns across Google Ads, Meta (Facebook/Instagram), TikTok, LinkedIn, Bing Ads, GA4, Shopify, Klaviyo, and Search Console — via natural language. 42 expert-authored marketing playbooks, 8 morning-workflow slash commands, OAuth-secured live data. Built by GoMarble.",
+  "version": "0.2.0",
+  "description": "Installer for GoMarble, the AI agent for paid media teams, in Claude Code and Codex CLI. Diagnose, analyze creative, research competitors, cut waste, shift budget, launch and report across Meta, Google, TikTok, LinkedIn and Microsoft Ads. 52 skills built on GoMarble's playbooks, 8 slash commands, OAuth-secured live data.",
   "type": "module",
   "bin": {
-    "marketing-agent": "bin/install.mjs"
+    "marketing-agent": "installer/install.mjs"
   },
   "files": [
     "assets/",
-    "bin/",
+    "installer/",
     ".claude-plugin/",
     ".codex-plugin/",
     ".mcp.json",
     "commands/",
-    "hooks/",
     "skills/",
     "LICENSE",
     "README.md"
@@ -69,7 +68,7 @@
     "name": "GoMarble",
     "url": "https://gomarble.ai"
   },
-  "homepage": "https://gomarble.ai",
+  "homepage": "https://www.gomarble.ai",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/gomarble-ai/marketing-agent.git"

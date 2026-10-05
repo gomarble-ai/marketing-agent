@@ -1,10 +1,13 @@
 ---
 name: creative-research
 description: "Use when collecting live competitor ads and classifying evergreen (long-running) versus breakout (recently repeated) investment signals with GoMarble Ads Library tools. For a summarized cross-competitor teardown and whitespace report, use competitor-ad-intelligence."
+metadata:
+  source: "prompts/skills/creative_research"
 ---
+
 # Creative Competitor Research Protocol
 
-Discover new creative concepts by analyzing competitor ads. Use observable longevity and variation signals to prioritize concepts, then adapt them for your brand without treating those proxies as verified performance.
+Discover new creative concepts by analyzing competitor ads. Find validated winning concepts and adapt them for your brand.
 
 ## Prerequisites
 
@@ -54,9 +57,9 @@ Returns: brand_id (needed for fetching ads), brand name, category/niches. Save b
 
 ---
 
-## Step 3A: Evergreen Signals (Sustained Investment)
+## Step 3A: Evergreen Winners (Proven Concepts)
 
-**Goal**: Find ads running 30+ days. Longevity indicates continued investment, not verified profitability.
+**Goal**: Find ads running 30+ days — longevity implies profitability.
 
 **Tool: `ads_library_get_ads_by_brand_id`**
 ```
@@ -72,24 +75,24 @@ Parameters:
 
 1. Filter: remove ads tagged "low impression count". Focus on top 10–15 longest runners, prioritize 60+ days.
 2. Deep analyze with **`ads_library_analyze_ad`**: pass top ad IDs with `include_duplicates: true`.
-3. Document patterns across the prioritized ads:
+3. Document patterns across winners:
 
 | Element | What to Look For |
 |---------|-----------------|
-| **Angle** | What selling points repeat across prioritized ads? (Authority? Results? Price?) |
+| **Angle** | What selling points repeat across winners? (Authority? Results? Price?) |
 | **Concept** | How is the angle executed? (Testimonial? Before/after? Expert?) |
 | **Visual Style** | Professional vs lo-fi? UGC? Product-focused? |
 | **Script** | Common structure? (Problem → Solution → CTA) Length patterns? |
 | **Hook** | Visual patterns? Text overlay? Audio approach? (first 3–5 seconds) |
 | **Format** | Dominant format? (Testimonial, demo, lifestyle) |
 
-4. For each prioritized concept, suggest adaptation: their approach → your version with rationale.
+4. For each winner, suggest adaptation: their approach → your version with rationale.
 
 ---
 
-## Step 3B: Breakout Signals (Recent Repetition)
+## Step 3B: Breakout Winners (Recent Scaling Signals)
 
-**Goal**: Find concepts launched recently and repeated aggressively. This indicates repeated investment or structured testing, not confirmed scaling success.
+**Goal**: Find concepts launched recently and repeated aggressively — indicates active scaling.
 
 **Tool: `ads_library_get_ads_by_brand_id`**
 ```
@@ -101,15 +104,15 @@ Parameters:
   limit: 100
 ```
 
-### Identifying Breakout Candidates
+### Identifying Breakout Winners
 
-Group ads by similarity (same copy/format/visual style). A Breakout Candidate is a concept that:
+Group ads by similarity (same copy/format/visual style). A Breakout Winner is a concept that:
 - Launched within 30 days
 - Has been repeated/varied multiple times
 - Variations launched across different dates (not just one batch)
 
-**Repetition signal levels**:
-- **HIGH** (4+ variations across multiple dates): repeated investment; prioritize for analysis
+**Scaling signal levels**:
+- **HIGH** (4+ variations across multiple dates): Competitor actively scaling this concept
 - **MEDIUM** (2–3 variations): Worth monitoring
 - **LOW** (< 2): Testing phase
 
@@ -147,8 +150,8 @@ Returns: total active ads, format distribution, platform breakdown. Use to decid
 ## Key Principles
 
 1. **Scale matters** — compare similar-sized competitors
-2. **Patterns > individual ads** — look for what repeats across prioritized ads
-3. **Recent and old answer different questions** — recent repetition shows current testing/investment; longevity shows sustained investment
-4. **Variations are a proxy** — multiple versions signal testing or investment, not verified performance
+2. **Patterns > individual ads** — look for what repeats across winners
+3. **Recent > old** — breakout winners (30 days) often more valuable than 180-day evergreens
+4. **Variations = validation** — multiple versions = strong signal
 5. **Adaptation not copying** — translate concepts authentically to your brand
-6. **Recency matters** — current repetition can justify prioritizing a timely, controlled test; it does not prove the concept is scaling successfully
+6. **Speed matters** — if competitor is scaling NOW, test quickly before saturation

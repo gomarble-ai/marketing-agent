@@ -1,0 +1,160 @@
+{
+  "_comment": "Maps GoMarble's server-side skills (the load_skill catalog in mcp-server-sse: ads-mcp-server/src/lib/langfuse/langfuse.json) to plugin skills. Run scripts/sync-server-skills.mjs to refresh. Bodies are copied verbatim; the script only adds frontmatter, rewrites server paths to plugin skill names, and prepends a Claude adapter note where the server text assumes GoMarble's own app.",
+  "skills": [
+    {
+      "skill": "meta-performance-analysis",
+      "source": "prompts/skills/meta/performance-analysis",
+      "description": "Use when analyzing Meta (Facebook/Instagram) ad performance: account type detection, Pareto analysis, baselines, performance thresholds, issue diagnosis."
+    },
+    {
+      "skill": "meta-creative-analysis",
+      "source": "prompts/skills/meta/creative-analysis",
+      "description": "Use when analyzing Meta ad creative performance: Hook Rate / Hold Rate diagnostics, fatigue scoring (Healthy / Early Warning / Fatigued / Dead), format rules, variation strategy."
+    },
+    {
+      "skill": "meta-depth-of-analysis",
+      "source": "prompts/skills/meta/depth-of-analysis",
+      "description": "Use on Meta audits and optimization reviews to go beyond surface metrics: hierarchical drill-down, objective-aware KPIs, breakdowns, trends, funnel dependencies, attribution rigor."
+    },
+    {
+      "skill": "meta-guardrails",
+      "source": "prompts/skills/meta/guardrails",
+      "description": "Read before making any Meta Ads recommendation or change: budget-control rules, top-performer protection, scaling limits, stop rules, and safety wording for changes."
+    },
+    {
+      "skill": "meta-tool-fundamentals",
+      "source": "prompts/skills/meta/tool-fundamentals",
+      "description": "Foundation tool reference for any Meta (Facebook/Instagram) Ads task: Marketing API quirks, pagination, date ranges, entity relationships, currency handling. Use whenever calling GoMarble's facebook_* tools."
+    },
+    {
+      "skill": "meta-agent-operations",
+      "source": "prompts/skills/meta/agent-operations",
+      "description": "Use when running Meta Ads changes as an agentic loop: sequencing reads, proposals and approvals, verifying results after a change is applied."
+    },
+    {
+      "skill": "meta-custom-event-interpretation",
+      "source": "prompts/skills/meta/custom-event-interpretation",
+      "description": "Read before any Meta audit, pause, scale or optimization-event change on a sales campaign that optimizes for COMPLETE_REGISTRATION or another custom event. Detects 3rd-party purchase trackers (Profitmetrics, Triple Whale, Cosmise) so a working campaign isn't misjudged."
+    },
+    {
+      "skill": "meta-create-master-skill",
+      "source": "prompts/skills/meta/create/master-skill",
+      "description": "Use for any Meta Ads launch or build: a new campaign, ad set, or ads (image, video, carousel, catalog). One-call launch via facebook_propose_create_campaign_structure with approval before anything goes live.",
+      "references": {
+        "campaign.md": "prompts/skills/meta/create/campaign",
+        "adset.md": "prompts/skills/meta/create/adset",
+        "ad-with-creative.md": "prompts/skills/meta/create/ad-with-creative"
+      }
+    },
+    {
+      "skill": "google-ads-depth-of-analysis",
+      "source": "prompts/skills/google_ads/depth-of-analysis",
+      "description": "Use on Google Ads audits and optimization reviews: hierarchical drill-down, bid-strategy-aware evaluation, segmentation, trends, brand/PMax cannibalization, attribution rigor."
+    },
+    {
+      "skill": "google-ads-guardrails",
+      "source": "prompts/skills/google_ads/guardrails",
+      "description": "Read before making any Google Ads recommendation or change: valid budget controls, scaling limits, learning-phase rules, stop triggers, required diagnostics."
+    },
+    {
+      "skill": "google-ads-keywordplanner",
+      "source": "prompts/skills/google_ads/keywordPlanner",
+      "description": "Use for Google Ads keyword research: discovering keywords, search volume, top-of-page CPC and competition from real Keyword Planner data, never estimates."
+    },
+    {
+      "skill": "google-ads-pmax-evaluation",
+      "source": "prompts/skills/google_ads/pmax-evaluation",
+      "description": "Use to evaluate Performance Max campaigns: maturity gates, 3-day vs 3-day anomaly checks, asset labels, PMax vs Search comparison."
+    },
+    {
+      "skill": "google-ads-pmax-scaling",
+      "source": "prompts/skills/google_ads/pmax-scaling",
+      "description": "Use when deciding whether and how to scale a Performance Max campaign, disciplined against overcorrection."
+    },
+    {
+      "skill": "google-ads-search-analysis",
+      "source": "prompts/skills/google_ads/search-analysis",
+      "description": "Use when analyzing Google Ads Search campaigns: Q1-Q5 search term classification, rank vs budget auction pressure, CPC inflation diagnosis, decision matrix."
+    },
+    {
+      "skill": "google-ads-search-execution",
+      "source": "prompts/skills/google_ads/search-execution",
+      "description": "Use when making changes to Google Ads Search campaigns: bid adjustments, budget changes, negatives, query isolation, with the right propose tool for each."
+    },
+    {
+      "skill": "google-ads-shopping",
+      "source": "prompts/skills/google_ads/shopping",
+      "description": "Use for Google Shopping and Merchant Center performance: feed health gate, SKU classification (KILL / DOWNGRADE / PROMOTE), negatives, budget decisions."
+    },
+    {
+      "skill": "google-ads-tool-fundamentals",
+      "source": "prompts/skills/google_ads/tool-fundamentals",
+      "description": "Foundation tool reference for any Google Ads task: GAQL patterns, resources, micros, account and MCC structure. Use whenever calling GoMarble's google_ads_* tools."
+    },
+    {
+      "skill": "google-ads-create-master-skill",
+      "source": "prompts/skills/google_ads/create/master-skill",
+      "description": "Use for any Google Ads build or change: new Search campaigns, ad groups, RSAs, assets, experiments, shared negative keyword lists, bid modifiers, and PMax asset groups, with approval before anything goes live.",
+      "references": {
+        "campaign.md": "prompts/skills/google_ads/create/campaign",
+        "ad-group.md": "prompts/skills/google_ads/create/ad-group",
+        "ad.md": "prompts/skills/google_ads/create/ad",
+        "asset.md": "prompts/skills/google_ads/create/asset",
+        "bid-modifiers.md": "prompts/skills/google_ads/create/bid-modifiers",
+        "experiment.md": "prompts/skills/google_ads/create/experiment",
+        "negative-keyword-list.md": "prompts/skills/google_ads/create/negative-keyword-list",
+        "pmax.md": "prompts/skills/google_ads/create/pmax-skill"
+      }
+    },
+    {
+      "skill": "tiktok-create-master-skill",
+      "source": "prompts/skills/tiktok/create/master-skill",
+      "description": "Use for any TikTok Ads launch: a new campaign, ad group or ads, catalog and Smart+ campaigns. Creative-first, placement-aware, one-call launch via tiktok_propose_create_campaign_structure with approval before anything goes live.",
+      "references": {
+        "campaign.md": "prompts/skills/tiktok/create/campaign",
+        "ad-group.md": "prompts/skills/tiktok/create/ad-group",
+        "ad.md": "prompts/skills/tiktok/create/ad",
+        "smart-plus.md": "prompts/skills/tiktok/create/smart-plus"
+      }
+    },
+    {
+      "skill": "ga4-source-of-truth",
+      "source": "prompts/skills/ga4/source-of-truth",
+      "description": "Use for any GA4 analysis or when reconciling ad-platform conversions with analytics: conversions vs transactions, channel-subset-sum traps, attribution discipline.",
+      "tools": ["google_analytics_list_properties", "google_analytics_run_report", "google_analytics_get_traffic_sources", "google_analytics_get_events", "google_analytics_get_page_views", "google_analytics_get_user_behavior", "google_analytics_get_device_metrics", "google_analytics_get_active_users"]
+    },
+    {
+      "skill": "shopify-order-discipline",
+      "source": "prompts/skills/shopify/order-discipline",
+      "description": "Use for any Shopify revenue, order, product or customer analysis, and when comparing ad-platform revenue to store revenue: gross vs net, refunds, multi-currency, no financial_status filter traps.",
+      "tools": ["shopify_list_shops", "shopify_run_analytics_query", "shopify_list_orders_by_query", "shopify_list_products_by_query", "shopify_list_customers_by_query", "shopify_get_all_details_by_gid"]
+    },
+    {
+      "skill": "search-console-master-skill",
+      "source": "prompts/skills/search_console/master-skill",
+      "description": "Use for organic search and SEO questions from Google Search Console: organic growth, ranking and CTR opportunities, traffic drops, indexing issues, content priorities, and paid vs organic overlap.",
+      "references": {
+        "gsc-analysis-protocol.md": "prompts/skills/search_console/gsc-analysis-protocol",
+        "guardrails.md": "prompts/skills/search_console/guardrails"
+      },
+      "tools": ["gsc_list_properties", "gsc_get_performance_overview", "gsc_get_search_analytics", "gsc_get_advanced_search_analytics", "gsc_get_search_by_page_query", "gsc_compare_search_periods", "gsc_check_indexing_issues", "gsc_inspect_url", "gsc_inspect_url_enhanced", "gsc_batch_url_inspection", "gsc_get_site_details", "gsc_get_sitemaps", "gsc_list_sitemaps_enhanced", "gsc_get_sitemap_details"]
+    },
+    {
+      "skill": "creative-research",
+      "source": "prompts/skills/creative_research",
+      "description": "Use to discover competitors and new creative concepts from the ad library: evergreen (long-running) and breakout (fast-scaling) investment signals."
+    }
+  ],
+  "retired": [
+    "meta-create-campaign",
+    "meta-create-adset",
+    "meta-create-ad-with-creative",
+    "google-ads-create-campaign",
+    "google-ads-create-ad-group",
+    "google-ads-create-ad",
+    "google-ads-create-asset",
+    "google-ads-create-bid-modifiers",
+    "google-ads-create-experiment",
+    "google-ads-create-negative-keyword-list"
+  ]
+}

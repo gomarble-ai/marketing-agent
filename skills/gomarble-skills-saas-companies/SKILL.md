@@ -1,3 +1,8 @@
+---
+name: gomarble-skills-saas-companies
+description: "Use for SaaS growth questions: ARR growth, churn risk, CAC payback, cohort performance, expansion revenue, sales funnel conversion, onboarding success, revenue by segment, and a weekly SaaS health report. Needs subscription and CRM data from exports, a warehouse (Snowflake through GoMarble), or a connector found with discover_connectors; ad spend comes from GoMarble's ad platform tools."
+---
+
 # Claude Skills for SaaS Companies
 
 **9 Core Skills + Weekly Health Report** for analyzing and optimizing ARR growth, churn, CAC payback, and customer cohort health.

@@ -1,7 +1,10 @@
 ---
 name: google-ads-shopping
 description: "Use when analyzing or optimizing Google Ads Shopping campaigns: feed health gate, item KILL/DOWNGRADE/PROMOTE rules, product groups, search-term negatives, SCALE/T/CAP."
+metadata:
+  source: "prompts/skills/google_ads/shopping"
 ---
+
 # Google Ads Shopping — Optimization Protocol
 
 Product-led optimization: validate feed → classify items → manage structure → scale or cut.

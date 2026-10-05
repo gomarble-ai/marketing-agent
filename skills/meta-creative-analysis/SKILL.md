@@ -1,7 +1,10 @@
 ---
 name: meta-creative-analysis
 description: "Use when analyzing Meta ad creatives: video hook/hold rates, 4 diagnostic scenarios, image/catalog rules, creative pattern recognition."
+metadata:
+  source: "prompts/skills/meta/creative-analysis"
 ---
+
 # Meta Ads - Creative Analysis Workflow
 
 > Metric definitions (Hook Rate, Hold Rate, CTR, performance benchmarks, video funnel) live in `meta/tool-fundamentals` and auto-load with this skill. Do NOT redefine them here. This skill is the workflow for diagnosing creative performance after the metrics are loaded.
@@ -9,13 +12,13 @@ description: "Use when analyzing Meta ad creatives: video hook/hold rates, 4 dia
 ## Inputs You Need
 
 Before applying this skill, ensure you have:
-- Ad-level video metrics (`video_play_actions`, `video_thruplay_watched_actions`, `actions` with `video_view`) — see `tool-fundamentals` for the exact fields and the Hook/Hold formulas.
+- Ad-level video metrics (`video_play_actions`, `video_thruplay_watched_actions`, `actions` with `video_view`) — see `meta-tool-fundamentals` for the exact fields and the Hook/Hold formulas.
 - Account-level Hold Rate baseline from a 90-day account-level pull.
 - Pareto set of ads (cumulative spend ≤ 90%).
 
 ## Diagnostic Scenarios for Video Ads
 
-Apply the benchmarks from `tool-fundamentals` (Hook Rate / Hold Rate / CTR thresholds) to classify each Pareto video ad into one of these scenarios.
+Apply the benchmarks from `meta-tool-fundamentals` (Hook Rate / Hold Rate / CTR thresholds) to classify each Pareto video ad into one of these scenarios.
 
 ### Scenario 1: Good Hook, Poor Hold
 - Hook Rate Good (≥ 40%), Hold Rate Poor (< Account Avg), CTR Average

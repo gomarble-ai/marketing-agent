@@ -1,7 +1,10 @@
 ---
 name: google-ads-depth-of-analysis
 description: "Use for any Google Ads audit, performance review, optimization request, strategy question, or account restructuring. Covers 8 analytical dimensions: hierarchical drill-down, breakdowns, temporal trends, attribution rigor."
+metadata:
+  source: "prompts/skills/google_ads/depth-of-analysis"
 ---
+
 # Google Ads - Depth of Analysis
 
 > **When to apply**: Audits, performance reviews, optimization requests, strategy questions, account restructuring.

@@ -1,12 +1,18 @@
 ---
 name: google-ads-create-master-skill
 description: "MUST load FIRST for any Google Ads create, update, or mutation task. Master workflow for create campaigns, ad groups, ads, assets, sitelinks, experiments, negative keyword lists, bid modifiers, pause/rename/update. Triggers: any Google Ads write intent."
+metadata:
+  source: "prompts/skills/google_ads/create/master-skill"
 ---
+
+> **In Claude.** This methodology is GoMarble's own, kept in sync with the GoMarble connector.
+> - Where this says changes appear as approval cards or rows: in Claude, call the propose tool with `mode: "dryrun"` first. That validates the change without touching the account. Show the user each proposed change (entity, current value, new value), and only after an explicit yes call the same tool with `mode: "live"` and just the approved `operation_ids`.
+
 # Google Ads Mutation Workflow
 
 Master workflow for any Google Ads create or update operation — campaigns, ad groups, ads, assets, experiments, shared negative lists, bid modifiers. Sequence is fixed: confirm intent → pull context → propose → user approves (auto-executes) → confirm.
 
-> **Tool behavior:** All `google_ads_propose_*` tools auto-execute on user approval. There is no separate `google_ads_execute_approved_operation` call to make. When the user approves a proposal, it executes immediately — capture the returned IDs and resource names from the tool response. (`google_ads_execute_approved_operation` exists as a recovery hatch for legacy/timeout edge cases — do not use it in the normal flow.)
+> **Tool behavior:** All `google_ads_propose_*` tools auto-execute on user approval — there is NO separate execute tool of any kind. Campaign + ad group + ad creation happens in **ONE call** to `google_ads_propose_create_campaign_structure` (the legacy `google_ads_propose_create_campaign` / `_create_adgroup` / `_create_ad` tools no longer exist — never call them). Execution is a single atomic mutate: the whole structure lands or nothing does. Capture the returned IDs and resource names from the tool response.
 
 ---
 
@@ -16,13 +22,13 @@ Each step has a dedicated sub-skill. **Read the sub-skill at its step — not al
 
 | Step | Read before | Path |
 |------|------------|------|
-| Create / update campaign | Calling `google_ads_propose_create_campaign` or `google_ads_propose_update_campaigns` | `google-ads-create-campaign` |
-| Create / update ad group | Calling `google_ads_propose_create_adgroup` or `google_ads_propose_update_adgroups` | `google-ads-create-ad-group` |
-| Create / update ad (RSA) | Calling `google_ads_propose_create_ad` or `google_ads_propose_update_ads` | `google-ads-create-ad` |
-| Create / update asset, update PMax asset group | Calling `google_ads_propose_create_asset`, `google_ads_propose_update_asset`, or `google_ads_propose_update_pmax_asset_group` | `google-ads-create-asset` |
-| Create / update experiment | Calling `google_ads_propose_create_experiment` or `google_ads_propose_update_experiment` | `google-ads-create-experiment` |
-| Create / update shared negative keyword list | Calling `google_ads_propose_create_negative_keyword_list` or `google_ads_propose_update_negative_keyword_list` | `google-ads-create-negative-keyword-list` |
-| Adjust bid modifiers / ad schedule | Calling `google_ads_propose_update_bid_modifiers` | `google-ads-create-bid-modifiers` |
+| Campaign — create slot / update | Filling the `campaign` slot of `google_ads_propose_create_campaign_structure`, or calling `google_ads_propose_update_campaigns` | `references/campaign.md` |
+| Ad group — create slot / update | Filling the `adgroup` slot of `google_ads_propose_create_campaign_structure`, or calling `google_ads_propose_update_adgroups` | `references/ad-group.md` |
+| Ads (RSA) — create slot / update | Filling the `ads` array of `google_ads_propose_create_campaign_structure`, or calling `google_ads_propose_update_ads` | `references/ad.md` |
+| Create / update asset, update PMax asset group | Calling `google_ads_propose_create_asset`, `google_ads_propose_update_asset`, or `google_ads_propose_update_pmax_asset_group` | `references/asset.md` |
+| Create / update experiment | Calling `google_ads_propose_create_experiment` or `google_ads_propose_update_experiment` | `references/experiment.md` |
+| Create / update shared negative keyword list | Calling `google_ads_propose_create_negative_keyword_list` or `google_ads_propose_update_negative_keyword_list` | `references/negative-keyword-list.md` |
+| Adjust bid modifiers / ad schedule | Calling `google_ads_propose_update_bid_modifiers` | `references/bid-modifiers.md` |
 
 Always honor `google-ads-guardrails` before proposing any change.
 
@@ -106,8 +112,9 @@ We only flip between `ENABLED` and `PAUSED`. There is no removal — the API sup
 
 - **Empty account, no reference campaigns:** Use cold-start defaults — `MAXIMIZE_CLICKS` bidding, single GEO from the user's market, English language, ~$30–$50/day budget. Flag the cold start once: "No active campaigns to mirror — using defaults; happy to adjust before approval."
 - **Smart bidding requested but no conversion tracking:** Propose `MAXIMIZE_CLICKS` instead. Tell the user the account needs conversion tracking before TARGET_CPA / TARGET_ROAS / MAXIMIZE_CONVERSIONS / MAXIMIZE_CONVERSION_VALUE will work.
-- **Multiple items in one batch:** Use a single propose call with N items in the array — one approval card covers all, all execute together. Never split into N calls.
-- **Mixed entity types in one user request** (e.g. "create a campaign with ad groups and ads"): Each entity type still goes through its own propose call. Order: campaign → capture IDs from execution result → ad group → capture IDs → ad. Same as Meta's strict order.
+- **Multiple items in one batch (UPDATE tools):** Use a single propose call with N items in the array — never split into N calls.
+- **Any create request — campaign, ad group, ads, or all three** ("create a campaign with an ad group and ads"): ONE call to `google_ads_propose_create_campaign_structure` with `campaign` + `adgroup` + `ads` slots. Each level is a config to create XOR an existing id (`campaign`/`campaign_id`, `adgroup`/`adgroup_id`). The server links levels via temp IDs inside one atomic mutate — you NEVER capture and thread IDs between create steps. **ONE ad group per call**; more ad groups → additional calls passing `campaign_id`. All ads in a call land in that call's single ad group.
+- **Rejection semantics:** the execution is all-or-nothing. If the user rejects every ad of a launch that proposed ads — or rejects a parent whose children were approved — the server creates NOTHING (no orphan campaign/ad group shells).
 - **Re-using a budget (`budget_id`):** Always GAQL-confirm the budget exists and is not removed before referencing.
 - **Cross-account (MCC):** `manager_id` must be set on the propose call. Verify the manager has linkage to the customer before proposing.
 

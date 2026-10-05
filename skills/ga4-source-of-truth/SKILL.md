@@ -1,7 +1,13 @@
 ---
 name: ga4-source-of-truth
 description: "Use for any GA4 query whose result will be reported back to the user. Covers conversions ≠ transactions distinction, channel-subset-sum trap with sessionDefaultChannelGroup, intraday partial-data discipline, Paid Social aggregation rules, API-vs-UI attribution mismatch."
+metadata:
+  source: "prompts/skills/ga4/source-of-truth"
 ---
+
+> **In Claude.** This methodology is GoMarble's own, kept in sync with the GoMarble connector.
+> - GoMarble connector tools for this skill: `google_analytics_list_properties`, `google_analytics_run_report`, `google_analytics_get_traffic_sources`, `google_analytics_get_events`, `google_analytics_get_page_views`, `google_analytics_get_user_behavior`, `google_analytics_get_device_metrics`, `google_analytics_get_active_users`.
+
 # GA4 Source-of-Truth
 
 Before any GA4-derived figure goes to the user:

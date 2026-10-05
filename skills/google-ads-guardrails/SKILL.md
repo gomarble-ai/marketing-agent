@@ -1,7 +1,10 @@
 ---
 name: google-ads-guardrails
 description: "Guardrails for Google Ads recommendations and mutations. Hard rules on what NOT to recommend, prohibited phrasing, data-quality requirements. Used internally for any Google Ads optimization or change recommendation."
+metadata:
+  source: "prompts/skills/google_ads/guardrails"
 ---
+
 # Google Ads Guardrails
 
 **READ BEFORE GENERATING ANY RECOMMENDATION.**

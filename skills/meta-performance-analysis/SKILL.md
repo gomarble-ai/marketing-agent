@@ -1,7 +1,10 @@
 ---
 name: meta-performance-analysis
 description: "Use when analyzing Meta (Facebook/Instagram) ad performance: account type detection, Pareto analysis, baselines, performance thresholds, issue diagnosis."
+metadata:
+  source: "prompts/skills/meta/performance-analysis"
 ---
+
 # Meta Ads - Performance Analysis Workflow
 
 > Metric definitions (CTR, CPM, ROAS, CPL, CPR, conversion rate, account-type → PCM mapping, performance benchmarks, Pareto definition) live in `meta/tool-fundamentals` and auto-load with this skill. Do NOT redefine them here. This skill is the workflow for performance audits after the metrics are loaded.

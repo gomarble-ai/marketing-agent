@@ -1,7 +1,10 @@
 ---
 name: meta-guardrails
 description: "Guardrails for Meta Ads recommendations and mutations. Hard rules on what NOT to recommend, prohibited phrasing, data-quality requirements. Used internally for any Meta optimization or change."
+metadata:
+  source: "prompts/skills/meta/guardrails"
 ---
+
 # Meta Ads Guardrails
 
 **READ BEFORE GENERATING ANY RECOMMENDATION.**

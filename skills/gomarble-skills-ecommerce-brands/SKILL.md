@@ -1,3 +1,8 @@
+---
+name: gomarble-skills-ecommerce-brands
+description: "Use for ecommerce business questions beyond a single ad channel: which products to scale or cut, cart abandonment and conversion-rate bottlenecks, customer cohorts and repeat purchase, unit economics and contribution margin, channel mix, promotion impact, device and browser issues, and a weekly ecommerce summary. Works from Shopify and GA4 through GoMarble (read shopify-order-discipline and ga4-source-of-truth first), or from exports."
+---
+
 # Claude Skills for Ecommerce Brands
 
 **9 Core Skills + Weekly Summary** for analyzing and optimizing product performance, unit economics, and revenue across all channels.

@@ -1,7 +1,10 @@
 ---
 name: meta-tool-fundamentals
 description: "Foundation tool reference for any Meta (Facebook/Instagram) Ads task — Marketing API quirks, common entity relationships, currency in cents. Used internally when working with Meta tools."
+metadata:
+  source: "prompts/skills/meta/tool-fundamentals"
 ---
+
 # Meta Ads - Tool Fundamentals
 
 How to use Meta Ads tools effectively, plus the canonical metric definitions used across all Meta skills. Auto-loaded with every Meta skill request.
@@ -39,6 +42,8 @@ Only omit the `effective_status` filter when the user explicitly asks for histor
 
 **Creative fatigue analysis**: Use `time_increment='1'` for daily trend data.
 
+**Date range discipline (CRITICAL)**: For fixed historical comparisons (named weeks, calendar months, W1/W2/W3, or exact date ranges), use explicit `time_range` for each period. Do NOT use `date_preset` unless the user explicitly asks for a relative period such as `last_7d`, `last_14d`, `this_month`, or `yesterday`.
+
 ## Purchase De-Duplication (CRITICAL)
 
 Facebook returns overlapping purchase action_types: `omni_purchase`, `purchase`, `offsite_conversion.fb_pixel_purchase`, `onsite_web_purchase`, `web_in_store_purchase`, `app_custom_event.fb_mobile_purchase`.
@@ -46,12 +51,19 @@ Facebook returns overlapping purchase action_types: `omni_purchase`, `purchase`,
 **Rule**: Use ONLY ONE. Check `omni_purchase` first; if absent, fall back to `purchase`. NEVER sum multiple types — this double-counts revenue and inflates ROAS.
 
 ## Pagination (CRITICAL)
-Ad-level insights paginate at 25 results per page. When the response contains `paging.next`, you MUST use `facebook_fetch_pagination_url` to fetch ALL remaining pages before performing any analysis. Analyzing only page 1 produces wrong ad counts, wrong totals, and wrong CPAs.
+Meta insights can paginate at ANY level (`account`, `campaign`, `adset`, or `ad`), especially with breakdowns, `time_increment`, or broad date ranges. If any Meta insights response contains `paging.next` or `_gomarble_meta_insights_data_quality.paging_next_present=true`, the response is incomplete.
 
-**Rule**: Never present ad counts, per-ad-set breakdowns, or CPA calculations until you have fetched every page. Cross-check: if an ad set appears to have only 1 ad, verify by checking if there are more pages.
+Before using Meta insights data for totals, rankings, CPA/ROAS, budget allocation, campaign comparisons, or Python/advanced analysis:
+1. Call `facebook_fetch_pagination_url` with the exact `paging.next` URL.
+2. Continue fetching until the latest response has no `paging.next` and the data-quality block says `response_complete=true`.
+3. Only then combine pages and analyze.
+
+Never present totals or conclusions from a partial Meta insights page. If pagination cannot be completed, state that the Meta data is incomplete and avoid numeric conclusions from it.
 
 ## Currency
-All Meta budget values are in **cents** (integer). $50 = 5000. Always divide by 100 when displaying to users. Confirm account currency from `facebook_get_details_of_ad_account` before presenting monetary values — never assume USD.
+ALL Meta propose tools — `facebook_propose_create_campaign_structure` AND every `facebook_propose_update_*` tool — take budgets/bids in **ACCOUNT CURRENCY, human-readable** (50 means $50, 300 means ₹300). NEVER convert to cents for a propose tool; the server converts. Values from `facebook_get_campaign_details`/adset details are already in account currency too.
+
+Only Meta's RAW response fields — insights and `account_structure` budget fields — are in **cents** ($50 = 5000): divide those by 100 when displaying. Confirm account currency from `facebook_get_details_of_ad_account` before presenting monetary values — never assume USD.
 
 ## Account Context
 Always call `facebook_get_details_of_ad_account` first. It returns:
@@ -79,7 +91,7 @@ If `facebook_get_adaccount_insights` fails with "reduce the amount of data", use
 
 ## Metric Glossary
 
-Canonical definitions used across all Meta skills. Workflow skills (`creative-analysis`, `performance-analysis`, `depth-of-analysis`) reference these — they do NOT redefine them.
+Canonical definitions used across all Meta skills. Workflow skills (`meta-creative-analysis`, `meta-performance-analysis`, `meta-depth-of-analysis`) reference these — they do NOT redefine them.
 
 ### Direct Metrics (from API response)
 
@@ -99,6 +111,16 @@ Canonical definitions used across all Meta skills. Workflow skills (`creative-an
 | Leads | `actions` array, `action_type=lead` | |
 | Revenue | `action_values` array, `action_type=omni_purchase` | |
 | Purchase ROAS | `purchase_roas` | Direct |
+
+### Additive vs Non-Additive Metrics (CRITICAL)
+
+Additive across complete rows at the same date/entity grain: `spend`, `impressions`, `clicks`, action counts, and `action_values` after purchase de-duplication.
+
+Non-additive: `reach`, `frequency`, `ctr`, `cpm`, `cpc`, `cpp`, `purchase_roas`, `cost_per_*`, CPA/CPR/CPL, and other rate/cost fields. Do NOT sum or average row-level `reach` or `frequency` and call it account/campaign/week/month reach or frequency.
+
+For weekly/monthly/account reach or frequency, query `facebook_get_adaccount_insights` at the exact output level (for example `level="account"` for account totals) with explicit `time_range` and no unnecessary breakdown/time_increment. Reach/frequency cannot be recomputed from lower-grain rows.
+
+For rate fields, prefer the API value at the intended grain; otherwise recompute valid rates from additive numerator/denominator fields only after all pages are fetched.
 
 ### Calculated Metrics
 
@@ -147,7 +169,7 @@ If `promoted_object` is missing → ASK the user. Never assume.
 
 For Hold Rate, compute `account_avg_hold_rate` from a 90-day account-level pull (`facebook_get_adaccount_insights` at `level="account"` with `date_preset="last_90d"` and the video fields) before applying.
 
-### Diagnostic Signals (definitions only — workflow lives in `depth-of-analysis`)
+### Diagnostic Signals (definitions only — workflow lives in `meta-depth-of-analysis`)
 
 | Signal | Means |
 |---|---|

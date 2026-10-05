@@ -52,4 +52,4 @@ Concrete spec for 6 static + 6 video creatives. For each:
 - Angle + audience pairing
 - Reference to which winner pattern it remixes
 
-End with: `_Strategy doc — no ads built. Hand this to your creative team or use the `meta-create-ad-with-creative` skill to build any of the 12 specs._`
+End with: `_Strategy doc — no ads built. Hand this to your creative team or use the `launch-campaigns` skill to build any of the 12 specs._`
