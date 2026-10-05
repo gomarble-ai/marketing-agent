@@ -9,6 +9,11 @@
   },
   "homepage": "https://www.gomarble.ai/mcp",
   "repository": "https://github.com/gomarble-ai/marketing-agent",
+  "icon": "./assets/icon.png",
+  "documentationUrl": "https://github.com/gomarble-ai/marketing-agent#readme",
+  "supportUrl": "https://github.com/gomarble-ai/marketing-agent/issues",
+  "privacyPolicyUrl": "https://www.gomarble.ai/privacy",
+  "termsOfServiceUrl": "https://www.gomarble.ai/terms",
   "license": "MIT",
   "keywords": [
     "paid-media",

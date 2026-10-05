@@ -163,7 +163,7 @@ function existingDescription(skill) {
 }
 
 function frontmatter(skill, description, source) {
-  const esc = description.replace(/"/g, '\\"');
+  const esc = description.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
   return `---\nname: ${skill}\ndescription: "${esc}"\nmetadata:\n  source: "${source}"\n---\n\n`;
 }
 

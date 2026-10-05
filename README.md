@@ -1,9 +1,4 @@
-<p align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/gomarble-ai/marketing-agent/main/assets/logo-dark.png">
-    <img alt="GoMarble" src="https://raw.githubusercontent.com/gomarble-ai/marketing-agent/main/assets/logo-light.png" width="320">
-  </picture>
-</p>
+![GoMarble](assets/logo.png)
 
 <h1 align="center">GoMarble for Claude</h1>
 
@@ -237,7 +232,7 @@ marketing-agent/
 ├── commands/                # 8 slash commands (Claude Code)
 ├── skills/                  # 52 skills, read by both Claude and Codex
 ├── scripts/                 # maintainer tools: skill sync and coverage check
-├── bin/install.mjs          # the npx installer
+├── installer/install.mjs    # the npx installer
 └── README.md
 ```
 

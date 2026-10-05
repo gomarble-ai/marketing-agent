@@ -45,7 +45,7 @@ const MARKETPLACE = 'https://github.com/gomarble-ai/marketing-agent.git';
 const MARKETPLACE_NAME = 'gomarble';
 
 // What goes from the npm package into the user's Codex plugin install dir
-const COPY_ENTRIES = ['.claude-plugin', '.codex-plugin', '.mcp.json', 'commands', 'skills'];
+const COPY_ENTRIES = ['.claude-plugin', '.codex-plugin', '.mcp.json', 'assets', 'commands', 'skills'];
 
 // ─── Argument parsing ────────────────────────────────────────
 const args = process.argv.slice(2);

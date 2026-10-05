@@ -4,11 +4,11 @@
   "description": "Installer for GoMarble, the AI agent for paid media teams, in Claude Code and Codex CLI. Diagnose, analyze creative, research competitors, cut waste, shift budget, launch and report across Meta, Google, TikTok, LinkedIn and Microsoft Ads. 52 skills built on GoMarble's playbooks, 8 slash commands, OAuth-secured live data.",
   "type": "module",
   "bin": {
-    "marketing-agent": "bin/install.mjs"
+    "marketing-agent": "installer/install.mjs"
   },
   "files": [
     "assets/",
-    "bin/",
+    "installer/",
     ".claude-plugin/",
     ".codex-plugin/",
     ".mcp.json",
