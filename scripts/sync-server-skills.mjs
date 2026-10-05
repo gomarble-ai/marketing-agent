@@ -159,7 +159,12 @@ function existingDescription(skill) {
     }
     return block.join(' ').replace(/\s+/g, ' ').trim();
   }
-  return value.replace(/^["']|["']$/g, '');
+  if (value.startsWith('"') && value.endsWith('"')) {
+    // YAML double-quoted scalar: undo the escaping frontmatter() adds, so a re-sync is stable.
+    return value.slice(1, -1).replace(/\\(["\\])/g, '$1');
+  }
+  if (value.startsWith("'") && value.endsWith("'")) return value.slice(1, -1).replace(/''/g, "'");
+  return value;
 }
 
 function frontmatter(skill, description, source) {

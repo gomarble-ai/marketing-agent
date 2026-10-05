@@ -1,6 +1,6 @@
 ---
 name: meta-create-master-skill
-description: "MUST load FIRST for any Meta ad creation, launch, campaign setup, ad set creation, or creative push. Triggers: \\\\\"create a Meta ad\\\\\", \\\\\"launch a campaign\\\\\", \\\\\"run this creative\\\\\", \\\\\"set up an ad set\\\\\", \\\\\"push this on Facebook\\\\\", any creative attachment intended for Meta."
+description: "MUST load FIRST for any Meta ad creation, launch, campaign setup, ad set creation, or creative push. Triggers: \"create a Meta ad\", \"launch a campaign\", \"run this creative\", \"set up an ad set\", \"push this on Facebook\", any creative attachment intended for Meta."
 metadata:
   source: "prompts/skills/meta/create/master-skill"
 ---
