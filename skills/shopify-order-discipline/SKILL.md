@@ -5,7 +5,7 @@ metadata:
   source: "prompts/skills/shopify/order-discipline"
 ---
 
-> **In Claude.** This methodology is GoMarble's own, kept in sync with the GoMarble connector.
+> **Outside the GoMarble app.** This methodology is GoMarble's own, kept in sync with the GoMarble connector.
 > - GoMarble connector tools for this skill: `shopify_list_shops`, `shopify_run_analytics_query`, `shopify_list_orders_by_query`, `shopify_list_products_by_query`, `shopify_list_customers_by_query`, `shopify_get_all_details_by_gid`.
 
 # Shopify Order Discipline

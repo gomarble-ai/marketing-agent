@@ -5,7 +5,7 @@ metadata:
   source: "prompts/skills/meta/custom-event-interpretation"
 ---
 
-> **In Claude.** This methodology is GoMarble's own, kept in sync with the GoMarble connector.
+> **Outside the GoMarble app.** This methodology is GoMarble's own, kept in sync with the GoMarble connector.
 > - Where this says to call `user_input`: that tool exists only in GoMarble's own app. Ask the user the same question in chat instead. Where it says not to call `user_input`, don't ask — decide from the data.
 > - Where this names `submit_recommendations` or `record_audit_findings`: those exist only in GoMarble's own app. Present the findings and recommendations in your reply instead.
 

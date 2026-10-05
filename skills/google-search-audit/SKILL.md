@@ -7,7 +7,9 @@ argument-hint: "[Google Ads Customer ID]"
 
 # Google Ads Search Audit — Morning Briefing (Read-Only)
 
-For Google Ads account `$ARGUMENTS`, run a daily Search-campaigns operator pass. Compare **last 3 days vs prior 3 days**. **Read-only — output is recommendations only, no mutations applied.**
+For the Google Ads account the user names, run a daily Search-campaigns operator pass. Compare **last 3 days vs prior 3 days**. **Read-only — output is recommendations only, no mutations applied.**
+
+If the user didn't name an account, list their connected accounts and ask which one to use.
 
 ## Step 1 — Brand vs Non-Brand classification (do first)
 

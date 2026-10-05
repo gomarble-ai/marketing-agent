@@ -15,10 +15,12 @@ If the user provided a change log (rows of `Date | Entity | Change`), parse it. 
 
 ## Step 2 — Pull data (read-only)
 
-For ad account `$ARGUMENTS`:
+For the ad account the user names:
 - Yesterday's metrics: ROAS, CPM, CTR, CVR, Spend, Reach, Frequency
 - Trailing 7-day average of the same
 - Campaign + ad set + ad level
+
+If the user didn't name an account, list their connected accounts and ask which one to use.
 
 ## Step 3 — Flag
 

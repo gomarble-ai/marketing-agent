@@ -5,7 +5,7 @@ description: The complete winning-ads methodology in a single reference — comp
 
 # Winning Ads Skill Pack
 
-Six Claude Skills for GoMarble that take you from "what's working in the market" to a shoot-ready ad brief: competitor intelligence, your own creative diagnosis, a psychological hook framework, pattern synthesis across both, brief generation, and one orchestrator that routes the whole pipeline.
+Six GoMarble skills that take you from "what's working in the market" to a shoot-ready ad brief: competitor intelligence, your own creative diagnosis, a psychological hook framework, pattern synthesis across both, brief generation, and one orchestrator that routes the whole pipeline.
 
 Each skill below is a standalone `SKILL.md` — install individually (see README for how), or use this file as a single reference document. The orchestrator (`winning-ads-orchestrator`) is the entry point for full end-to-end requests; the other five are also directly triggerable on their own for narrower asks.
 
@@ -109,7 +109,7 @@ Turns GoMarble's Ads Library MCP tools into a structured competitive-creative br
 
 ## Hard requirement
 
-This skill only works through GoMarble MCP. If GoMarble MCP is not connected in the current session, say so explicitly and stop — do not attempt to approximate this with web search or general knowledge of a brand's marketing. Competitor ad library data is not something Claude can infer or recall reliably; the whole value is that it's live.
+This skill only works through GoMarble MCP. If GoMarble MCP is not connected in the current session, say so explicitly and stop — do not attempt to approximate this with web search or general knowledge of a brand's marketing. Competitor ad library data is not something the model can infer or recall reliably; the whole value is that it's live.
 
 ## Tools (GoMarble MCP `ads_library_*`)
 
@@ -138,7 +138,7 @@ Confirm with context already available (don't ask if it's inferable):
 
 ### Step 3: Pull the ads
 - Per competitor: `ads_library_get_ads_by_brand_id` — pull a meaningful sample (aim for enough to see repeated patterns, not just the newest 2-3 ads)
-- Cross-check spend/scale with `ads_library_get_brand_analytics` — an ad running at high spend/long duration is a stronger "this is working" signal than one running briefly at low spend. Duration and apparent scale are the closest proxy available to competitor performance (Claude has no access to their actual metrics).
+- Cross-check spend/scale with `ads_library_get_brand_analytics` — an ad running at high spend/long duration is a stronger "this is working" signal than one running briefly at low spend. Duration and apparent scale are the closest proxy available to competitor performance (the model has no access to their actual metrics).
 
 ### Step 4: Analyze the creative
 For the ads worth analyzing in depth (longest-running, highest apparent spend, or most-duplicated), run `ads_library_analyze_ad`:

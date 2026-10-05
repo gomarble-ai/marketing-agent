@@ -7,7 +7,9 @@ argument-hint: "[Google Ads Customer ID]"
 
 # PMax Pulse — 3-Day Anomaly Check (Read-Only)
 
-For Google Ads account `$ARGUMENTS`, scan every active **Performance Max** campaign and detect anomalies between the last 3 days and the prior 3 days. **Read-only — never modify PMax campaigns from a daily pulse, the black-box dynamics mean knee-jerk reactions cost more than they fix.**
+For the Google Ads account the user names, scan every active **Performance Max** campaign and detect anomalies between the last 3 days and the prior 3 days. **Read-only — never modify PMax campaigns from a daily pulse, the black-box dynamics mean knee-jerk reactions cost more than they fix.**
+
+If the user didn't name an account, list their connected accounts and ask which one to use.
 
 ## Inputs (per PMax campaign, both 3d windows)
 

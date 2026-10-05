@@ -2,7 +2,7 @@
   "name": "gomarble",
   "displayName": "GoMarble",
   "version": "0.2.0",
-  "description": "GoMarble's paid media agent inside Claude. Connect Meta, Google, TikTok, LinkedIn and Microsoft Ads with GA4, Shopify, Klaviyo and Search Console, then ask what changed and why. Diagnose performance, analyze winning creative, research competitor ads, write creative briefs, cut wasted spend, shift budget, launch and edit Meta and Google campaigns, build reports, and set up agents that watch your accounts on a schedule. Changes are proposed first and applied only after you approve them, within your team's roles and per-account access. 52 skills built on GoMarble's own playbooks, plus 8 slash commands. Connects to GoMarble's remote MCP server with an OAuth sign-in; free plan available.",
+  "description": "GoMarble's paid media agent inside Claude. Connect Meta, Google, TikTok, LinkedIn and Microsoft Ads with GA4, Shopify, Klaviyo and Search Console, then ask what changed and why. Diagnose performance, analyze winning creative, research competitor ads, write creative briefs, cut wasted spend, shift budget, launch and edit Meta and Google campaigns, build reports, and set up agents that watch your accounts on a schedule. Changes are proposed first and applied only after you approve them, within your team's roles and per-account access. 60 skills built on GoMarble's own playbooks. Connects to GoMarble's remote MCP server with an OAuth sign-in.",
   "author": {
     "name": "GoMarble",
     "url": "https://www.gomarble.ai"

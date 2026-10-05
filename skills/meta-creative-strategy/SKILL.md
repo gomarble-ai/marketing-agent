@@ -7,7 +7,9 @@ argument-hint: "[Ad Account ID] [optional: lookback window in days, default 30]"
 
 # Meta Creative Strategy (Read-Only)
 
-For ad account `$ARGUMENTS`, produce a complete creative strategy pass. Default lookback: 30 days. **Read-only — no ads built or modified.**
+For the ad account the user names, produce a complete creative strategy pass. Default lookback: 30 days. **Read-only — no ads built or modified.**
+
+If the user didn't name an account, list their connected accounts and ask which one to use.
 
 ## Section 1 — Winners + losers
 

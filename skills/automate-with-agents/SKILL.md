@@ -5,7 +5,7 @@ description: "Use when the user wants GoMarble to keep doing a job on a schedule
 
 # Automate with agents
 
-GoMarble agents run a standing job on a schedule in GoMarble's cloud, whether or not Claude is open. Each run investigates what changed and delivers the result by email or Slack. An agent can be read-only (watch and report) or have write access (propose changes, applied only after approval by default).
+GoMarble agents run a standing job on a schedule in GoMarble's cloud, whether or not the chat app is open. Each run investigates what changed and delivers the result by email or Slack. An agent can be read-only (watch and report) or have write access (propose changes, applied only after approval by default).
 
 "Agent" and "schedule" mean the same thing. Everything goes through one tool: `manage_agents`.
 
@@ -61,7 +61,7 @@ Optional settings:
 | Run it once now | `action: "run"`, `scheduleId` |
 | Remove it | `action: "delete"`, `scheduleId`, only after the user confirms. Deleting can't be undone; pausing can. |
 
-Report agents (`type: "report"`) re-run a report saved in the GoMarble app and need its `reportId`. To schedule a report built in Claude, create a prompt agent whose prompt describes the report (see the `build-reports` skill).
+Report agents (`type: "report"`) re-run a report saved in the GoMarble app and need its `reportId`. To schedule a report built in this conversation, create a prompt agent whose prompt describes the report (see the `build-reports` skill).
 
 ## Writing a good agent prompt
 

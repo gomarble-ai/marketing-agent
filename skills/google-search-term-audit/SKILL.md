@@ -7,7 +7,9 @@ argument-hint: "[Google Ads Customer ID]"
 
 # Google Search Term Audit — Waste Forensics (Read-Only)
 
-For Google Ads account `$ARGUMENTS`, run a forensic search-term waste audit. **Read-only — produces a suggested-exclusion list, never executes mutations.**
+For the Google Ads account the user names, run a forensic search-term waste audit. **Read-only — produces a suggested-exclusion list, never executes mutations.**
+
+If the user didn't name an account, list their connected accounts and ask which one to use.
 
 ## Phase 1 — Data selection + Pareto filtering
 

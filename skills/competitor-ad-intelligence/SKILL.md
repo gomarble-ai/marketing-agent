@@ -18,7 +18,7 @@ For raw discovery or collection requests such as "find competitors," "show me th
 
 ## Hard requirement
 
-This skill only works through GoMarble MCP. If GoMarble MCP is not connected in the current session, say so explicitly and stop — do not attempt to approximate this with web search or general knowledge of a brand's marketing. Competitor ad library data is not something Claude can infer or recall reliably; the whole value is that it's live.
+This skill only works through GoMarble MCP. If GoMarble MCP is not connected in the current session, say so explicitly and stop — do not attempt to approximate this with web search or general knowledge of a brand's marketing. Competitor ad library data is not something the model can infer or recall reliably; the whole value is that it's live.
 
 Within the Marketing Agent plugin, `creative-research` owns detailed discovery and evergreen/breakout cohort collection. Use this skill to interpret those results across brands and produce the structured competitive brief; call the tools below directly only when the needed ads have not already been collected.
 
@@ -49,7 +49,7 @@ Confirm with context already available (don't ask if it's inferable):
 
 ### Step 3: Pull the ads
 - Per competitor: `ads_library_get_ads_by_brand_id` — pull a meaningful sample (aim for enough to see repeated patterns, not just the newest 2-3 ads)
-- Cross-check spend/scale with `ads_library_get_brand_analytics` — high spend or long duration is evidence that the brand continues to invest in an ad, not proof that it performs well. Duration and apparent scale are prioritization proxies because Claude has no access to the competitor's actual outcome metrics.
+- Cross-check spend/scale with `ads_library_get_brand_analytics` — high spend or long duration is evidence that the brand continues to invest in an ad, not proof that it performs well. Duration and apparent scale are prioritization proxies because the model has no access to the competitor's actual outcome metrics.
 
 ### Step 4: Analyze the creative
 For the ads worth analyzing in depth (longest-running, highest apparent spend, or most-duplicated), run `ads_library_analyze_ad`:

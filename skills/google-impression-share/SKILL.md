@@ -7,7 +7,9 @@ argument-hint: "[Google Ads Customer ID]"
 
 # Google Ads Impression Share Analysis (Read-Only)
 
-For Google Ads account `$ARGUMENTS`, analyze impression-share metrics across all active campaigns. **Read-only — recommends only, never adjusts budgets or bids.**
+For the Google Ads account the user names, analyze impression-share metrics across all active campaigns. **Read-only — recommends only, never adjusts budgets or bids.**
+
+If the user didn't name an account, list their connected accounts and ask which one to use.
 
 ## Constraints (do not violate)
 

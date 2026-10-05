@@ -43,7 +43,7 @@ function walk(dir) {
   });
 }
 
-const files = [...walk(join(ROOT, 'skills')), ...walk(join(ROOT, 'commands'))];
+const files = walk(join(ROOT, 'skills'));
 const coveredBy = new Map(tools.map((t) => [t, new Set()]));
 const unknown = new Map();
 const PREFIX = /^(ads_library|bing_ads|facebook|gdrive|google_ads|google_analytics|google_drive|gsc|impact|instagram|klaviyo|linkedin|shopify|snowflake|tiktok)[-_]/;

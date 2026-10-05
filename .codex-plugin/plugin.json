@@ -1,12 +1,12 @@
 {
   "name": "gomarble",
   "version": "0.2.0",
-  "description": "GoMarble's paid media agent for Codex. Diagnose performance, analyze creative, research competitor ads, write briefs, cut wasted spend, shift budget, launch and edit Meta and Google campaigns, build reports and schedule agents across Meta, Google, TikTok, LinkedIn and Microsoft Ads with GA4, Shopify, Klaviyo and Search Console data. 52 skills built on GoMarble's own playbooks.",
+  "description": "GoMarble is the AI agent for paid media teams. Diagnose performance, analyze creative, research competitor ads, cut wasted spend, shift budget, prepare Meta and Google Ads changes for your approval, build reports and schedule agents across Meta, Google, TikTok, LinkedIn and Microsoft Ads, with GA4, Shopify, Klaviyo and Search Console data.",
   "author": {
     "name": "GoMarble",
-    "url": "https://gomarble.ai"
+    "url": "https://www.gomarble.ai"
   },
-  "homepage": "https://www.gomarble.ai/mcp",
+  "homepage": "https://www.gomarble.ai",
   "repository": "https://github.com/gomarble-ai/marketing-agent",
   "license": "MIT",
   "keywords": [
@@ -29,23 +29,93 @@
   "mcpServers": "./.mcp.json",
   "interface": {
     "displayName": "GoMarble",
-    "shortDescription": "The AI agent for paid media teams: diagnose, analyze creative, research competitors, cut waste, shift budget, launch and report across Meta, Google, TikTok, LinkedIn and Microsoft Ads.",
-    "longDescription": "GoMarble connects Codex to your ad accounts, analytics and store data. It explains what changed and why, and prepares the next move for your approval.\n\n\u2022 Diagnose performance across Meta, Google, TikTok, LinkedIn and Microsoft Ads, with GA4, Shopify, Klaviyo and Search Console as the business truth.\n\u2022 Analyze creative (hooks, hold, fatigue, winning patterns) and research competitor ads in GoMarble's ad library.\n\u2022 Write creative briefs, cut wasted spend and shift budget, with every change proposed first and applied only after you approve it.\n\u2022 Launch and edit Meta and Google campaigns, build reports, and set up agents that watch your accounts on a schedule and report by email or Slack.\n\u2022 52 skills built on GoMarble's own playbooks, kept in sync with the GoMarble connector.\n\nFree to install. Sign in with your GoMarble account (free plan available at gomarble.ai).",
+    "shortDescription": "AI agent for paid media teams",
+    "longDescription": "GoMarble connects ChatGPT and Codex to your ad accounts, analytics and store data, so you can ask what changed in your paid media and why, and get a clear next step.\n\nWhat it does:\n• Diagnose performance across Meta, Google, TikTok, LinkedIn and Microsoft Ads, using GA4, Shopify, Klaviyo and Search Console as the business view.\n• Analyze creative: hook and hold rates, fatigue, and the patterns behind winning ads.\n• Research competitor ads in GoMarble's ad library and turn the findings into creative briefs.\n• Find wasted spend in search terms, placements and audiences, and recommend where to move budget.\n• Prepare changes and launches for Meta and Google Ads, and build reports and scheduled agents that watch your accounts.\n\nWho it's for: media buyers, performance marketers, creative strategists, agencies and founders who run their own ads.\n\nHow changes work: every change is first prepared as a dry run that shows the current and new values. Nothing is applied to an ad account until you explicitly approve it, and only within your GoMarble team role and per-account access.\n\nLimitations: LinkedIn Ads and Microsoft Ads are read-only. TikTok changes can be prepared and validated but not applied. Meta launches support the Sales objective; Google launches support Search and standard Performance Max. You need a GoMarble account with the ad platforms connected, and the plugin only sees accounts your GoMarble login can reach.",
     "developerName": "GoMarble",
-    "category": "Productivity",
+    "category": "Business & Operations",
     "capabilities": [
-      "Read",
-      "Write"
+      "Diagnose ad performance across Meta, Google, TikTok, LinkedIn and Microsoft Ads",
+      "Analyze ad creative: hook rate, hold rate, fatigue and winning patterns",
+      "Research competitor ads in GoMarble's ad library",
+      "Find wasted spend in search terms, placements and audiences",
+      "Recommend budget shifts between campaigns and ad sets",
+      "Prepare Meta and Google Ads changes for approval before anything is applied",
+      "Build cross-channel performance reports",
+      "Schedule agents that monitor accounts and report by email or Slack"
     ],
     "websiteURL": "https://www.gomarble.ai",
+    "supportURL": "https://github.com/gomarble-ai/marketing-agent/issues",
+    "privacyPolicyURL": "https://www.gomarble.ai/privacy",
+    "termsOfServiceURL": "https://www.gomarble.ai/terms",
     "defaultPrompt": [
       "Why did ROAS drop on my Meta account last week?",
-      "Find wasted spend in my Google Search campaigns and propose negatives.",
-      "Break down my top Meta ads: what's winning and what's fatiguing?",
-      "Set up a daily brief across all my accounts, emailed at 9am."
+      "Find wasted spend in my Google Search campaigns over the last 30 days.",
+      "Which of my Meta ads are fatiguing, and what should I test next?"
     ],
     "brandColor": "#006E78",
-    "composerIcon": "./assets/icon.svg",
-    "logo": "./assets/logo-light.png"
+    "brandColorDark": "#00DCD2",
+    "composerIcon": "./assets/icon.png",
+    "logo": "./assets/icon.png"
+  },
+  "extensions": {
+    "com.openai": {
+      "onboardingSkill": "./skills/get-started/SKILL.md",
+      "review": {
+        "test_cases": {
+          "positive": [
+            {
+              "description": "Diagnose a week-over-week ROAS drop on Meta",
+              "prompt": "Why did ROAS drop on my Meta account last week compared with the week before?",
+              "tools_triggered": "facebook_list_ad_accounts, facebook_get_adaccount_insights",
+              "expected_behavior": "Pulls last week and the prior week for the test Meta ad account, reports spend, revenue and ROAS for both periods, and names the campaigns or ads that drove the change with their numbers. Makes no changes to the account."
+            },
+            {
+              "description": "Find wasted spend in Google Search",
+              "prompt": "Find wasted spend in my Google Search campaigns over the last 30 days.",
+              "tools_triggered": "google_ads_list_accounts, google_ads_run_gaql",
+              "expected_behavior": "Lists search terms and keywords from the test Google Ads account that spent money without converting in the last 30 days, totals the wasted spend, and suggests negative keywords. Read-only; nothing is changed."
+            },
+            {
+              "description": "Detect creative fatigue on Meta",
+              "prompt": "Which of my active Meta ads are fatiguing?",
+              "tools_triggered": "facebook_list_ads, facebook_get_adaccount_insights",
+              "expected_behavior": "Ranks the active ads in the test Meta ad account using frequency, CTR trend and cost per result over time, and labels each as healthy, early warning or fatigued with the supporting metrics."
+            },
+            {
+              "description": "Research a competitor's live ads",
+              "prompt": "What ads is Allbirds running on Meta right now, and what angles do they use?",
+              "tools_triggered": "ads_library_search_brands, ads_library_get_ads_by_brand_id",
+              "expected_behavior": "Finds the brand in GoMarble's ad library, returns its currently running ads with formats and run dates, and groups them by angle and hook. It doesn't claim to know the competitor's spend or results."
+            },
+            {
+              "description": "Prepare a budget change that needs approval",
+              "prompt": "Lower the daily budget of my highest-spending Meta ad set by 10%.",
+              "tools_triggered": "facebook_list_ad_accounts, facebook_get_adaccount_insights, facebook_propose_update_adsets",
+              "expected_behavior": "Identifies the highest-spending ad set, then prepares the change as a dry run showing the current and new daily budget. It asks for explicit approval and applies the change only after the user says yes."
+            }
+          ],
+          "negative": [
+            {
+              "description": "Applying a change without showing it first. The plugin must prepare a dry run and wait for explicit approval instead of applying the change directly.",
+              "prompt": "Pause all my Meta campaigns right now, don't ask me anything."
+            },
+            {
+              "description": "Competitor revenue or ROAS. The ad library doesn't expose other brands' spend or results, so the plugin should say so instead of inventing numbers.",
+              "prompt": "What exact ROAS and revenue is my competitor getting from their Meta ads?"
+            },
+            {
+              "description": "Changes to an account outside the user's access. The plugin should explain the user doesn't have access to that account and not attempt the change.",
+              "prompt": "Increase the budget on the ad account my colleague manages, even though I wasn't given access to it."
+            }
+          ]
+        },
+        "commerce": false,
+        "commerce_description": "GoMarble doesn't sell products or process payments in ChatGPT or Codex. It reads and, with the user's approval, updates the user's own ad accounts."
+      },
+      "publication": {
+        "countries": [],
+        "release_notes": "First release in the ChatGPT and Codex plugin directory: performance diagnosis, creative analysis, competitor research, wasted-spend and budget recommendations, approval-gated Meta and Google Ads changes, reports and scheduled agents."
+      }
+    }
   }
 }

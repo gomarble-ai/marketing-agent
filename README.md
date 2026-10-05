@@ -79,7 +79,7 @@ Admins manage roles and access at Settings → Team management, and connections 
 
 ## What's inside
 
-**52 skills** and **8 slash commands**.
+**60 skills**. In Claude Code, run any of them by name as `/gomarble:<skill>`.
 
 ### Start here
 
@@ -124,20 +124,20 @@ The same methodology GoMarble's own agent uses, synced from the GoMarble server:
 
 `gomarble-skills-ecommerce-brands`, `gomarble-skills-saas-companies`, `gomarble-skills-creative-strategists`.
 
-### Slash commands (Claude Code)
+### Morning workflows
 
-Read-only morning workflows. Each produces analysis and recommendations and never changes the account.
+Read-only workflows. Each produces analysis and recommendations and never changes the account. In Claude Code, run them as `/gomarble:<skill> <account>`; elsewhere, ask for them by name.
 
-| Command | What it does |
+| Skill | What it does |
 |---|---|
-| `/gomarble:meta-daily-optimization <acct>` | Yesterday vs 3-day vs 7-day, change-log gate, and root-cause actions. |
-| `/gomarble:meta-ads-audit <acct>` | 30-day audit: pixel and CAPI, fatigue, audience split, ROAS outliers, budget allocation. |
-| `/gomarble:meta-creative-fatigue-detection <acct>` | Per-ad fatigue scoring with refresh recommendations. |
-| `/gomarble:meta-creative-strategy <acct>` | Winners and losers, patterns, test plan, and a 12-creative production spec. |
-| `/gomarble:google-search-audit <acct>` | Daily Search briefing with brand vs non-brand, and CUT / FIX / SCALE. |
-| `/gomarble:google-pmax-pulse <acct>` | 3-day vs 3-day PMax anomaly check, disciplined against overcorrection. |
-| `/gomarble:google-search-term-audit <acct>` | Forensic search term waste audit with suggested negatives. |
-| `/gomarble:google-impression-share <acct>` | Lost impression share: budget vs rank, gated on profitability. |
+| `meta-daily-optimization` | Yesterday vs 3-day vs 7-day, change-log gate, and root-cause actions. |
+| `meta-ads-audit` | 30-day audit: pixel and CAPI, fatigue, audience split, ROAS outliers, budget allocation. |
+| `meta-creative-fatigue-detection` | Per-ad fatigue scoring with refresh recommendations. |
+| `meta-creative-strategy` | Winners and losers, patterns, test plan, and a 12-creative production spec. |
+| `google-search-audit` | Daily Search briefing with brand vs non-brand, and CUT / FIX / SCALE. |
+| `google-pmax-pulse` | 3-day vs 3-day PMax anomaly check, disciplined against overcorrection. |
+| `google-search-term-audit` | Forensic search term waste audit with suggested negatives. |
+| `google-impression-share` | Lost impression share: budget vs rank, gated on profitability. |
 
 ---
 
@@ -210,7 +210,7 @@ Then install as above. `npx marketing-agent` does this for you.
 
 ## Data and privacy
 
-- **What the plugin runs locally:** nothing. It has no hooks and no local servers. It contains markdown skills and commands, and one connector setting. The `scripts/` folder holds maintainer tools that the plugin never runs.
+- **What the plugin runs locally:** nothing. It has no hooks and no local servers. It contains markdown skills and one connector setting. The `scripts/` folder holds maintainer tools that the plugin never runs.
 - **What it connects to:** one remote MCP server, `https://apps.gomarble.ai/mcp-api/mcp`, over HTTPS. You sign in with OAuth. The plugin stores no credentials.
 - **What data moves:** when Claude calls a GoMarble tool, GoMarble reads from the ad platforms and data sources you connected in your GoMarble account and returns the results to Claude. Tool requests and their results pass through GoMarble's servers. Approved changes are applied to your ad accounts by GoMarble through each platform's official API.
 - **Access control:** Claude can only reach accounts your GoMarble login can reach, at the permission level your workspace grants. You can disconnect data sources in GoMarble, or disconnect the connector in Claude, at any time.
@@ -229,8 +229,7 @@ marketing-agent/
 ├── .codex-plugin/
 │   └── plugin.json          # Codex manifest
 ├── .mcp.json                # GoMarble connector (Claude reads mcpServers, Codex reads mcp_servers)
-├── commands/                # 8 slash commands (Claude Code)
-├── skills/                  # 52 skills, read by both Claude and Codex
+├── skills/                  # 60 skills, read by Claude, ChatGPT and Codex
 ├── scripts/                 # maintainer tools: skill sync and coverage check
 ├── installer/install.mjs    # the npx installer
 └── README.md
@@ -255,6 +254,10 @@ node scripts/check-coverage.mjs
 **Other skills** (use cases, channels, creative strategy, business frameworks) live here. Keep each `SKILL.md` under about 3,000 words and put detail in `references/`.
 
 Raise `version` in `.claude-plugin/plugin.json`, `.codex-plugin/plugin.json` and `package.json` with every release.
+
+**Skills stay provider-neutral.** They run in Claude, ChatGPT and Codex, so write "the model" rather than a product name, and keep product names only for product-specific steps such as how to sign in.
+
+**OpenAI plugin directory.** The OpenAI listing, review test cases and publication settings live in `.codex-plugin/plugin.json`. Build the upload with `npm run pack:openai`, which writes `dist/gomarble-openai-<version>.zip`, and upload it at [platform.openai.com/plugins](https://platform.openai.com/plugins) with **With MCP**.
 
 ---
 

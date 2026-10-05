@@ -7,7 +7,9 @@ argument-hint: "[Ad Account ID]"
 
 # Meta Ads Audit — 30 Days (Read-Only)
 
-Comprehensive health audit of ad account `$ARGUMENTS`. **Read-only — produces analysis only, never applies changes.**
+Comprehensive health audit of the ad account the user names. **Read-only — produces analysis only, never applies changes.**
+
+If the user didn't name an account, list their connected accounts and ask which one to use.
 
 ## Sections to cover
 

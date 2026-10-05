@@ -10,7 +10,7 @@
  * What it changes, and nothing else:
  *   1. Adds YAML frontmatter (keeps an existing skill's description; falls back to the map).
  *   2. Rewrites server paths (prompts/skills/...) to plugin skill names or references/ files.
- *   3. Prepends a short "In Claude" note where the server text assumes GoMarble's own app
+ *   3. Prepends a short "Outside the GoMarble app" note where the server text assumes GoMarble's own app
  *      (approval cards, the user_input tool, in-app-only tools).
  *   4. Removes retired skill folders listed in the map.
  *
@@ -101,12 +101,12 @@ const SHORT_NAME_FAMILIES = [
   { prefix: 'meta-', names: ['creative-analysis', 'performance-analysis', 'depth-of-analysis', 'guardrails', 'tool-fundamentals', 'agent-operations', 'custom-event-interpretation'] },
 ];
 
-// ─── "In Claude" adapter notes ────────────────────────────────
+// ─── "Outside the GoMarble app" adapter notes ────────────────────────────────
 // Each note is added only when its trigger appears in the text it precedes.
 const ADAPTERS = [
   {
     test: /approval (UI|card|row|panel)|approval cards?|approve (it|them) in the UI/i,
-    note: 'Where this says changes appear as approval cards or rows: in Claude, call the propose tool with `mode: "dryrun"` first. That validates the change without touching the account. Show the user each proposed change (entity, current value, new value), and only after an explicit yes call the same tool with `mode: "live"` and just the approved `operation_ids`.',
+    note: 'Where this says changes appear as approval cards or rows: here, call the propose tool with `mode: "dryrun"` first. That validates the change without touching the account. Show the user each proposed change (entity, current value, new value), and only after an explicit yes call the same tool with `mode: "live"` and just the approved `operation_ids`.',
   },
   {
     test: /\buser_input\b/,
@@ -122,7 +122,7 @@ const ADAPTERS = [
   },
   {
     test: /\bretrieve_full_tool_output\b/,
-    note: 'Where this names `retrieve_full_tool_output`: it isn\'t available in Claude. If an earlier tool result is no longer in context, call the original tool again.',
+    note: 'Where this names `retrieve_full_tool_output`: it isn\'t available outside the GoMarble app. If an earlier tool result is no longer in context, call the original tool again.',
   },
 ];
 
@@ -132,7 +132,7 @@ function adapterBlock(text, tools) {
     notes.push(`- GoMarble connector tools for this skill: ${tools.map((t) => `\`${t}\``).join(', ')}.`);
   }
   if (!notes.length) return '';
-  return ['> **In Claude.** This methodology is GoMarble\'s own, kept in sync with the GoMarble connector.', ...notes.map((n) => `> ${n}`), '', ''].join('\n');
+  return ['> **Outside the GoMarble app.** This methodology is GoMarble\'s own, kept in sync with the GoMarble connector.', ...notes.map((n) => `> ${n}`), '', ''].join('\n');
 }
 
 // ─── Frontmatter ──────────────────────────────────────────────
