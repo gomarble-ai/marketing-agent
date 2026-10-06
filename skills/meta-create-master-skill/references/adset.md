@@ -1,8 +1,5 @@
 <!-- Synced from GoMarble server skill: prompts/skills/meta/create/adset -->
 
-> **Outside the GoMarble app.** This methodology is GoMarble's own, kept in sync with the GoMarble connector.
-> - Where this says changes appear as approval cards or rows: here, call the propose tool with `mode: "dryrun"` first. That validates the change without touching the account. Show the user each proposed change (entity, current value, new value), and only after an explicit yes call the same tool with `mode: "live"` and just the approved `operation_ids`.
-
 # Meta Ads - Create Ad Set
 
 ## This skill defines the `adset` SLOT of the launch call
@@ -180,7 +177,7 @@ The search returns objects with `id` and `name`. **Always include both `id` and 
 4. Pick the most relevant results (highest audience size, most specific match)
 5. Optionally call with `search_type: "adinterestsuggestion"` + picked IDs to find related interests
 6. Build `targeting.flexible_spec[].interests` with the selected `{ id, name }` pairs
-7. Present to user in the proposal — they can edit/remove in the approval UI
+7. Present to user in the dry-run proposal — they can ask to edit or remove any of it before approving
 
 #### Multiple flexible_spec groups (OR vs AND logic):
 
@@ -228,7 +225,7 @@ Call `facebook_list_custom_audiences` with `act_id`.
 
 ### Phase 4: Propose Directly
 
-Place the finished object in the `adset` slot of the `facebook_propose_create_campaign_structure` launch call (made together with the `campaign` and `ads` slots). Do NOT show a summary or ask for confirmation — the user reviews and edits everything in the approval UI.
+Place the finished object in the `adset` slot of the `facebook_propose_create_campaign_structure` launch call (made together with the `campaign` and `ads` slots). Don't ask questions first: propose as a dry run, and the user reviews every value in the dry-run preview before anything is applied.
 
 ---
 

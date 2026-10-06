@@ -146,7 +146,7 @@ A GoMarble account is required. MCP access is included in every plan.
 - **Free:** 1 ad account per connector, 1 seat and 1 read-only agent. No card required.
 - **Paid plans** add more accounts, seats and agents. Plans with write actions add approved changes (launch and edit campaigns, manage keywords, adjust budgets, pause ads) and agents that can make changes.
 
-Paid plans come with a 7-day trial. See [gomarble.ai/pricing](https://www.gomarble.ai/pricing) for current plans and limits.
+See [gomarble.ai/pricing](https://www.gomarble.ai/pricing) for current plans, trials and limits.
 
 ---
 

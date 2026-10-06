@@ -5,14 +5,11 @@ metadata:
   source: "prompts/skills/google_ads/create/master-skill"
 ---
 
-> **Outside the GoMarble app.** This methodology is GoMarble's own, kept in sync with the GoMarble connector.
-> - Where this says changes appear as approval cards or rows: here, call the propose tool with `mode: "dryrun"` first. That validates the change without touching the account. Show the user each proposed change (entity, current value, new value), and only after an explicit yes call the same tool with `mode: "live"` and just the approved `operation_ids`.
-
 # Google Ads Mutation Workflow
 
-Master workflow for any Google Ads create or update operation — campaigns, ad groups, ads, assets, experiments, shared negative lists, bid modifiers. Sequence is fixed: confirm intent → pull context → propose → user approves (auto-executes) → confirm.
+Master workflow for any Google Ads create or update operation — campaigns, ad groups, ads, assets, experiments, shared negative lists, bid modifiers. Sequence is fixed: confirm intent → pull context → propose as a dry run → show the exact changes → explicit user yes → apply with `mode: "live"` → confirm.
 
-> **Tool behavior:** All `google_ads_propose_*` tools auto-execute on user approval — there is NO separate execute tool of any kind. Campaign + ad group + ad creation happens in **ONE call** to `google_ads_propose_create_campaign_structure` (the legacy `google_ads_propose_create_campaign` / `_create_adgroup` / `_create_ad` tools no longer exist — never call them). Execution is a single atomic mutate: the whole structure lands or nothing does. Capture the returned IDs and resource names from the tool response.
+> **Tool behavior:** Every `google_ads_propose_*` tool both validates and applies: call it with `mode: "dryrun"`, show the user every proposed change (entity, current value, new value), and only after an explicit yes call it again with `mode: "live"` and the approved `operation_ids`. There is NO separate execute tool of any kind. Campaign + ad group + ad creation happens in **ONE call** to `google_ads_propose_create_campaign_structure` (the legacy `google_ads_propose_create_campaign` / `_create_adgroup` / `_create_ad` tools no longer exist — never call them). Execution is a single atomic mutate: the whole structure lands or nothing does. Capture the returned IDs and resource names from the tool response.
 
 ---
 
@@ -63,7 +60,7 @@ If the account has no conversion tracking and the user asked for smart bidding, 
 
 ## Phase 3 — Propose
 
-Read the relevant sub-skill from the index above. Build the propose call with all auto-detected values filled in. Each entry in a batched call shows as its own approval row, so users can approve/decline per-item.
+Read the relevant sub-skill from the index above. Build the propose call with all auto-detected values filled in. Each entry in a batched call returns its own `operation_id`, so the user can approve or decline each item.
 
 Output a tight summary table to the user *before* the propose tool returns its preview — keep it short:
 
@@ -71,7 +68,7 @@ Output a tight summary table to the user *before* the propose tool returns its p
 |---|---|---|
 | ... | ... | ... |
 
-After the propose call returns, the agent UI shows an approval card. **Do not narrate the card.** Wait for approval/decline. Approval auto-executes the operation — the same tool response will include the execution result and any returned IDs/resource names.
+After the dry-run call returns, show the user each proposed change (entity, current value, new value) and ask for an explicit yes. Then call the same tool with `mode: "live"` and only the approved `operation_ids`; that response includes the execution result and any returned IDs/resource names.
 
 ---
 
@@ -102,7 +99,7 @@ After execution succeeds, post one short confirmation line per entity. Format:
 - **Ad groups** — created `ENABLED` (active)
 - **Ads** — created `PAUSED`. Ads are the user's final gate before spend begins.
 
-Even when the user says "launch it" or "go live", new ads stay `PAUSED` until the user explicitly approves an enable step. To enable: separate explicit propose call — `google_ads_propose_update_ads` setting `status: ENABLED`. (Approval still required; auto-executes on approval.)
+Even when the user says "launch it" or "go live", new ads stay `PAUSED` until the user explicitly approves an enable step. To enable: separate explicit propose call — `google_ads_propose_update_ads` setting `status: ENABLED`. (Dry run first; apply with `mode: "live"` only after an explicit yes.)
 
 We only flip between `ENABLED` and `PAUSED`. There is no removal — the API supports it, but our skill set deliberately does not. If the user asks to "delete" or "remove" an entity, propose pausing it instead and explain.
 
@@ -124,7 +121,7 @@ We only flip between `ENABLED` and `PAUSED`. There is no removal — the API sup
 
 - **Phase 1 / Phase 2 synthesis:** 1–3 lines. Account, currency, reference campaign or "cold start". Done.
 - **Phase 3 summary table:** Compact. Only fields the user could reasonably want to override.
-- **Approval card:** Don't narrate. Don't add a "shall I proceed?" message after.
+- **Approval:** Show the dry-run changes once, clearly, and ask for an explicit yes before calling with `mode: "live"`.
 - **Phase 4 errors:** Short error line + suggested fix. No raw API dumps.
 - **Phase 5 confirmation:** One line per executed entity. Then stop.
 

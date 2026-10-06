@@ -45,6 +45,14 @@
     [
       "Use `user_input` with a single `daily_budget` number field.",
       "Ask for that one number in chat."
+    ],
+    [
+      "7. Present to user in the proposal — they can edit/remove in the approval UI",
+      "7. Present to user in the dry-run proposal — they can ask to edit or remove any of it before approving"
+    ],
+    [
+      "Do NOT show a summary or ask for confirmation — the user reviews and edits everything in the approval UI.",
+      "Don't ask questions first: propose as a dry run, and the user reviews every value in the dry-run preview before anything is applied."
     ]
   ],
   "meta-create-master-skill/references/ad-with-creative.md": [
@@ -99,6 +107,22 @@
     [
       "Multiple catalogs → ask via `user_input` select with `label` = catalog name (include `product_count` if useful), `value` = catalog id.",
       "Multiple catalogs → ask the user to choose, listing the catalogs by name (with `product_count` if useful), and map the answer back to the catalog id."
+    ],
+    [
+      "toggles only the **user** can flip, under \"Advanced settings\" on the ad's approval card. No tool parameter exists for them",
+      "toggles only the **user** can flip, in Meta Ads Manager (or under \"Advanced settings\" in GoMarble's own app). No tool parameter exists for them"
+    ],
+    [
+      "Each ad gets its own approval card. Know the rejection rule:",
+      "Each ad gets its own `operation_id`, so the user can approve or reject each one. Know the rejection rule:"
+    ],
+    [
+      "it's used by the approval UI alongside `product_set_id` so the user sees the human-readable name.",
+      "it's shown alongside `product_set_id` in the proposal so the user sees the human-readable name."
+    ],
+    [
+      "render as non-editable rows in the approval UI.",
+      "appear in the dry-run proposal for the user to review; they can't be edited there."
     ]
   ],
   "meta-custom-event-interpretation/SKILL.md": [
@@ -185,6 +209,88 @@
     [
       "load `google_ads/search-execution` via `load_skill` for tool parameters",
       "read the `google-ads-search-execution` skill for tool parameters"
+    ]
+  ],
+  "google-ads-create-master-skill/SKILL.md": [
+    [
+      "Sequence is fixed: confirm intent → pull context → propose → user approves (auto-executes) → confirm.",
+      "Sequence is fixed: confirm intent → pull context → propose as a dry run → show the exact changes → explicit user yes → apply with `mode: \"live\"` → confirm."
+    ],
+    [
+      "> **Tool behavior:** All `google_ads_propose_*` tools auto-execute on user approval — there is NO separate execute tool of any kind.",
+      "> **Tool behavior:** Every `google_ads_propose_*` tool both validates and applies: call it with `mode: \"dryrun\"`, show the user every proposed change (entity, current value, new value), and only after an explicit yes call it again with `mode: \"live\"` and the approved `operation_ids`. There is NO separate execute tool of any kind."
+    ],
+    [
+      "Each entry in a batched call shows as its own approval row, so users can approve/decline per-item.",
+      "Each entry in a batched call returns its own `operation_id`, so the user can approve or decline each item."
+    ],
+    [
+      "After the propose call returns, the agent UI shows an approval card. **Do not narrate the card.** Wait for approval/decline. Approval auto-executes the operation — the same tool response will include the execution result and any returned IDs/resource names.",
+      "After the dry-run call returns, show the user each proposed change (entity, current value, new value) and ask for an explicit yes. Then call the same tool with `mode: \"live\"` and only the approved `operation_ids`; that response includes the execution result and any returned IDs/resource names."
+    ],
+    [
+      "- **Approval card:** Don't narrate. Don't add a \"shall I proceed?\" message after.",
+      "- **Approval:** Show the dry-run changes once, clearly, and ask for an explicit yes before calling with `mode: \"live\"`."
+    ],
+    [
+      "(Approval still required; auto-executes on approval.)",
+      "(Dry run first; apply with `mode: \"live\"` only after an explicit yes.)"
+    ]
+  ],
+  "meta-agent-operations/SKILL.md": [
+    [
+      "Rules for proposing and executing changes on Meta Ads via propose tools (they auto-execute on user approval).",
+      "Rules for proposing and executing changes on Meta Ads via propose tools: dry run first, then apply with `mode: \"live\"` after the user approves."
+    ],
+    [
+      "2. Call the appropriate propose tool to create pending operations\n3. Wait for user approval (up to 2.5 minutes active, then approvable via panel for 24 hours)\n4. Approved operations execute AUTOMATICALLY — there is NO separate execute tool (`facebook_execute_approved_operation` no longer exists; never call it). The propose tool's response includes the execution result and any new/updated IDs.",
+      "2. Call the appropriate propose tool with `mode: \"dryrun\"`. It validates the change and returns `operation_ids`; nothing changes yet.\n3. Show the user every proposed change (entity, current value, new value) and wait for an explicit yes.\n4. Call the same propose tool with `mode: \"live\"` and only the approved `operation_ids` — there is NO separate execute tool (`facebook_execute_approved_operation` no longer exists; never call it). That response includes the execution result and any new/updated IDs."
+    ]
+  ],
+  "meta-create-master-skill/SKILL.md": [
+    [
+      "Each entity in the launch gets its own approval card; on approval the launch auto-executes in dependency order (campaign → ad set → ads).",
+      "Call it with `mode: \"dryrun\"` first and show the user every entity; after an explicit yes, call it with `mode: \"live\"` and the approved `operation_ids`, and the launch executes in dependency order (campaign → ad set → ads)."
+    ],
+    [
+      "Then send the proposal. The proposal itself handles user confirmation — don't add a \"shall I proceed?\" message after it.",
+      "Then send the proposal as a dry run, show the user exactly what will be created, and ask for an explicit yes before calling with `mode: \"live\"`."
+    ],
+    [
+      "- Each entity gets its own approval card. On approval the launch executes in dependency order;",
+      "- Each entity gets its own `operation_id`. After the user approves, the `mode: \"live\"` call executes in dependency order;"
+    ],
+    [
+      "do NOT call the tool again and do NOT re-propose — that creates duplicate approval cards. Tell the user the proposal is ready and ask them to Approve or Reject it on the card in the chat.",
+      "do NOT re-propose — that creates duplicate operations. Show the pending changes again and ask the user for an explicit yes or no; on yes, call with `mode: \"live\"` and the approved `operation_ids`."
+    ],
+    [
+      "-> user approves each ad individually -> each executes automatically on approval",
+      "-> user approves each ad individually -> the `mode: \"live\"` call applies only the approved ads"
+    ],
+    [
+      "- **Phase 5:** Configuration table + proposal. No follow-up \"shall I proceed?\" message.",
+      "- **Phase 5:** Configuration table + dry-run proposal, then one explicit request for approval."
+    ],
+    [
+      "- **Phase 6 enable:** No extra message after proposing the enable. The approval cards are the confirmation.",
+      "- **Phase 6 enable:** Propose the enable as a dry run and get an explicit yes before the `mode: \"live\"` call."
+    ]
+  ],
+  "tiktok-create-master-skill/SKILL.md": [
+    [
+      "> in **ONE call** to `tiktok_propose_create_campaign_structure`. Each entity gets\n> its own approval card; approved entities execute in dependency order\n> (campaign → ad group → ads).",
+      "> in **ONE call** to `tiktok_propose_create_campaign_structure`. Each entity gets\n> its own `operation_id`. Through AI app connections TikTok changes can only be\n> validated as a dry run: show the user the validated launch, then give them the\n> steps to apply it in TikTok Ads Manager (see `tiktok-ads`). Where a live call is\n> possible, it executes in dependency order (campaign → ad group → ads)."
+    ],
+    [
+      "Then send the proposal. Don't add \"shall I proceed?\" — the cards handle that.",
+      "Then send the proposal as a dry run and show the user exactly what it would create."
+    ]
+  ],
+  "tiktok-create-master-skill/references/smart-plus.md": [
+    [
+      "Approval card first; nothing reaches\n  TikTok until the user approves.",
+      "Dry run first; nothing reaches\n  TikTok until the user approves (and through AI app connections it is applied in TikTok Ads Manager)."
     ]
   ]
 }

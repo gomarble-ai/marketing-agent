@@ -5,9 +5,6 @@ metadata:
   source: "prompts/skills/tiktok/create/master-skill"
 ---
 
-> **Outside the GoMarble app.** This methodology is GoMarble's own, kept in sync with the GoMarble connector.
-> - Where this says changes appear as approval cards or rows: here, call the propose tool with `mode: "dryrun"` first. That validates the change without touching the account. Show the user each proposed change (entity, current value, new value), and only after an explicit yes call the same tool with `mode: "live"` and just the approved `operation_ids`.
-
 # TikTok Ad Launch Workflow
 
 A creative-first workflow for launching TikTok ads. The sequence is fixed:
@@ -17,8 +14,10 @@ the placement and **placement can never be changed after the ad group exists**.
 
 > **Tool behavior:** the entire launch — campaign, ad group and ads — is proposed
 > in **ONE call** to `tiktok_propose_create_campaign_structure`. Each entity gets
-> its own approval card; approved entities execute in dependency order
-> (campaign → ad group → ads). Never thread IDs between slots — the server wires
+> its own `operation_id`. Through AI app connections TikTok changes can only be
+> validated as a dry run: show the user the validated launch, then give them the
+> steps to apply it in TikTok Ads Manager (see `tiktok-ads`). Where a live call is
+> possible, it executes in dependency order (campaign → ad group → ads). Never thread IDs between slots — the server wires
 > each new parent's ID into its children.
 
 ---
@@ -160,7 +159,7 @@ budget. Batch into one turn, max 2 questions, tappable options.
 | Identity | EvanAlexanderGrooming (CUSTOMIZED_USER) | Required for Pangle |
 | Status | Paused | Always |
 
-Then send the proposal. Don't add "shall I proceed?" — the cards handle that.
+Then send the proposal as a dry run and show the user exactly what it would create.
 
 ---
 
