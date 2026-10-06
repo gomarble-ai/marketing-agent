@@ -18,22 +18,17 @@ const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const { tools } = JSON.parse(readFileSync(join(ROOT, 'scripts', 'connector-tools.json'), 'utf-8'));
 const toolSet = new Set(tools);
 
-// Tool names that appear in skills on purpose even though the connector doesn't expose them:
-// the server text warns against them, or the adapter note maps them to a real tool.
+// Tool names that may appear in skills even though the connector doesn't expose them.
+// Keep this to explicit "never call X" warnings. Anything that tells the model to CALL a
+// missing tool must be rewritten instead (scripts/skill-rewrites.json for synced skills),
+// or the model makes failed calls.
 const ALLOWED_UNEXPOSED = new Set([
-  'google_ads_update_entity',
-  'facebook_execute_approved_operation',
-  'google_ads_execute_approved_operation',
+  'facebook_execute_approved_operation', // meta-agent-operations: "no longer exists; never call it"
+  // meta-create-master-skill / google-ads-create-master-skill: "the legacy tools … no longer exist"
   'facebook_propose_create_campaign',
   'facebook_propose_create_adset',
   'facebook_propose_create_ad_with_creative',
   'google_ads_propose_create_campaign',
-  'google_ads_propose_create_adgroup',
-  'google_ads_propose_create_ad',
-  'submit_recommendations',
-  'record_audit_findings',
-  'retrieve_full_tool_output',
-  'user_input',
 ]);
 
 function walk(dir) {

@@ -5,9 +5,6 @@ metadata:
   source: "prompts/skills/google_ads/search-execution"
 ---
 
-> **Outside the GoMarble app.** This methodology is GoMarble's own, kept in sync with the GoMarble connector.
-> - Where this names `google_ads_update_entity`: use the matching propose tool instead — `google_ads_propose_update_campaigns`, `google_ads_propose_update_adgroups`, `google_ads_propose_update_ads`, `google_ads_propose_update_asset`, `google_ads_propose_update_bid_modifiers`, `google_ads_propose_update_negative_keyword_list` or `google_ads_propose_update_pmax_asset_group`.
-
 # Google Ads Search — Execution Rules
 
 Tool parameters and processes for implementing search campaign changes. Load this after completing analysis with `google-ads-search-analysis`.
@@ -17,45 +14,18 @@ Tool parameters and processes for implementing search campaign changes. Load thi
 **When to increase bids (5–10%)**:
 - ALL must be true: majority Q1 queries, CPA ≤ target, Rank Pressure = HIGH
 
-**Keyword-level bid change**:
-```json
-{
-  "customer_id": "<CUSTOMER_ID>",
-  "entity_type": "keyword",
-  "entity_id": "<KEYWORD_ID>",
-  "parent_id": "<AD_GROUP_ID>",
-  "updates": { "cpc_bid_micros": "<CURRENT_BID * 1.05 to 1.10>" }
-}
-```
+**Keyword-level bid change**: `google_ads_propose_update_adgroups` on the keyword's ad group, with a `keyword_changes` entry for the keyword and its new `cpc_bid_micros` = current bid × 1.05–1.10, **in account currency** (divide the GAQL micros value by 1,000,000; e.g. 1.5 for $1.50).
 
-**Ad group-level bid change**:
-```json
-{
-  "customer_id": "<CUSTOMER_ID>",
-  "entity_type": "ad_group",
-  "entity_id": "<AD_GROUP_ID>",
-  "parent_id": "<CAMPAIGN_ID>",
-  "updates": { "cpc_bid_micros": "<CURRENT_BID * 1.05 to 1.10>" }
-}
-```
+**Ad group-level bid change**: `google_ads_propose_update_adgroups` with the new `cpc_bid_micros` = current bid × 1.05–1.10, in account currency.
 
-Tool: `google_ads_update_entity`
+Dry-run first; apply only after the user approves.
 
 ## Budget Adjustments
 
 **When to increase budget (10–20%)**:
 - ALL must be true: CPA stable, Q1–Q3 spend share ≥ 60%, Budget Pressure = HIGH
 
-```json
-{
-  "customer_id": "<CUSTOMER_ID>",
-  "entity_type": "campaign_budget",
-  "entity_id": "<BUDGET_ID>",
-  "updates": { "amount_micros": "<CURRENT_BUDGET * 1.10 to 1.20>" }
-}
-```
-
-Tool: `google_ads_update_entity`
+Tool: `google_ads_propose_update_campaigns` with the new daily `budget_micros` = current budget × 1.10–1.20, **in account currency** (e.g. 50 for $50; divide the GAQL `amount_micros` by 1,000,000). Dry-run first; apply only after the user approves.
 
 ## Query Negation
 

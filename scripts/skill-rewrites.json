@@ -1,0 +1,190 @@
+{
+  "meta-create-master-skill/references/campaign.md": [
+    [
+      "## user_input Rules",
+      "## Asking the user"
+    ],
+    [
+      "Do NOT call `user_input` for campaign creation. Auto-detect and auto-configure ALL fields,",
+      "Don't ask the user anything for campaign creation. Auto-detect and auto-configure ALL fields,"
+    ],
+    [
+      "The user can review and edit everything in the approval UI.",
+      "The user reviews every value in the dry-run preview before anything is applied."
+    ],
+    [
+      "Do NOT call `user_input`. Do NOT show a summary before proposing — the user reviews everything in the approval UI.",
+      "Don't ask the user anything. Propose straight away as a dry run; the user reviews every value in the dry-run preview."
+    ],
+    [
+      "Use `user_input` with a single `daily_budget` number field.",
+      "Ask for that one number in chat."
+    ],
+    [
+      "Use `user_input` with a single `daily_budget` number field to ask.",
+      "Ask for that one number in chat."
+    ]
+  ],
+  "meta-create-master-skill/references/adset.md": [
+    [
+      "## user_input Rules",
+      "## Asking the user"
+    ],
+    [
+      "Do NOT call `user_input` for ad set creation. Auto-detect and auto-configure ALL fields,",
+      "Don't ask the user anything for ad set creation. Auto-detect and auto-configure ALL fields,"
+    ],
+    [
+      "The user can review and edit everything in the approval UI.",
+      "The user reviews every value in the dry-run preview before anything is applied."
+    ],
+    [
+      "Do NOT call `user_input`. Do NOT show a summary before proposing — the user reviews and edits everything in the approval UI.",
+      "Don't ask the user anything. Propose straight away as a dry run; the user reviews every value in the dry-run preview."
+    ],
+    [
+      "Use `user_input` with a single `daily_budget` number field.",
+      "Ask for that one number in chat."
+    ]
+  ],
+  "meta-create-master-skill/references/ad-with-creative.md": [
+    [
+      "## user_input Rules",
+      "## Asking the user"
+    ],
+    [
+      "The user reviews and edits everything in the approval UI.",
+      "The user reviews every value in the dry-run preview before anything is applied."
+    ],
+    [
+      "**Whenever you must ask the user to pick an ID (page, product set, catalog, etc.), use `user_input` with `type: \"select\"` — `value` = id, `label` = human-readable name. Never list IDs in chat text and ask the user to type one back.**",
+      "**Whenever you must ask the user to pick an ID (page, product set, catalog, etc.), list the options in chat by their human-readable name, numbered, and let the user pick by number or name. Map the choice back to the ID yourself; never ask the user to type an ID.**"
+    ],
+    [
+      "### user_input — 1 field only (creative asset)",
+      "### The one thing to ask for: the creative asset"
+    ],
+    [
+      "| # | Field name | type | required | accept |\n|---|-----------|------|----------|--------|\n| 1 | `creative_assets` | file_upload | true | image/jpeg, image/png, image/gif, video/mp4, video/quicktime |",
+      "Ask the user to attach the creative (JPEG, PNG, GIF, MP4 or MOV) to the chat, or to share a link to it."
+    ],
+    [
+      "That's it. No other fields. If you add any other field to user_input, you are doing it wrong.",
+      "That's it. Don't ask for anything else."
+    ],
+    [
+      "If the account has **multiple Facebook Pages** AND existing ads don't clearly indicate which one to use, ask the user via a second `user_input` with a `select` field:\n\n| # | Field name | type | required | options |\n|---|-----------|------|----------|---------|\n| 1 | `facebook_page` | select | true | `[{ label: \"Page Name 1\", value: \"page_id_1\" }, …]` |",
+      "If the account has **multiple Facebook Pages** AND existing ads don't clearly indicate which one to use, ask the user to choose: list the Pages by name, numbered, and map the answer back to the `page_id`."
+    ],
+    [
+      "do NOT ask for upload again via `user_input`",
+      "do NOT ask for them again"
+    ],
+    [
+      "Call `user_input` with ONLY `creative_assets` (file_upload). Wait for the upload.",
+      "Ask the user to attach the creative asset (nothing else). Wait for it."
+    ],
+    [
+      "Multiple → ask via `user_input` select showing page names.",
+      "Multiple → ask the user to choose, listing the page names."
+    ],
+    [
+      "You are FORBIDDEN from calling `user_input` to ask for `page_id` or `facebook_page` until",
+      "You are FORBIDDEN from asking the user for the Page until"
+    ],
+    [
+      "If you can't infer, ASK once via `user_input` with a single `landing_page_url` text field.",
+      "If you can't infer, ASK once in chat for the landing page URL."
+    ],
+    [
+      "Multiple catalogs → ask via `user_input` select with `label` = catalog name (include `product_count` if useful), `value` = catalog id.",
+      "Multiple catalogs → ask the user to choose, listing the catalogs by name (with `product_count` if useful), and map the answer back to the catalog id."
+    ]
+  ],
+  "meta-custom-event-interpretation/SKILL.md": [
+    [
+      "Your VERY FIRST tool call about that campaign — before `submit_recommendations`, before any `facebook_propose_update_*`, before mentioning the campaign in any audit table or \"campaigns to improve\" list — MUST be a `user_input` asking whether",
+      "Before anything else about that campaign — before any recommendation, before any `facebook_propose_update_*`, before mentioning the campaign in any audit table or \"campaigns to improve\" list — you MUST ask the user in chat whether"
+    ],
+    [
+      "> - Any `submit_recommendations` entry that mentions this campaign",
+      "> - Any recommendation that mentions this campaign"
+    ],
+    [
+      "the agent's FIRST tool call about that campaign MUST be a `user_input` call with the following framing.",
+      "the agent MUST first ask the user in chat, with the following framing, and wait for the answer."
+    ],
+    [
+      "(i.e., the user_input has not been answered):",
+      "(i.e., the user hasn't answered the question yet):"
+    ],
+    [
+      "- Any `submit_recommendations` entry referencing the CR-on-purchase-objective campaign.",
+      "- Any recommendation referencing the CR-on-purchase-objective campaign."
+    ],
+    [
+      "agent issues `user_input` FIRST before any recommendation:",
+      "agent asks the user FIRST, before any recommendation:"
+    ],
+    [
+      "> *Tool call: `user_input` with question:*",
+      "> *Agent asks in chat:*"
+    ],
+    [
+      "(Agent does NOT issue any `submit_recommendations` entry mentioning this campaign,",
+      "(Agent does NOT make any recommendation mentioning this campaign,"
+    ],
+    [
+      "have I already issued a `user_input` asking about Profitmetrics / 3rd-party tracker AND received an answer? If not — STOP. The next tool call must be `user_input`, no recommendation may include this campaign.",
+      "have I already asked the user about Profitmetrics / 3rd-party tracker AND received an answer? If not — STOP. Ask the question now; no recommendation may include this campaign."
+    ]
+  ],
+  "google-ads-tool-fundamentals/SKILL.md": [
+    [
+      "- **`google_ads_update_entity`**: write tool for bid, budget, status, and structural mutations. Always require user approval per the operation flow.",
+      "- **`google_ads_propose_update_*`**: write tools for bid, budget, status, and structural changes (`…_campaigns`, `…_adgroups`, `…_ads`, `…_asset`, `…_bid_modifiers`, `…_negative_keyword_list`, `…_pmax_asset_group`). Money is in account currency, not micros. Always dry-run first and apply only after the user approves."
+    ]
+  ],
+  "google-ads-search-execution/SKILL.md": [
+    [
+      "**Keyword-level bid change**:\n```json\n{\n  \"customer_id\": \"<CUSTOMER_ID>\",\n  \"entity_type\": \"keyword\",\n  \"entity_id\": \"<KEYWORD_ID>\",\n  \"parent_id\": \"<AD_GROUP_ID>\",\n  \"updates\": { \"cpc_bid_micros\": \"<CURRENT_BID * 1.05 to 1.10>\" }\n}\n```\n\n**Ad group-level bid change**:\n```json\n{\n  \"customer_id\": \"<CUSTOMER_ID>\",\n  \"entity_type\": \"ad_group\",\n  \"entity_id\": \"<AD_GROUP_ID>\",\n  \"parent_id\": \"<CAMPAIGN_ID>\",\n  \"updates\": { \"cpc_bid_micros\": \"<CURRENT_BID * 1.05 to 1.10>\" }\n}\n```\n\nTool: `google_ads_update_entity`",
+      "**Keyword-level bid change**: `google_ads_propose_update_adgroups` on the keyword's ad group, with a `keyword_changes` entry for the keyword and its new `cpc_bid_micros` = current bid × 1.05–1.10, **in account currency** (divide the GAQL micros value by 1,000,000; e.g. 1.5 for $1.50).\n\n**Ad group-level bid change**: `google_ads_propose_update_adgroups` with the new `cpc_bid_micros` = current bid × 1.05–1.10, in account currency.\n\nDry-run first; apply only after the user approves."
+    ],
+    [
+      "```json\n{\n  \"customer_id\": \"<CUSTOMER_ID>\",\n  \"entity_type\": \"campaign_budget\",\n  \"entity_id\": \"<BUDGET_ID>\",\n  \"updates\": { \"amount_micros\": \"<CURRENT_BUDGET * 1.10 to 1.20>\" }\n}\n```\n\nTool: `google_ads_update_entity`",
+      "Tool: `google_ads_propose_update_campaigns` with the new daily `budget_micros` = current budget × 1.10–1.20, **in account currency** (e.g. 50 for $50; divide the GAQL `amount_micros` by 1,000,000). Dry-run first; apply only after the user approves."
+    ]
+  ],
+  "google-ads-pmax-scaling/SKILL.md": [
+    [
+      "Tool: `google_ads_update_entity` with `entity_type: \"campaign_budget\"`, `updates: { amount_micros: <new_amount> }`.",
+      "Tool: `google_ads_propose_update_campaigns` with the new daily `budget_micros` in account currency (not micros). Dry-run first; apply only after the user approves."
+    ]
+  ],
+  "google-ads-create-master-skill/references/pmax.md": [
+    [
+      "request. Pass exactly one of:",
+      "request. Provide exactly one of:"
+    ],
+    [
+      "`google_ads_get_currency`; pass `currency_code`",
+      "`google_ads_get_currency`; send `currency_code`"
+    ],
+    [
+      "Always pass `brand_guidelines_enabled` explicitly.",
+      "Always set `brand_guidelines_enabled` explicitly."
+    ]
+  ],
+  "google-ads-pmax-evaluation/SKILL.md": [
+    [
+      "load `google_ads/pmax-scaling` via `load_skill` for budget scaling",
+      "read the `google-ads-pmax-scaling` skill for budget scaling"
+    ]
+  ],
+  "google-ads-search-analysis/SKILL.md": [
+    [
+      "load `google_ads/search-execution` via `load_skill` for tool parameters",
+      "read the `google-ads-search-execution` skill for tool parameters"
+    ]
+  ]
+}

@@ -2,16 +2,15 @@
 
 > **Outside the GoMarble app.** This methodology is GoMarble's own, kept in sync with the GoMarble connector.
 > - Where this says changes appear as approval cards or rows: here, call the propose tool with `mode: "dryrun"` first. That validates the change without touching the account. Show the user each proposed change (entity, current value, new value), and only after an explicit yes call the same tool with `mode: "live"` and just the approved `operation_ids`.
-> - Where this says to call `user_input`: that tool exists only in GoMarble's own app. Ask the user the same question in chat instead. Where it says not to call `user_input`, don't ask — decide from the data.
 
 # Meta Ads - Create Ad Set
 
 ## This skill defines the `adset` SLOT of the launch call
 The whole launch — campaign, ad set, and ads — is ONE call to `facebook_propose_create_campaign_structure`. This skill covers the `adset` object of that call. **ONE ad set per call** — additional ad sets go in their own launch calls with top-level `campaign_id`. Include the slot only when creating a NEW ad set; to add ads to an existing ad set pass top-level `adset_id` instead (mutually exclusive).
 
-## user_input Rules
+## Asking the user
 
-Do NOT call `user_input` for ad set creation. Auto-detect and auto-configure ALL fields, then fill the `adset` slot of the single `facebook_propose_create_campaign_structure` launch call. The user can review and edit everything in the approval UI.
+Don't ask the user anything for ad set creation. Auto-detect and auto-configure ALL fields, then fill the `adset` slot of the single `facebook_propose_create_campaign_structure` launch call. The user reviews every value in the dry-run preview before anything is applied.
 
 **Auto-configure ALL fields silently:**
 
@@ -36,11 +35,11 @@ Do NOT call `user_input` for ad set creation. Auto-detect and auto-configure ALL
 | `targeting.genders` | Do NOT set | All genders |
 | `targeting.publisher_platforms` | Do NOT set | Advantage+ Placements (automatic) |
 
-**Workflow:** Fetch account details (Step 1) → list pixels (Step 3) → detect patterns (Step 4) → build targeting with interest search (Step 5) → put the result in the `adset` slot of the launch call. The server derives all campaign context itself (see Step 2). Do NOT call `user_input`. Do NOT show a summary before proposing — the user reviews and edits everything in the approval UI.
+**Workflow:** Fetch account details (Step 1) → list pixels (Step 3) → detect patterns (Step 4) → build targeting with interest search (Step 5) → put the result in the `adset` slot of the launch call. The server derives all campaign context itself (see Step 2). Don't ask the user anything. Propose straight away as a dry run; the user reviews every value in the dry-run preview.
 
 **EMPTY ACCOUNT (no existing adsets to detect patterns from):** If `account_structure.adsets` is empty, this is a NEW account. Do NOT stop and ask the user what to do. Proceed with creation using these defaults:
 - `target_countries`: Use the account's timezone/locale to infer country (e.g., INR currency → `["IN"]`, USD → `["US"]`). If unsure, ASK the user.
-- `daily_budget` (ABO only): **ASK the user** — you have no data to infer from. Use `user_input` with a single `daily_budget` number field.
+- `daily_budget` (ABO only): **ASK the user** — you have no data to infer from. Ask for that one number in chat.
 - `adset_name`: Generate from campaign name + "Broad" (e.g., "GoMarble | Broad | Apr 2026")
 - `targeting`: Broad targeting — geo_locations only, age 18-55, no interests/behaviors
 - Everything else: use standard auto-configured values (IMPRESSIONS, OFFSITE_CONVERSIONS, ACTIVE, etc.)

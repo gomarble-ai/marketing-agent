@@ -20,7 +20,7 @@ Turn the approved brief into a campaign setup. GoMarble assembles the whole buil
 1. **Creative and brief.** Get the creative (upload, URL, existing ad, or Drive file) and the brief. If there's no creative, ask for it first.
 2. **Account context.** `recall_memory` for naming conventions, UTM rules, targets and anything the brand never does. Apply the user's naming and tracking rules across the whole build.
 3. **Currency.** Meta: `facebook_get_details_of_ad_account`. Google: `google_ads_get_currency`. TikTok: `tiktok_get_account_details`. Pass `currency_code` on every launch call. Budgets are in account currency (50 means $50).
-4. **The platform's launch skill.** The launch tools' descriptions ask for GoMarble's master skill via `load_skill`. This plugin ships the same content: read it from the plugin, and calling `load_skill` as well is harmless.
+4. **The platform's launch skill.** The launch tools' descriptions ask for GoMarble's master skill via `load_skill`. This plugin ships the same content: read it from the plugin (`meta-create-master-skill`, `google-ads-create-master-skill`, `tiktok-create-master-skill`) and don't call `load_skill`.
 
 ## Meta
 

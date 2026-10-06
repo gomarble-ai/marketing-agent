@@ -1,25 +1,23 @@
 ![GoMarble](assets/logo.png)
 
-<h1 align="center">GoMarble for Claude</h1>
+<h1 align="center">GoMarble for ChatGPT, Codex and Claude</h1>
 
 <p align="center">
-  <b>The AI agent for paid media teams, inside Claude and Codex.</b><br/>
+  <b>The AI agent for paid media teams, inside ChatGPT, Codex and Claude.</b><br/>
   Built by <a href="https://www.gomarble.ai">GoMarble</a>.
 </p>
 
 ---
 
-GoMarble connects Claude to your ad accounts, analytics and store data. It explains what changed and why, and prepares the next move for your approval.
+GoMarble connects your AI assistant to your ad accounts, analytics and store data. It explains what changed and why, and prepares the next move for your approval.
 
 Ask about any account in plain language. GoMarble pulls the data across channels, finds the root cause, and recommends what to do. When you say yes, it makes the change. You can also hand the routine work to agents that watch your accounts on a schedule and report back by email or Slack.
-
-GoMarble agents manage more than $3B in annualized ad spend for in-house brand teams and agencies.
 
 ---
 
 ## What you can do
 
-| Job | Ask Claude | Skill |
+| Job | Ask | Skill |
 |---|---|---|
 | **Diagnose performance** | "Why did ROAS drop on my Meta account last week? Find the root cause and what to do next." | `diagnose-performance` |
 | **Analyze creative** | "Break down my top 10 Meta ads by spend. Which hooks, formats and angles are winning, and which are fatiguing?" | `analyse-creative` |
@@ -38,11 +36,11 @@ The use-case skills follow [gomarble.ai/use-cases](https://www.gomarble.ai/use-c
 
 ## Works with your whole stack
 
-| Channel | What Claude can do through GoMarble |
+| Channel | What your assistant can do through GoMarble |
 |---|---|
 | **Meta Ads** | Analyze, diagnose, creative analysis, audits. Launch Sales campaigns, edit, clone, pause and change budgets, with approval. |
 | **Google Ads** | Analyze with GAQL, search terms, Shopping, PMax, keyword research. Launch Search and Performance Max, edit, negatives, bid modifiers, experiments, with approval. |
-| **TikTok Ads** | Reports, audience and creative breakdowns, review status. For accounts in GoMarble's TikTok beta, launches and edits are prepared and validated in Claude, then applied in TikTok Ads Manager. |
+| **TikTok Ads** | Reports, audience and creative breakdowns, review status. For accounts in GoMarble's TikTok beta, launches and edits are prepared and validated through GoMarble, then applied in TikTok Ads Manager. |
 | **LinkedIn Ads, Microsoft Ads** | Performance, campaigns, keywords, targeting. Read-only: changes come back as instructions. |
 | **GA4, Shopify** | The business source of truth for sessions, conversions, orders and revenue. |
 | **Klaviyo** | Campaign and flow performance, lists and segments. |
@@ -52,26 +50,26 @@ The use-case skills follow [gomarble.ai/use-cases](https://www.gomarble.ai/use-c
 | **Snowflake, Google Drive** | Your warehouse (read-only queries), and docs, sheets and media in Drive. |
 | **Ad library** | Competitor ads by brand, domain, keyword or niche. |
 
-GoMarble supports 80+ integrations. Claude can reach the ones you connect in GoMarble.
+GoMarble supports 80+ integrations. Your assistant can use the GoMarble tools for the ones you connect.
 
 ---
 
 ## You approve every change
 
 - **Analysis never changes anything.** Diagnosing, creative analysis, competitor research and reporting are read-only.
-- **Changes are proposed first.** GoMarble validates each change as a dry run, and Claude shows you each edit, from the current value to the new one. Nothing is applied until you approve, and you can approve some edits and reject others.
-- **New ads start paused.** By default, ads in a campaign built from Claude are created paused (TikTok entities start disabled), so nothing spends until you turn them on.
-- **Agents start as drafts.** A new agent doesn't run until you activate it. Agents that can make changes ask for approval by default. Auto-apply is available only if you turn it on.
+- **Changes are proposed first.** GoMarble validates each change as a dry run, and your assistant shows you each edit, from the current value to the new one. Nothing is applied until you approve, and you can approve some edits and reject others.
+- **New ads start paused.** By default, ads in a campaign built through GoMarble are created paused (TikTok entities start disabled), so nothing spends until you turn them on.
+- **Agents start as drafts.** A new agent doesn't run until you activate it. Agents created from your assistant always ask for approval before making a change. Applying changes automatically can only be set up by a workspace owner or admin in the GoMarble web app.
 - **Guardrails for teams.** On plans with agent governance, you can limit which kinds of changes an agent may make and cap the size of any budget change.
 
 ## Built for teams
 
-Claude works inside your GoMarble team's access rules, so agencies and in-house teams can give everyone Claude without giving everyone every account.
+Your assistant works inside your GoMarble team's access rules, so agencies and in-house teams can give everyone access without giving everyone every account.
 
 - **Roles:** owners and admins reach every account. Members reach only the accounts granted to them.
 - **View or Act, per account:** a member with View can analyze an account; changing it (even proposing a change) needs Act.
-- **Opt-in write access for Claude:** a Claude connection can read by default. Applying changes on Meta or Google Ads is a permission each person turns on.
-- **Clear answers when access is missing:** Claude says what's needed and who can grant it, instead of failing silently.
+- **Opt-in write access for AI apps:** a connection from ChatGPT, Codex or Claude can read by default. Applying changes on Meta or Google Ads is a permission each person turns on.
+- **Clear answers when access is missing:** your assistant says what's needed and who can grant it, instead of failing silently.
 
 Admins manage roles and access at Settings → Team management, and connections at Settings → Integrations.
 
@@ -87,7 +85,7 @@ Admins manage roles and access at Settings → Team management, and connections 
 |---|---|
 | `get-started` | Connect accounts, find what's connected, use GoMarble's memory, and how approvals work. |
 | `accounts-and-connections` | See, add, remove or reconnect ad accounts and data sources, connect other tools and Slack, and switch read-only / read & write. |
-| `access-and-permissions` | Team roles, View vs Act account access, Claude's permissions, and what to do when a tool is denied. |
+| `access-and-permissions` | Team roles, View vs Act account access, your AI app's permissions, and what to do when a tool is denied. |
 
 ### Use cases
 
@@ -154,6 +152,10 @@ Paid plans come with a 7-day trial. See [gomarble.ai/pricing](https://www.gomarb
 
 ## Install
 
+### ChatGPT
+
+Install **GoMarble** from the ChatGPT plugin directory once it's listed, then sign in when prompted.
+
 ### Claude Code
 
 ```text
@@ -172,9 +174,11 @@ Install **GoMarble** from the plugin directory once it's listed. You can also up
 
 ```bash
 codex plugin marketplace add https://github.com/gomarble-ai/marketing-agent.git
+codex plugin add gomarble@gomarble
+codex mcp login gomarble
 ```
 
-Start Codex, open the **Plugins** panel, find **GoMarble**, and install. Then run `codex mcp login gomarble`.
+You can also install it from the **Plugins** panel in Codex.
 
 ### One command for both (npm)
 
@@ -199,7 +203,7 @@ Then install as above. `npx marketing-agent` does this for you.
 
 ## Connect your ad accounts
 
-1. The first time Claude uses GoMarble, you'll be asked to sign in. In Claude Code, run `/mcp`, pick the GoMarble server, and choose **Authenticate**. In Codex, run `codex mcp login gomarble`.
+1. The first time your assistant uses GoMarble, you'll be asked to sign in. In ChatGPT and Claude, connect GoMarble when prompted. In Claude Code, run `/mcp`, pick the GoMarble server, and choose **Authenticate**. In Codex, run `codex mcp login gomarble`.
 2. Log in at [apps.gomarble.ai](https://apps.gomarble.ai) with your work email.
 3. Add your ad accounts and data sources at [apps.gomarble.ai/settings/integrations](https://apps.gomarble.ai/settings/integrations).
 4. Come back and ask about your accounts.
@@ -212,8 +216,8 @@ Then install as above. `npx marketing-agent` does this for you.
 
 - **What the plugin runs locally:** nothing. It has no hooks and no local servers. It contains markdown skills and one connector setting. The `scripts/` folder holds maintainer tools that the plugin never runs.
 - **What it connects to:** one remote MCP server, `https://apps.gomarble.ai/mcp-api/mcp`, over HTTPS. You sign in with OAuth. The plugin stores no credentials.
-- **What data moves:** when Claude calls a GoMarble tool, GoMarble reads from the ad platforms and data sources you connected in your GoMarble account and returns the results to Claude. Tool requests and their results pass through GoMarble's servers. Approved changes are applied to your ad accounts by GoMarble through each platform's official API.
-- **Access control:** Claude can only reach accounts your GoMarble login can reach, at the permission level your workspace grants. You can disconnect data sources in GoMarble, or disconnect the connector in Claude, at any time.
+- **What data moves:** when your assistant calls a GoMarble tool, GoMarble reads from the ad platforms and data sources you connected in your GoMarble account and returns the results to your assistant. Tool requests and their results pass through GoMarble's servers. Approved changes are applied to your ad accounts by GoMarble through each platform's official API.
+- **Access control:** your assistant can only reach accounts your GoMarble login can reach, at the permission level your workspace grants. You can disconnect data sources in GoMarble, or disconnect the connector in ChatGPT, Codex or Claude, at any time.
 
 GoMarble's privacy policy: [gomarble.ai/privacy](https://www.gomarble.ai/privacy). Security: [gomarble.ai/security](https://www.gomarble.ai/security).
 
@@ -228,7 +232,7 @@ marketing-agent/
 │   └── marketplace.json     # marketplace for /plugin marketplace add
 ├── .codex-plugin/
 │   └── plugin.json          # Codex manifest
-├── .mcp.json                # GoMarble connector (Claude reads mcpServers, Codex reads mcp_servers)
+├── .mcp.json                # GoMarble connector (mcpServers, read by Claude and Codex)
 ├── skills/                  # 60 skills, read by Claude, ChatGPT and Codex
 ├── scripts/                 # maintainer tools: skill sync and coverage check
 ├── installer/install.mjs    # the npx installer
@@ -247,7 +251,11 @@ node scripts/sync-server-skills.mjs /tmp/langfuse.json
 node scripts/check-coverage.mjs
 ```
 
-`scripts/skill-map.json` maps each server skill to a plugin skill. The sync adds frontmatter, rewrites server paths to plugin skill names, and adds a short note wherever the server text assumes GoMarble's own app.
+`scripts/skill-map.json` maps each server skill to a plugin skill. The sync adds frontmatter, rewrites server paths to plugin skill names, applies `scripts/skill-rewrites.json`, and adds a short note wherever the server text still assumes GoMarble's own app.
+
+**Rewrites keep synced skills usable through the connector.** `scripts/skill-rewrites.json` holds exact find → replace edits for server text that only works inside GoMarble's app, such as its `user_input` form, in-app-only tools and retired tools. Every `find` must still match, or the sync fails, so a server wording change can't silently bring back a call to a tool the connector doesn't expose. The better long-term fix is the same wording change in the server skill.
+
+**CI** (`.github/workflows/plugin-ci.yml`) runs `scripts/validate_plugin.py` (OpenAI listing rules and Agent Skills / Codex skill rules), the coverage check, `claude plugin validate --strict`, the OpenAI ZIP build, an npm pack dry run and a check that the listing links are live.
 
 **Every connector tool has a skill.** `scripts/check-coverage.mjs` fails if a tool in `scripts/connector-tools.json` isn't covered by a skill, or a skill names a tool the connector doesn't expose. Update that list when the connector's tools change.
 

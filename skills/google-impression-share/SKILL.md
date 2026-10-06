@@ -2,7 +2,6 @@
 name: google-impression-share
 description: |
   Google Ads impression-share analysis to identify missed scaling opportunities and diagnose delivery constraints. Distinguishes Lost-IS (Budget) — addressable with money — from Lost-IS (Rank) — addressable with bids/quality. Disciplined: only recommends scaling on campaigns that are already profitable (≥30 conversions in 30d AND CPA at/below target). Read-only — recommends budgets, bids, holds; never executes. Use weekly or when planning where to deploy more spend.
-argument-hint: "[Google Ads Customer ID]"
 ---
 
 # Google Ads Impression Share Analysis (Read-Only)

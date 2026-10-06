@@ -94,6 +94,6 @@ Always check for technical/usability issues before excluding a device or locatio
 
 ## Next Steps
 
-If campaign is profitable and ready to scale, load `google_ads/pmax-scaling` via `load_skill` for budget scaling, location expansion, and asset expansion rules.
+If campaign is profitable and ready to scale, read the `google-ads-pmax-scaling` skill for budget scaling, location expansion, and asset expansion rules.
 
 Output must include: maturity status, PMax vs Search comparison, asset label summary (BEST/GOOD/LOW counts), device/location flags, scaling eligibility assessment.

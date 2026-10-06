@@ -157,6 +157,6 @@ Scaling step caps come from `tool-fundamentals → Scaling step cap` and `google
 
 ## Next Steps
 
-If changes need to be executed, load `google_ads/search-execution` via `load_skill` for tool parameters and implementation details.
+If changes need to be executed, read the `google-ads-search-execution` skill for tool parameters and implementation details.
 
 Output must include: query mix breakdown with spend shares, pressure diagnosis with IS metrics, CPC trend analysis with root cause, recommended actions in execution order, expected 7-day impact.

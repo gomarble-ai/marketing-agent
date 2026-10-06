@@ -53,10 +53,10 @@ The model can't remove accounts. Give the steps and the warning.
 | Source | Where | Notes |
 |---|---|---|
 | Ad platforms, GA4, Search Console, Shopify, Klaviyo, Snowflake, impact.com, Facebook Pages, Instagram | **apps.gomarble.ai/settings/integrations** | Owner or admin. Sign in to the platform, then choose accounts where asked. |
-| Other tools: CRMs, analytics, warehouses, project tools (HubSpot, Notion, PostHog, Mixpanel, BigQuery, Linear…) | Call `discover_connectors` with the tool's name or the need ("crm", "product analytics") | If it returns `not_connected`, share its `connect_url` as a link (it opens **Settings → Connectors** ready to add that tool). If it says `native_integration`, use Settings → Integrations instead. If nothing matches, any MCP server can be added by URL on the Connectors page. Owner or admin. |
+| Other tools: CRMs, analytics, warehouses, project tools (HubSpot, Notion, PostHog, Mixpanel, BigQuery, Linear…) | **apps.gomarble.ai/settings/connectors** | Owner or admin, in the GoMarble web app. Connectors added there are used by GoMarble's own app and agents. Don't call `discover_connectors` from here, and don't promise that a newly added connector's tools will appear in this conversation. |
 | Slack (for agent delivery) and Google Drive | **apps.gomarble.ai/settings/apps** | Slack needs a plan that includes it. For private channels, invite the GoMarble bot. |
 
-Once connected, the new source's tools appear in the GoMarble connection. Connector tools are named after the connector, for example `gdrive-search_files`. The user may need to start a new conversation to see them.
+From here, work only with the GoMarble tools this plugin's skills describe. Google Drive is one of them: its tools are named `gdrive-*` (for example `gdrive-search_files`) and appear once Drive is connected; the user may need to start a new conversation to see them.
 
 A connection can't be completed from the chat. The user finishes sign-in in the browser.
 

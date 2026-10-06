@@ -37,7 +37,7 @@ Settle these in one short exchange. Don't ask about anything the user already to
 | **Cadence** | `daily`, `weekly` or `monthly`, matched to the job. Don't over-notify. Convert the user's local time to a UTC `cronExpression` and pass their IANA `timezone`. |
 | **Delivery** | This is the user's choice, so ask. Email (`gmail` + `emailRecipients`) works for everyone. Slack (`slack` + `slackChannels`) needs Slack connected at apps.gomarble.ai/settings/apps (on a plan that includes it) and a channel the GoMarble bot can see. If they have no preference, propose email to their own address. Never default to Slack. Each method needs its destination in the same call, or the agent runs and delivers nothing. |
 | **When to notify** | `notificationMode: "always"`, or `"conditional"` with a `notificationCondition` such as "ROAS dropped below 1x". |
-| **Read or write** | Monitoring, briefs, fatigue flags, competitor watch and alerts are read-only (the default). Only a job that should act on the account needs `permissions: { accessLevel: "write", writeMode: "ask_approval" }`. Write agents must include at least one Meta Ads or Google Ads account and need a GoMarble plan with write actions. Use `writeMode: "auto_apply"` only when the user explicitly asks for changes to apply without approval, and confirm it with them first. |
+| **Read or write** | Monitoring, briefs, fatigue flags, competitor watch and alerts are read-only (the default). Only a job that should act on the account needs `permissions: { accessLevel: "write", writeMode: "ask_approval" }`. Write agents must include at least one Meta Ads or Google Ads account and need a GoMarble plan with write actions. **From here, always use `writeMode: "ask_approval"`**: the agent prepares each change and it waits for someone to approve it in GoMarble. Never set `writeMode: "auto_apply"`. If the user wants changes applied without approval, explain that a workspace owner or admin can set that up in the GoMarble web app, where it comes with guardrails such as budget-change caps. |
 | **Guardrails** | For write agents, offer `guardrails`: `allowedActions` (for example only `status_toggle` and `budget_change`) and `maxBudgetChangePct` (for example 20). These need the agent-governance plan feature. `accountScopeStrict: true` locks the agent to its accounts; ask before setting it. |
 
 ### 3. Create it as a draft
@@ -96,5 +96,5 @@ These are based on GoMarble's own agent templates. Adapt them to the user's acco
 ## Guardrails
 
 - Never create, update, activate or delete an agent the user didn't ask for.
-- Never turn on write access or auto-apply without the user saying so.
+- Never turn on write access without the user saying so, and never set `writeMode: "auto_apply"` from here, even if asked (see Read or write above).
 - Confirm the final settings in one short summary before creating: title, job, accounts, cadence (in the user's time zone), delivery, read or write.

@@ -2,7 +2,6 @@
 name: google-search-audit
 description: |
   Daily Google Ads Search morning briefing — compares last 3 days vs prior 3 days, segments brand vs non-brand (with different expectations for each), and surfaces specific recommendations across budget, impression share, bid adjustments, search-term waste, and query opportunities. Read-only — produces a CUT / FIX / SCALE recommendations list, never executes mutations. Use as your morning Google Search standup.
-argument-hint: "[Google Ads Customer ID]"
 ---
 
 # Google Ads Search Audit — Morning Briefing (Read-Only)

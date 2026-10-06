@@ -2,7 +2,6 @@
 name: meta-ads-audit
 description: |
   30-day comprehensive Meta Ads health audit. Checks pixel/CAPI integrity, scans creative fatigue across the account, profiles audience-segment spend split, surfaces ROAS/CPA outliers (top + bottom decile), evaluates budget allocation efficiency, and produces a professional written report. Read-only — no changes applied. Use for quarterly reviews, new-account onboarding, or any "what's actually happening in this account" deep dive.
-argument-hint: "[Ad Account ID]"
 ---
 
 # Meta Ads Audit — 30 Days (Read-Only)
