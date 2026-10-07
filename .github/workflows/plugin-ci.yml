@@ -38,7 +38,12 @@ jobs:
         run: node scripts/check-coverage.mjs
 
       - name: Claude plugin manifest (claude plugin validate --strict)
-        run: npx --yes @anthropic-ai/claude-code plugin validate --strict .
+        # Pinned: an unpinned npx can reuse an older Claude Code from the runner image, and
+        # versions before 2.1.281 warn on the directory listing fields (icon, supportUrl, ...),
+        # which --strict turns into a failure.
+        run: |
+          npx --yes @anthropic-ai/claude-code@2.1.292 --version
+          npx --yes @anthropic-ai/claude-code@2.1.292 plugin validate --strict .
 
       - name: Build the OpenAI upload ZIP and re-validate its contents
         run: |
