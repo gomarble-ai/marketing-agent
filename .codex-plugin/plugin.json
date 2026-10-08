@@ -109,6 +109,7 @@
             }
           ]
         },
+        "demo_recording_url": "https://youtu.be/dqUPL0-WC2Q",
         "commerce": false,
         "commerce_description": "GoMarble doesn't sell products or process payments in ChatGPT or Codex. It reads and, with the user's approval, updates the user's own ad accounts."
       },
