@@ -54,6 +54,17 @@ jobs:
           test -f /tmp/upload/.codex-plugin/plugin.json
           test ! -e /tmp/upload/.claude-plugin
           python3 scripts/validate_plugin.py /tmp/upload
+          # The ZIP carries OpenAI's MCP form; the repo keeps Claude's (Claude Code / directory read it).
+          python3 - <<'EOF'
+          import json
+          z = json.load(open('/tmp/upload/.mcp.json'))['mcpServers']
+          r = json.load(open('.mcp.json'))['mcpServers']
+          assert z.keys() == r.keys(), (z.keys(), r.keys())
+          for k in z:
+              assert z[k] == {'type': 'streamable-http', 'url': r[k]['url']}, z[k]
+              assert r[k]['type'] == 'http' and 'oauth' in r[k], r[k]
+          print('mcp.json: upload uses streamable-http; repo keeps the Claude form')
+          EOF
 
       - name: npm package contents
         run: |
