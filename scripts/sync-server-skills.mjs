@@ -25,7 +25,7 @@
  */
 
 import { readFileSync, writeFileSync, mkdirSync, existsSync, rmSync } from 'fs';
-import { dirname, join, resolve } from 'path';
+import { dirname, join, relative, resolve } from 'path';
 import { fileURLToPath } from 'url';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
@@ -209,6 +209,9 @@ function server(path) {
 
 const report = { written: [], unresolved: [] };
 
+// Build every file in memory first and check the rewrites before touching the tree, so a
+// server text change that breaks a rewrite fails the sync without leaving half-written skills.
+const plan = [];
 for (const entry of map.skills) {
   const dir = join(SKILLS_DIR, entry.skill);
   const description = existingDescription(entry.skill) || entry.description;
@@ -217,19 +220,31 @@ for (const entry of map.skills) {
   const { out: pathBody, unresolved } = rewritePaths(server(entry.source), entry.skill);
   const body = applyRewrites(`${entry.skill}/SKILL.md`, pathBody);
   unresolved.forEach((p) => report.unresolved.push(`${entry.skill}: ${p}`));
-
-  if (existsSync(join(dir, 'references'))) rmSync(join(dir, 'references'), { recursive: true, force: true });
-  mkdirSync(dir, { recursive: true });
-  writeFileSync(join(dir, 'SKILL.md'), frontmatter(entry.skill, description, entry.source) + adapterBlock(body, entry.tools) + body);
-  report.written.push(`skills/${entry.skill}/SKILL.md`);
+  const files = [{ path: join(dir, 'SKILL.md'), content: frontmatter(entry.skill, description, entry.source) + adapterBlock(body, entry.tools) + body }];
 
   for (const [file, source] of Object.entries(entry.references || {})) {
     const { out: refPathBody, unresolved: refUnresolved } = rewritePaths(server(source), entry.skill);
     const refBody = applyRewrites(`${entry.skill}/references/${file}`, refPathBody);
     refUnresolved.forEach((p) => report.unresolved.push(`${entry.skill}/references/${file}: ${p}`));
-    mkdirSync(join(dir, 'references'), { recursive: true });
-    writeFileSync(join(dir, 'references', file), `<!-- Synced from GoMarble server skill: ${source} -->\n\n` + adapterBlock(refBody) + refBody);
-    report.written.push(`skills/${entry.skill}/references/${file}`);
+    files.push({ path: join(dir, 'references', file), content: `<!-- Synced from GoMarble server skill: ${source} -->\n\n` + adapterBlock(refBody) + refBody });
+  }
+  plan.push({ dir, files });
+}
+
+for (const key of Object.keys(REWRITES)) {
+  if (!rewritesUsed.has(key)) rewriteErrors.push(`${key}: not a synced file (check skill-rewrites.json)`);
+}
+if (rewriteErrors.length) {
+  console.error(`\nskill-rewrites.json is out of date with the server text (nothing was written):\n  ${rewriteErrors.join('\n  ')}`);
+  process.exit(1);
+}
+
+for (const { dir, files } of plan) {
+  if (existsSync(join(dir, 'references'))) rmSync(join(dir, 'references'), { recursive: true, force: true });
+  for (const { path, content } of files) {
+    mkdirSync(dirname(path), { recursive: true });
+    writeFileSync(path, content);
+    report.written.push(relative(ROOT, path));
   }
 }
 
@@ -242,13 +257,6 @@ for (const skill of map.retired || []) {
 }
 
 report.written.forEach((f) => console.log(`synced   ${f}`));
-for (const key of Object.keys(REWRITES)) {
-  if (!rewritesUsed.has(key)) rewriteErrors.push(`${key}: not a synced file (check skill-rewrites.json)`);
-}
-if (rewriteErrors.length) {
-  console.error(`\nskill-rewrites.json is out of date with the server text:\n  ${rewriteErrors.join('\n  ')}`);
-  process.exit(1);
-}
 if (report.unresolved.length) {
   console.log('\nServer paths with no plugin home (left as-is; the connector\'s load_skill can still load them):');
   report.unresolved.forEach((u) => console.log(`  ${u}`));
