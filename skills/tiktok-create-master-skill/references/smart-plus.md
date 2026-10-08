@@ -1,8 +1,5 @@
 <!-- Synced from GoMarble server skill: prompts/skills/tiktok/create/smart-plus -->
 
-> **In Claude.** This methodology is GoMarble's own, kept in sync with the GoMarble connector.
-> - Where this says changes appear as approval cards or rows: in Claude, call the propose tool with `mode: "dryrun"` first. That validates the change without touching the account. Show the user each proposed change (entity, current value, new value), and only after an explicit yes call the same tool with `mode: "live"` and just the approved `operation_ids`.
-
 # TikTok Ads — Upgraded Smart+
 
 ## The two tools
@@ -10,8 +7,8 @@
 - **`tiktok_get_smart_plus`** — reads (entity CAMPAIGN | ADGROUP | AD, action
   GET; CHECK_COPY_TASK). Immediate, no approval.
 - **`tiktok_propose_manage_smart_plus`** — every write (CREATE / UPDATE /
-  UPDATE_STATUS / UPDATE_BUDGETS / COPY). Approval card first; nothing reaches
-  TikTok until the user approves.
+  UPDATE_STATUS / UPDATE_BUDGETS / COPY). Dry run first; nothing reaches
+  TikTok until the user approves (and through AI app connections it is applied in TikTok Ads Manager).
 
 Smart+ entities live on a PARALLEL endpoint tree — the regular
 `tiktok_get_campaigns` / propose tools never see them, and vice versa.

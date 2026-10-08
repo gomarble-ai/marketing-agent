@@ -51,6 +51,7 @@ The connector reads these platforms but can't change them. Give the user the exa
 
 ## When a change is refused
 
-- **Needs a scope or plan:** the tool returns an upgrade or re-authorization link. Share it, and offer the recommendation in the meantime.
+- **Needs a permission:** the tool returns a re-authorization link. Share it, and offer the recommendation in the meantime.
+- **Plan limit reached:** explain which limit was hit and that the workspace owner manages the plan in GoMarble (plan details: gomarble.ai/pricing). Don't share upgrade or checkout links; offer the recommendation so the user can apply it in the ad platform.
 - **Read-only connection or team permission:** say who can grant write access (the workspace owner, or Settings → Integrations in GoMarble).
 - **Governance policy block:** say which limit applied. Don't try to work around it.

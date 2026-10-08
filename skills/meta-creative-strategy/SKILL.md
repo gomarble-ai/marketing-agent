@@ -2,12 +2,13 @@
 name: meta-creative-strategy
 description: |
   Full creative strategy pass for Meta Ads. Identifies winners + losers across the account, extracts the pattern behind each winner (hook, format, angle, audience pairing), produces a test plan + scaling plan + fatigue check, and outputs a concrete 12-creative production spec (6 static + 6 video) with hook lines, angles, and CTA recommendations. Read-only — no ads built. Use when a brief asks "what should we test next" or before a creative production sprint.
-argument-hint: "[Ad Account ID] [optional: lookback window in days, default 30]"
 ---
 
 # Meta Creative Strategy (Read-Only)
 
-For ad account `$ARGUMENTS`, produce a complete creative strategy pass. Default lookback: 30 days. **Read-only — no ads built or modified.**
+For the ad account the user names, produce a complete creative strategy pass. Default lookback: 30 days. **Read-only — no ads built or modified.**
+
+If the user didn't name an account, list their connected accounts and ask which one to use.
 
 ## Section 1 — Winners + losers
 

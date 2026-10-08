@@ -2,7 +2,6 @@
 name: meta-daily-optimization
 description: |
   Daily Meta Ads morning briefing. Compares yesterday vs trailing-7-day average, applies a change-log gate (skips entities edited in the last 48h), and surfaces a short vertical list of read-only recommendations: which ads look like fatigue candidates, which ad sets show funnel breaks, where auction pressure suggests a budget bump. Read-only — never executes mutations. The 1D + 3D + 7D framework prevents knee-jerk reactions to noisy single-day data.
-argument-hint: "[Ad Account ID] [optional: paste recent change log as `Date | Entity | Change`]"
 ---
 
 # Meta Daily Optimization — Morning Briefing (Read-Only)
@@ -15,10 +14,12 @@ If the user provided a change log (rows of `Date | Entity | Change`), parse it. 
 
 ## Step 2 — Pull data (read-only)
 
-For ad account `$ARGUMENTS`:
+For the ad account the user names:
 - Yesterday's metrics: ROAS, CPM, CTR, CVR, Spend, Reach, Frequency
 - Trailing 7-day average of the same
 - Campaign + ad set + ad level
+
+If the user didn't name an account, list their connected accounts and ask which one to use.
 
 ## Step 3 — Flag
 

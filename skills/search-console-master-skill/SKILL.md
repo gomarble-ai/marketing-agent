@@ -5,7 +5,7 @@ metadata:
   source: "prompts/skills/search_console/master-skill"
 ---
 
-> **In Claude.** This methodology is GoMarble's own, kept in sync with the GoMarble connector.
+> **Outside the GoMarble app.** This methodology is GoMarble's own, kept in sync with the GoMarble connector.
 > - GoMarble connector tools for this skill: `gsc_list_properties`, `gsc_get_performance_overview`, `gsc_get_search_analytics`, `gsc_get_advanced_search_analytics`, `gsc_get_search_by_page_query`, `gsc_compare_search_periods`, `gsc_check_indexing_issues`, `gsc_inspect_url`, `gsc_inspect_url_enhanced`, `gsc_batch_url_inspection`, `gsc_get_site_details`, `gsc_get_sitemaps`, `gsc_list_sitemaps_enhanced`, `gsc_get_sitemap_details`.
 
 # Organic Search (Google Search Console) – Master Skill

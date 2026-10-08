@@ -5,17 +5,13 @@ metadata:
   source: "prompts/skills/meta/custom-event-interpretation"
 ---
 
-> **In Claude.** This methodology is GoMarble's own, kept in sync with the GoMarble connector.
-> - Where this says to call `user_input`: that tool exists only in GoMarble's own app. Ask the user the same question in chat instead. Where it says not to call `user_input`, don't ask — decide from the data.
-> - Where this names `submit_recommendations` or `record_audit_findings`: those exist only in GoMarble's own app. Present the findings and recommendations in your reply instead.
-
 # Meta Custom Event Interpretation
 
 > ### ⚠️ HIGHEST-PRIORITY RULE — read before any campaign performance audit, recommendation, pause, scale, or optimization-event change involving Meta campaigns
 >
 > **Trigger:** Any campaign you encounter where `objective ∈ {OUTCOME_SALES, CONVERSIONS, PURCHASES}` AND `optimization_goal / promoted_object.custom_event_type = COMPLETE_REGISTRATION`.
 >
-> **Required first action:** Your VERY FIRST tool call about that campaign — before `submit_recommendations`, before any `facebook_propose_update_*`, before mentioning the campaign in any audit table or "campaigns to improve" list — MUST be a `user_input` asking whether `COMPLETE_REGISTRATION` is the user's 3rd-party-tracker (Profitmetrics / Cosmise / Triple Whale) purchase proxy or a genuine registration action.
+> **Required first action:** Before anything else about that campaign — before any recommendation, before any `facebook_propose_update_*`, before mentioning the campaign in any audit table or "campaigns to improve" list — you MUST ask the user in chat whether `COMPLETE_REGISTRATION` is the user's 3rd-party-tracker (Profitmetrics / Cosmise / Triple Whale) purchase proxy or a genuine registration action.
 >
 > **For Nordic accounts (DKK / SEK / NOK / EUR, or chat in Danish / Swedish / Norwegian / Finnish):** name **Profitmetrics** explicitly in the question — it is the dominant 3rd-party tracker in this region and is the most common reason for this configuration. Example Danish framing:
 >
@@ -24,7 +20,7 @@ metadata:
 > **For other accounts:** English equivalent, name 3rd-party tracker category by name (Profitmetrics, Cosmise, Triple Whale).
 >
 > **Forbidden until the user answers:**
-> - Any `submit_recommendations` entry that mentions this campaign (no pause / archive / scale / budget-cut / optimization-event-switch / "monitor" / "consolidate").
+> - Any recommendation that mentions this campaign (no pause / archive / scale / budget-cut / optimization-event-switch / "monitor" / "consolidate").
 > - Any `facebook_propose_update_*` referencing this campaign.
 > - Any "low signal / learning phase not exited / poor ROAS / consider pausing" framing about this campaign anywhere in your written response.
 > - Any "skift optimeringsmål til PURCHASE" / "switch optimization to PURCHASE" recommendation about this campaign.
@@ -88,7 +84,7 @@ Do NOT recommend changing the optimization event without seeing both event volum
 1. `optimization_goal` / `promoted_object.custom_event_type` = `COMPLETE_REGISTRATION`, AND
 2. Campaign `objective` is a purchase-oriented objective (`OUTCOME_SALES`, `CONVERSIONS`, `PURCHASES`, or any objective whose target is purchase).
 
-**Required behavior:** Before issuing ANY recommendation involving that campaign (pause, archive, scale, budget change, optimization-event switch, audience change, creative change, bid change, structural change, or even "monitor"), the agent's FIRST tool call about that campaign MUST be a `user_input` call with the following framing.
+**Required behavior:** Before issuing ANY recommendation involving that campaign (pause, archive, scale, budget change, optimization-event switch, audience change, creative change, bid change, structural change, or even "monitor"), the agent MUST first ask the user in chat, with the following framing, and wait for the answer.
 
 **If account currency is `DKK` / `SEK` / `NOK` / `EUR` or the chat is in a Nordic language** (Danish, Swedish, Norwegian, Finnish), explicitly name Profitmetrics in the question:
 
@@ -98,8 +94,8 @@ Do NOT recommend changing the optimization event without seeing both event volum
 
 > "Campaign `<campaign_name>` optimizes for `COMPLETE_REGISTRATION` on an `OUTCOME_SALES` objective. This configuration commonly means a 3rd-party profit/attribution tracker (Profitmetrics, Cosmise, Triple Whale, or similar) is routing purchase events through the `COMPLETE_REGISTRATION` standard event — in which case `CR` IS your actual purchase event and the configuration is correct. Is that the case here, or is `CR` a separate registration action (signup / newsletter / form completion) and we have a genuinely mismatched optimization?"
 
-**Forbidden** while this rule is in pending state (i.e., the user_input has not been answered):
-- Any `submit_recommendations` entry referencing the CR-on-purchase-objective campaign.
+**Forbidden** while this rule is in pending state (i.e., the user hasn't answered the question yet):
+- Any recommendation referencing the CR-on-purchase-objective campaign.
 - Any `facebook_propose_update_*` call against the CR-on-purchase-objective campaign.
 - Any volume-based reasoning from Rule 3 about that campaign.
 - Statements like "low signal", "learning phase not exited", "consider pausing", "consolidate budget", or any equivalent in any language about that campaign.
@@ -192,11 +188,11 @@ The following Meta standard events are FREQUENTLY misread as purchase / revenue 
 ❌ ALSO INCORRECT — volume-based reasoning (different path, same destructive outcome):
 > "Med kun 5 månedlige konverteringer og COMPLETE_REGISTRATION som optimeringsmål har algoritmen ikke nok signal til at forlade learning-fasen. Overvej at pause kampagnen og konsolidere budgettet."
 
-✅ CORRECT — Rule 2.5 fires, agent issues `user_input` FIRST before any recommendation:
-> *Tool call: `user_input` with question:*
+✅ CORRECT — Rule 2.5 fires, agent asks the user FIRST, before any recommendation:
+> *Agent asks in chat:*
 > "Kampagnen `(markant) Samlet kampagne` optimerer for `COMPLETE_REGISTRATION` på et `OUTCOME_SALES`-objektiv. I Norden bruges denne konfiguration ofte, fordi en 3. parts profit-tracker (typisk **Profitmetrics**, men også Cosmise eller Triple Whale) sender purchase-events ind via `COMPLETE_REGISTRATION`-endpointet — i så fald er CR jeres faktiske købs-event, og kampagnen er korrekt konfigureret. Er det tilfældet her, eller er CR en separat registrerings-handling (signup / newsletter / form)?"
 >
-> *(Agent does NOT issue any `submit_recommendations` entry mentioning this campaign, does NOT use the volume-threshold reasoning, does NOT include it in the "campaigns to improve" list — until the user answers.)*
+> *(Agent does NOT make any recommendation mentioning this campaign, does NOT use the volume-threshold reasoning, does NOT include it in the "campaigns to improve" list — until the user answers.)*
 
 If user replies "ja, vi bruger Profitmetrics" → agent re-audits treating CR-count as purchase-count. No pause recommendation, no optimization-event switch.
 
@@ -237,7 +233,7 @@ Before any output that:
 
 Verify:
 - [ ] What event is the campaign actually optimizing for? Have I named it?
-- [ ] **Rule 2.5 check:** Does this campaign have `COMPLETE_REGISTRATION` on a purchase-oriented objective (`OUTCOME_SALES` / `CONVERSIONS` / `PURCHASES`)? If YES, have I already issued a `user_input` asking about Profitmetrics / 3rd-party tracker AND received an answer? If not — STOP. The next tool call must be `user_input`, no recommendation may include this campaign.
+- [ ] **Rule 2.5 check:** Does this campaign have `COMPLETE_REGISTRATION` on a purchase-oriented objective (`OUTCOME_SALES` / `CONVERSIONS` / `PURCHASES`)? If YES, have I already asked the user about Profitmetrics / 3rd-party tracker AND received an answer? If not — STOP. Ask the question now; no recommendation may include this campaign.
 - [ ] Am I treating this event as a proxy for purchase / revenue? (If yes — stop.)
 - [ ] If recommending an event switch, have I checked the destination-event volume against the Rule 3 threshold?
 - [ ] If the account is in a non-English language (Danish, German, Spanish, etc.), am I avoiding the localized forbidden phrasings too?

@@ -2,12 +2,13 @@
 name: google-search-term-audit
 description: |
   Forensic Google Ads Search-term waste audit. Pareto-filters down to the 80% of spend that matters (campaign-level, then search-term-level), then flags wasteful terms using campaign-relative triggers: low engagement (CTR ≥40% below campaign avg) and low conversion (CVR ≥40% below campaign avg, including zeros). Surfaces a "Red List" with suggested negative-keyword exclusions and identifies common "waste words" for root-level negatives. Read-only — proposes exclusions, never executes them. Use weekly for waste cleanup.
-argument-hint: "[Google Ads Customer ID]"
 ---
 
 # Google Search Term Audit — Waste Forensics (Read-Only)
 
-For Google Ads account `$ARGUMENTS`, run a forensic search-term waste audit. **Read-only — produces a suggested-exclusion list, never executes mutations.**
+For the Google Ads account the user names, run a forensic search-term waste audit. **Read-only — produces a suggested-exclusion list, never executes mutations.**
+
+If the user didn't name an account, list their connected accounts and ask which one to use.
 
 ## Phase 1 — Data selection + Pareto filtering
 

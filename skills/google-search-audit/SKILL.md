@@ -2,12 +2,13 @@
 name: google-search-audit
 description: |
   Daily Google Ads Search morning briefing — compares last 3 days vs prior 3 days, segments brand vs non-brand (with different expectations for each), and surfaces specific recommendations across budget, impression share, bid adjustments, search-term waste, and query opportunities. Read-only — produces a CUT / FIX / SCALE recommendations list, never executes mutations. Use as your morning Google Search standup.
-argument-hint: "[Google Ads Customer ID]"
 ---
 
 # Google Ads Search Audit — Morning Briefing (Read-Only)
 
-For Google Ads account `$ARGUMENTS`, run a daily Search-campaigns operator pass. Compare **last 3 days vs prior 3 days**. **Read-only — output is recommendations only, no mutations applied.**
+For the Google Ads account the user names, run a daily Search-campaigns operator pass. Compare **last 3 days vs prior 3 days**. **Read-only — output is recommendations only, no mutations applied.**
+
+If the user didn't name an account, list their connected accounts and ask which one to use.
 
 ## Step 1 — Brand vs Non-Brand classification (do first)
 

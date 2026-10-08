@@ -5,9 +5,6 @@ metadata:
   source: "prompts/skills/google_ads/pmax-scaling"
 ---
 
-> **In Claude.** This methodology is GoMarble's own, kept in sync with the GoMarble connector.
-> - Where this names `google_ads_update_entity`: use the matching propose tool instead — `google_ads_propose_update_campaigns`, `google_ads_propose_update_adgroups`, `google_ads_propose_update_ads`, `google_ads_propose_update_asset`, `google_ads_propose_update_bid_modifiers`, `google_ads_propose_update_negative_keyword_list` or `google_ads_propose_update_pmax_asset_group`.
-
 # Google Ads PMax — Scaling & Expansion
 
 Rules for scaling PMax campaigns that have passed evaluation. Only load after confirming profitability via `google-ads-pmax-evaluation`.
@@ -35,7 +32,7 @@ ALL must be true before scaling:
 
 **Hard cap**: Do not exceed 2–3× initial monthly budget until 90+ days of consistent profitability.
 
-Tool: `google_ads_update_entity` with `entity_type: "campaign_budget"`, `updates: { amount_micros: <new_amount> }`.
+Tool: `google_ads_propose_update_campaigns` with the new daily `budget_micros` in account currency (not micros). Dry-run first; apply only after the user approves.
 
 ---
 

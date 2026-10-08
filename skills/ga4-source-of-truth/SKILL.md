@@ -5,7 +5,7 @@ metadata:
   source: "prompts/skills/ga4/source-of-truth"
 ---
 
-> **In Claude.** This methodology is GoMarble's own, kept in sync with the GoMarble connector.
+> **Outside the GoMarble app.** This methodology is GoMarble's own, kept in sync with the GoMarble connector.
 > - GoMarble connector tools for this skill: `google_analytics_list_properties`, `google_analytics_run_report`, `google_analytics_get_traffic_sources`, `google_analytics_get_events`, `google_analytics_get_page_views`, `google_analytics_get_user_behavior`, `google_analytics_get_device_metrics`, `google_analytics_get_active_users`.
 
 # GA4 Source-of-Truth

@@ -1,13 +1,14 @@
 ---
 name: google-pmax-pulse
 description: |
-  PMax morning anomaly check — compares last 3 days vs prior 3 days across spend, conversions, and CPA/ROAS for every Performance Max campaign. Flags CPA spikes (> 25%), conversion drops (> 25%), and spend spikes without conversions. Read-only — no changes applied. Disciplined: does NOT recommend major changes unless the issue is severe, since PMax is a black box and overcorrection is the #1 killer.
-argument-hint: "[Google Ads Customer ID]"
+  PMax morning anomaly check — compares last 3 days vs prior 3 days across spend, conversions, and CPA/ROAS for every Performance Max campaign. Flags CPA spikes (over 25%), conversion drops (over 25%), and spend spikes without conversions. Read-only — no changes applied. Disciplined: does NOT recommend major changes unless the issue is severe, since PMax is a black box and overcorrection is the #1 killer.
 ---
 
 # PMax Pulse — 3-Day Anomaly Check (Read-Only)
 
-For Google Ads account `$ARGUMENTS`, scan every active **Performance Max** campaign and detect anomalies between the last 3 days and the prior 3 days. **Read-only — never modify PMax campaigns from a daily pulse, the black-box dynamics mean knee-jerk reactions cost more than they fix.**
+For the Google Ads account the user names, scan every active **Performance Max** campaign and detect anomalies between the last 3 days and the prior 3 days. **Read-only — never modify PMax campaigns from a daily pulse, the black-box dynamics mean knee-jerk reactions cost more than they fix.**
+
+If the user didn't name an account, list their connected accounts and ask which one to use.
 
 ## Inputs (per PMax campaign, both 3d windows)
 

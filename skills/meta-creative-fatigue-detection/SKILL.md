@@ -2,12 +2,13 @@
 name: meta-creative-fatigue-detection
 description: |
   Per-ad creative fatigue diagnosis on Meta Ads. Scores every active ad as Healthy / Early Warning / Fatigued / Dead using CTR decline, frequency creep, CPA spike, CVR decline, and spend-shift signals. Surfaces specific refresh recommendations: which variants to retire, which winners to remix, which themes to test next. Read-only — no pauses applied. Use weekly or before any creative refresh cycle.
-argument-hint: "[Ad Account ID] [optional: lookback window in days, default 14]"
 ---
 
 # Meta Creative Fatigue Detection (Read-Only)
 
-Diagnose creative fatigue across ad account `$ARGUMENTS`. Default lookback: 14 days. **Read-only — never pauses or modifies ads.**
+Diagnose creative fatigue across the ad account the user names. Default lookback: 14 days. **Read-only — never pauses or modifies ads.**
+
+If the user didn't name an account, list their connected accounts and ask which one to use.
 
 ## Fatigue scoring signals
 

@@ -7,13 +7,13 @@ metadata:
 
 # Meta Ads - Agent Operations
 
-Rules for proposing and executing changes on Meta Ads via propose tools (they auto-execute on user approval).
+Rules for proposing and executing changes on Meta Ads via propose tools: dry run first, then apply with `mode: "live"` after the user approves.
 
 ## General Workflow
 1. Describe the intended change in plain language to the user
-2. Call the appropriate propose tool to create pending operations
-3. Wait for user approval (up to 2.5 minutes active, then approvable via panel for 24 hours)
-4. Approved operations execute AUTOMATICALLY — there is NO separate execute tool (`facebook_execute_approved_operation` no longer exists; never call it). The propose tool's response includes the execution result and any new/updated IDs.
+2. Call the appropriate propose tool with `mode: "dryrun"`. It validates the change and returns `operation_ids`; nothing changes yet.
+3. Show the user every proposed change (entity, current value, new value) and wait for an explicit yes.
+4. Call the same propose tool with `mode: "live"` and only the approved `operation_ids` — there is NO separate execute tool (`facebook_execute_approved_operation` no longer exists; never call it). That response includes the execution result and any new/updated IDs.
 5. Confirm outcome to the user
 
 ## Currency Rules

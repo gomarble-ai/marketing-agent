@@ -1,18 +1,15 @@
 ---
 name: meta-create-master-skill
-description: "MUST load FIRST for any Meta ad creation, launch, campaign setup, ad set creation, or creative push. Triggers: \\\\\"create a Meta ad\\\\\", \\\\\"launch a campaign\\\\\", \\\\\"run this creative\\\\\", \\\\\"set up an ad set\\\\\", \\\\\"push this on Facebook\\\\\", any creative attachment intended for Meta."
+description: "MUST load FIRST for any Meta ad creation, launch, campaign setup, ad set creation, or creative push. Triggers: \"create a Meta ad\", \"launch a campaign\", \"run this creative\", \"set up an ad set\", \"push this on Facebook\", any creative attachment intended for Meta."
 metadata:
   source: "prompts/skills/meta/create/master-skill"
 ---
-
-> **In Claude.** This methodology is GoMarble's own, kept in sync with the GoMarble connector.
-> - Where this says changes appear as approval cards or rows: in Claude, call the propose tool with `mode: "dryrun"` first. That validates the change without touching the account. Show the user each proposed change (entity, current value, new value), and only after an explicit yes call the same tool with `mode: "live"` and just the approved `operation_ids`.
 
 # Meta Ad Launch Workflow
 
 A creative-first, account-aware workflow for launching Meta ads with minimal user input. The sequence is fixed: creative → analysis → account scan → propose. Never flip the order, never run a Q&A upfront.
 
-> **Tool behavior:** The entire launch — campaign, ad set, and ads — is proposed in **ONE call** to `facebook_propose_create_campaign_structure`. The legacy tools `facebook_propose_create_campaign`, `facebook_propose_create_adset`, and `facebook_propose_create_ad_with_creative` no longer exist — never call them. Each entity in the launch gets its own approval card; on approval the launch auto-executes in dependency order (campaign → ad set → ads). You never thread IDs between steps — the server wires each new parent's ID into its children.
+> **Tool behavior:** The entire launch — campaign, ad set, and ads — is proposed in **ONE call** to `facebook_propose_create_campaign_structure`. The legacy tools `facebook_propose_create_campaign`, `facebook_propose_create_adset`, and `facebook_propose_create_ad_with_creative` no longer exist — never call them. Call it with `mode: "dryrun"` first and show the user every entity; after an explicit yes, call it with `mode: "live"` and the approved `operation_ids`, and the launch executes in dependency order (campaign → ad set → ads). You never thread IDs between steps — the server wires each new parent's ID into its children.
 
 ---
 
@@ -143,7 +140,7 @@ Before launching the proposal, show a configuration summary table:
 | CTA button | Shop Now | Matches creative CTA |
 | Schedule | Continuous, starts now | Default |
 
-Then send the proposal. The proposal itself handles user confirmation — don't add a "shall I proceed?" message after it.
+Then send the proposal as a dry run, show the user exactly what will be created, and ask for an explicit yes before calling with `mode: "live"`.
 
 ---
 
@@ -164,7 +161,7 @@ facebook_propose_create_campaign_structure({
 
 - **Never split into separate calls per entity.** One launch = one call. Batch ALL ads into the `ads` array.
 - **Never pass IDs between slots.** No `campaign_id` inside the `adset` slot, no `adset_id` inside the ads — the server creates the campaign, feeds its new ID to the ad set, and the ad set's new ID to every ad. Only use top-level `campaign_id` / `adset_id` when that parent already exists.
-- Each entity gets its own approval card. On approval the launch executes in dependency order; capture `new_campaign_id`, `new_adset_id`, and every `new_ad_id` from the tool response.
+- Each entity gets its own `operation_id`. After the user approves, the `mode: "live"` call executes in dependency order; capture `new_campaign_id`, `new_adset_id`, and every `new_ad_id` from the tool response.
 
 **Rejection semantics (know these — don't fight them):**
 - User rejects **every ad** of a launch that proposed ads → the WHOLE launch is cancelled; nothing is created (a campaign/ad set with no ads cannot serve).
@@ -176,7 +173,7 @@ facebook_propose_create_campaign_structure({
 
 Campaigns and ad sets are created as **ACTIVE**. Ads are created as **PAUSED** — they are the user's final gate before spending begins. After the launch succeeds, enable only the ads.
 
-**If the launch is still awaiting approval** (operations pending): do NOT call the tool again and do NOT re-propose — that creates duplicate approval cards. Tell the user the proposal is ready and ask them to Approve or Reject it on the card in the chat.
+**If the launch is still awaiting approval** (operations pending): do NOT re-propose — that creates duplicate operations. Show the pending changes again and ask the user for an explicit yes or no; on yes, call with `mode: "live"` and the approved `operation_ids`.
 
 ---
 
@@ -215,7 +212,7 @@ facebook_propose_update_ads({
   ]
 })
 ```
--> user approves each ad individually -> each executes automatically on approval
+-> user approves each ad individually -> the `mode: "live"` call applies only the approved ads
 
 **CRITICAL: 5 ads = 1 call with 5 items in the ads array. NOT 5 separate calls.**
 
@@ -259,6 +256,6 @@ Every response the user sees should be short and scannable. No walls of text.
 - **Phase 2 readout:** 2–3 lines max. Format / Hook / Funnel stage / CTA. No headers.
 - **Phase 3 synthesis:** 1–2 lines. Campaign name, key numbers, pixel, IG. Done.
 - **Phase 4 (if asking):** One short message framing the question + tappable options. No preamble.
-- **Phase 5:** Configuration table + proposal. No follow-up "shall I proceed?" message.
-- **Phase 6 enable:** No extra message after proposing the enable. The approval cards are the confirmation. After execution, one line: "Live. Ads are now active under `<campaign>`."
+- **Phase 5:** Configuration table + dry-run proposal, then one explicit request for approval.
+- **Phase 6 enable:** Propose the enable as a dry run and get an explicit yes before the `mode: "live"` call. After execution, one line: "Live. Ads are now active under `<campaign>`."
 - Never show raw API output. Never repeat information already shown in a previous phase.

@@ -5,9 +5,6 @@ metadata:
   source: "prompts/skills/google_ads/tool-fundamentals"
 ---
 
-> **In Claude.** This methodology is GoMarble's own, kept in sync with the GoMarble connector.
-> - Where this names `google_ads_update_entity`: use the matching propose tool instead — `google_ads_propose_update_campaigns`, `google_ads_propose_update_adgroups`, `google_ads_propose_update_ads`, `google_ads_propose_update_asset`, `google_ads_propose_update_bid_modifiers`, `google_ads_propose_update_negative_keyword_list` or `google_ads_propose_update_pmax_asset_group`.
-
 # Google Ads - Tool Fundamentals
 
 How to use Google Ads tools effectively, plus the canonical metric definitions used across all Google Ads skills. Auto-loaded with every Google Ads skill request.
@@ -15,7 +12,7 @@ How to use Google Ads tools effectively, plus the canonical metric definitions u
 ## Tools
 
 - **`google_ads_run_gaql`**: primary read tool for Google Ads Query Language. Use for any structural or performance pull from `campaign`, `ad_group`, `keyword_view`, `search_term_view`, `asset_group`, `geographic_view`, `shopping_performance_view`, etc.
-- **`google_ads_update_entity`**: write tool for bid, budget, status, and structural mutations. Always require user approval per the operation flow.
+- **`google_ads_propose_update_*`**: write tools for bid, budget, status, and structural changes (`…_campaigns`, `…_adgroups`, `…_ads`, `…_asset`, `…_bid_modifiers`, `…_negative_keyword_list`, `…_pmax_asset_group`). Money is in account currency, not micros. Always dry-run first and apply only after the user approves.
 - **`google_ads_keyword_discover` / `google_ads_keyword_metrics`**: keyword research; volume, CPC, competition, and forecast data.
 - **`google_ads_get_change_logs`**: audit account changes within a window.
 - **`google_ads_list_accounts`**: discover MCC structure and customer IDs.

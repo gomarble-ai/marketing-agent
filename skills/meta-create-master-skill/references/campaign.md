@@ -1,9 +1,5 @@
 <!-- Synced from GoMarble server skill: prompts/skills/meta/create/campaign -->
 
-> **In Claude.** This methodology is GoMarble's own, kept in sync with the GoMarble connector.
-> - Where this says changes appear as approval cards or rows: in Claude, call the propose tool with `mode: "dryrun"` first. That validates the change without touching the account. Show the user each proposed change (entity, current value, new value), and only after an explicit yes call the same tool with `mode: "live"` and just the approved `operation_ids`.
-> - Where this says to call `user_input`: that tool exists only in GoMarble's own app. Ask the user the same question in chat instead. Where it says not to call `user_input`, don't ask — decide from the data.
-
 # Meta Ads - Create Campaign
 
 ## This skill defines the `campaign` SLOT of the launch call
@@ -12,9 +8,9 @@ The whole launch — campaign, ad set, and ads — is ONE call to `facebook_prop
 ## CRITICAL: NEVER give up on empty accounts
 If the user asks to "launch creatives" or "create a campaign" and `account_structure` is empty — this means it's a new/fresh account. Do NOT stop, ask for an adset_id, or say "I can't find existing structure." Proceed with creating everything from scratch: Campaign → Ad Set → Ad+Creative. The full flow MUST complete.
 
-## user_input Rules
+## Asking the user
 
-Do NOT call `user_input` for campaign creation. Auto-detect and auto-configure ALL fields, then fill the `campaign` slot of the single `facebook_propose_create_campaign_structure` launch call. The user can review and edit everything in the approval UI.
+Don't ask the user anything for campaign creation. Auto-detect and auto-configure ALL fields, then fill the `campaign` slot of the single `facebook_propose_create_campaign_structure` launch call. The user reviews every value in the dry-run preview before anything is applied.
 
 **Auto-configure ALL fields silently:**
 
@@ -33,11 +29,11 @@ Do NOT call `user_input` for campaign creation. Auto-detect and auto-configure A
 | `end_time` | Only set if `lifetime_budget` chosen | Must be >24h after start_time |
 | `spend_cap` | Do NOT set | Only set if user explicitly asks |
 
-**Workflow:** Call `facebook_get_details_of_ad_account` FIRST → **check `account_status` is 1 (ACTIVE) — if not, STOP: the launch is rejected until the billing/status issue is fixed in Ads Manager** → extract `currency`, detect ABO/CBO pattern, detect budget range, detect naming convention → build the `campaign` slot with all auto-configured values (the launch call is made once the `adset` and `ads` slots are ready too). Do NOT call `user_input`. Do NOT show a summary before proposing — the user reviews everything in the approval UI.
+**Workflow:** Call `facebook_get_details_of_ad_account` FIRST → **check `account_status` is 1 (ACTIVE) — if not, STOP: the launch is rejected until the billing/status issue is fixed in Ads Manager** → extract `currency`, detect ABO/CBO pattern, detect budget range, detect naming convention → build the `campaign` slot with all auto-configured values (the launch call is made once the `adset` and `ads` slots are ready too). Don't ask the user anything. Propose straight away as a dry run; the user reviews every value in the dry-run preview.
 
 **EMPTY ACCOUNT (no existing campaigns/adsets/ads):** If `account_structure` returns empty (`campaigns: {}, adsets: {}, ads: {}`), this is a NEW account. Do NOT stop and ask the user what to do. Proceed with creation using these defaults:
 - `budget_type`: CBO (simpler for new accounts)
-- `daily_budget`: **ASK the user** — you have no data to infer from. Use `user_input` with a single `daily_budget` number field.
+- `daily_budget`: **ASK the user** — you have no data to infer from. Ask for that one number in chat.
 - `name`: Generate from context (e.g., product name, brand name, user's request). E.g., "GoMarble | Sales | Apr 2026"
 - Everything else: use standard auto-configured values (OUTCOME_SALES, ACTIVE, etc.)
 
@@ -66,7 +62,7 @@ From `account_structure.campaigns`:
 From `account_structure.campaigns`, active campaigns' budget amounts:
 - Calculate typical daily budget range (median of existing active campaign budgets)
 - If existing campaigns have budgets → use the median as the default
-- **If NO existing campaigns have budgets → you MUST ask the user.** Do NOT invent a number. Use `user_input` with a single `daily_budget` number field to ask.
+- **If NO existing campaigns have budgets → you MUST ask the user.** Do NOT invent a number. Ask for that one number in chat.
 
 ### Step 4: Detect Naming Convention
 From `account_structure.campaigns`, look at existing campaign names:
