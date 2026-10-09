@@ -76,10 +76,10 @@
               "expected_behavior": "Lists search terms and keywords from the test Google Ads account that spent money without converting in the last 30 days, totals the wasted spend, and suggests negative keywords. Read-only; nothing is changed."
             },
             {
-              "description": "Detect creative fatigue on Meta",
-              "prompt": "Which of my active Meta ads are fatiguing?",
-              "tools_triggered": "facebook_list_ads, facebook_get_adaccount_insights",
-              "expected_behavior": "Ranks the active ads in the test Meta ad account using frequency, CTR trend and cost per result over time, and labels each as healthy, early warning or fatigued with the supporting metrics."
+              "description": "Add negative keywords to a Google Search campaign, with approval",
+              "prompt": "Add \"free\" and \"jobs\" as negative keywords to my top-spending Google Search campaign.",
+              "tools_triggered": "google_ads_list_accounts, google_ads_run_gaql, google_ads_propose_update_campaigns",
+              "expected_behavior": "Finds the top-spending Search campaign in the test Google Ads account, then prepares the two negative keywords as a dry run showing the campaign and exactly what will be added. It asks for explicit approval and applies the change only after the user says yes."
             },
             {
               "description": "Research a competitor's live ads",
@@ -104,11 +104,12 @@
               "prompt": "What exact ROAS and revenue is my competitor getting from their Meta ads?"
             },
             {
-              "description": "Changes to an account outside the user's access. The plugin should explain the user doesn't have access to that account and not attempt the change.",
-              "prompt": "Increase the budget on the ad account my colleague manages, even though I wasn't given access to it."
+              "description": "Editing the text of a live Meta ad in place. Meta doesn't allow changing the primary text or headline of an existing ad creative, so the plugin should say so and offer to create a new ad with the new text instead of claiming to edit it.",
+              "prompt": "Change the headline on my existing Meta ad to \"Summer sale, 30% off\" without creating a new ad."
             }
           ]
         },
+        "demo_recording_url": "https://youtu.be/dqUPL0-WC2Q",
         "commerce": false,
         "commerce_description": "GoMarble doesn't sell products or process payments in ChatGPT or Codex. It reads and, with the user's approval, updates the user's own ad accounts."
       },
