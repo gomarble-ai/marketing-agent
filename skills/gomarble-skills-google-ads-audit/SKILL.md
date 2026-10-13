@@ -9,7 +9,7 @@ A consolidated set of skills for analyzing and optimizing Google Ads accounts. T
 
 The skills define **what to know, what data to look for, how to interpret it, and how to recommend action**. They do not depend on any specific tool integration.
 
-> **Read-and-recommend only.** These skills never make changes to the user's Google Ads account. Claude reads data and produces recommendations in plain language; the user applies the recommended changes themselves in the Google Ads UI.
+> **Read-and-recommend only.** These skills never make changes to the user's Google Ads account. The agent reads data and produces recommendations in plain language; the user applies the recommended changes themselves in the Google Ads UI.
 
 ---
 
@@ -119,7 +119,7 @@ When the source is a CSV export from the Google Ads UI, column names rarely matc
 | `asset_group_asset.performance_label` | ❌ NOT in standard CSV — requires Asset Report from the PMax campaign |
 | `campaign_search_term_insight.*` | ❌ NOT in standard CSV — requires Search Terms Insights from PMax campaign page |
 
-**Rule for Claude:** if the source is CSV, **costs are already in account currency** — never apply the divide-by-1,000,000 rule. That rule only fires on raw API/MCP data.
+**Rule for the agent:** if the source is CSV, **costs are already in account currency** — never apply the divide-by-1,000,000 rule. That rule only fires on raw API/MCP data.
 
 ---
 
@@ -131,7 +131,7 @@ When the source is a CSV export from the Google Ads UI, column names rarely matc
 | Shopping campaigns, product feed, Merchant Center, SKUs | **Shopping Optimization** |
 | Performance Max, PMax, asset groups | **PMax Optimization** |
 | Keyword research, new keyword ideas, search volume, CPC estimates, market expansion | **Keyword Research** |
-| Change requests (create campaign, add keyword, change bid, pause, etc.) | Apply the relevant analysis skill first, then **recommend** the change in plain language with rationale. Claude does not execute changes on the user's ad account — the user applies recommendations manually in the Google Ads UI. |
+| Change requests (create campaign, add keyword, change bid, pause, etc.) | Apply the relevant analysis skill first, then **recommend** the change in plain language with rationale. The agent does not execute changes on the user's ad account — the user applies recommendations manually in the Google Ads UI. |
 
 If the user's intent is ambiguous or spans multiple campaign types, ask which to focus on first.
 
@@ -1017,7 +1017,7 @@ PMax has the **largest data-source gap** of any skill. Many users share a campai
 
 ## Tool hints
 
-PMax's "limitations" cut both ways: the platform exposes less, but Google Ads API still has the resources Claude needs. The two resources that turn an incomplete PMax audit into a complete one are `asset_group_asset` (for performance labels) and `campaign_search_term_insight` (for the aggregated category data). Both require GAQL. If the connected MCP supports arbitrary GAQL (e.g. GoMarble's `google_ads_run_gaql`), use it. The CSV alternative — running two separate UI reports from the PMax campaign page — is the most common point of friction in PMax audits and worth flagging early in the conversation.
+PMax's "limitations" cut both ways: the platform exposes less, but Google Ads API still has the resources the agent needs. The two resources that turn an incomplete PMax audit into a complete one are `asset_group_asset` (for performance labels) and `campaign_search_term_insight` (for the aggregated category data). Both require GAQL. If the connected MCP supports arbitrary GAQL (e.g. GoMarble's `google_ads_run_gaql`), use it. The CSV alternative — running two separate UI reports from the PMax campaign page — is the most common point of friction in PMax audits and worth flagging early in the conversation.
 
 ---
 
@@ -1165,13 +1165,13 @@ If the user can't provide the data a skill needs, do **not** invent values. Stat
 
 ## How to handle change requests
 
-When the user asks Claude to change something in their account (e.g. "raise the bid", "pause the campaign"):
+When the user asks the agent to change something in their account (e.g. "raise the bid", "pause the campaign"):
 
 1. Run the relevant analysis skill to validate the change is justified.
 2. Apply the guardrails (especially scaling caps and the "no simultaneous bid + budget" rule).
 3. **Recommend the change in plain language** with the exact entity, the current value, the proposed value, the rationale, and what to monitor afterwards.
 
-Claude does not execute changes on the user's ad account. These skills are read-and-recommend only — the user applies recommendations manually in the Google Ads UI.
+The agent does not execute changes on the user's ad account. These skills are read-and-recommend only — the user applies recommendations manually in the Google Ads UI.
 
 ## How to handle multiple campaign types in one account
 

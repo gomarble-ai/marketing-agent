@@ -9,7 +9,7 @@ A consolidated set of skills for analyzing and optimizing Meta Ads (Facebook + I
 
 The skills define **what to know, what data to look for, how to interpret it, and how to recommend action**. They do not depend on any specific tool integration.
 
-> **Read-and-recommend only.** These skills never make changes to the user's Meta Ads account. Claude reads data and produces recommendations in plain language; the user applies the recommended changes themselves in Meta Ads Manager.
+> **Read-and-recommend only.** These skills never make changes to the user's Meta Ads account. The agent reads data and produces recommendations in plain language; the user applies the recommended changes themselves in Meta Ads Manager.
 
 ---
 
@@ -116,7 +116,7 @@ When the source is a CSV export from Ads Manager, the column names rarely match 
 | Attribution window | "Attribution Setting" |
 | `custom_event_type` / promoted_object | ❌ NOT in CSV — ask user to confirm |
 
-**Rule for Claude:** if a CSV column maps to a pre-computed metric (Purchases, 3-Second Video Plays, ThruPlays), use it directly and skip the upstream dedup / action-array rules. Those rules exist to clean raw API data.
+**Rule for the agent:** if a CSV column maps to a pre-computed metric (Purchases, 3-Second Video Plays, ThruPlays), use it directly and skip the upstream dedup / action-array rules. Those rules exist to clean raw API data.
 
 ---
 
@@ -131,7 +131,7 @@ When the source is a CSV export from Ads Manager, the column names rarely match 
 | Ad set targeting, budget utilization, audience comparison | **Ad Set Analysis** |
 | Top performers, Pareto analysis, which ads to keep/pause | **Performance Analysis** |
 | Hook rate, hold rate, video diagnostics, why creative isn't working | **Creative Analysis** |
-| Change requests (pause campaign, increase budget, change CTA, etc.) | Apply the relevant analysis skill first, then **recommend** the change in plain language with rationale. Claude does not execute changes on the user's ad account — the user applies recommendations manually in Ads Manager. |
+| Change requests (pause campaign, increase budget, change CTA, etc.) | Apply the relevant analysis skill first, then **recommend** the change in plain language with rationale. The agent does not execute changes on the user's ad account — the user applies recommendations manually in Ads Manager. |
 
 If the user's intent is ambiguous, ask which to focus on first.
 
@@ -1370,13 +1370,13 @@ If the user can't provide the data a skill needs, do **not** invent values. Stat
 
 ## How to handle change requests
 
-When the user asks Claude to change something in their account (e.g. *"pause this ad"*, *"raise the budget 20%"*):
+When the user asks the agent to change something in their account (e.g. *"pause this ad"*, *"raise the budget 20%"*):
 
 1. Run the relevant analysis skill to validate the change is justified.
 2. Apply the guardrails (especially scaling caps, top-performer protection, and the "no ad-level budget moves" rule).
 3. **Recommend the change in plain language** — exact entity, current value, proposed value, rationale, what to monitor afterwards, and any safety warnings (learning-phase reset, > 50% decrease, > 100% increase, etc.).
 
-Claude does not execute changes on the user's ad account. These skills are read-and-recommend only — the user applies recommendations manually in Ads Manager.
+The agent does not execute changes on the user's ad account. These skills are read-and-recommend only — the user applies recommendations manually in Ads Manager.
 
 ## How to handle multiple account types in one account
 
