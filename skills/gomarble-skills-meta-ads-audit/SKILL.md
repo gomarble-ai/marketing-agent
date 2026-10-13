@@ -1,5 +1,5 @@
 ---
-name: meta-ads-auditor
+name: gomarble-skills-meta-ads-audit
 description: Audits and optimizes Meta Ads (Facebook + Instagram) accounts at senior-media-buyer depth. Use when the user asks about Meta Ads performance, campaign optimization, creative fatigue, ad set analysis, video creative diagnosis, pixel tracking issues, or wants a Meta Ads audit. Covers EMQ Score health check, conversion metric mapping (ROAS vs CPL vs custom), campaign structure detection (Primary/Testing, Bid Split, Audience Split), ad set bid-limit and audience-split decision rules, Pareto-based ad-level performance analysis, and Hook Rate / Hold Rate video diagnostic scenarios. Includes safety checks for top performer protection and the COMPLETE_REGISTRATION-on-Purchase tracker trap (Profitmetrics, Triple Whale, Northbeam). Read-and-recommend only — produces analysis the user applies manually in Meta Ads Manager.
 ---
 

@@ -1,5 +1,5 @@
 ---
-name: google-ads-auditor
+name: gomarble-skills-google-ads-audit
 description: Audits and optimizes Google Ads accounts at senior-media-buyer depth. Use when the user asks about Google Ads performance, campaign optimization, search terms, keywords, Shopping campaigns, Performance Max (PMax), keyword research, wasted spend, or wants a Google Ads audit. Covers Q1-Q5 search term classification, auction pressure diagnosis (rank vs budget), Shopping SKU classification (KILL/DOWNGRADE/PROMOTE), PMax maturity gates and asset performance labels, PMax-vs-Search ROAS comparison, brand cannibalization detection, and buyer-intent keyword validation. Read-and-recommend only — produces analysis the user applies manually in the Google Ads UI.
 ---
 
