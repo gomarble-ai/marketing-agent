@@ -1,6 +1,6 @@
 {
   "name": "marketing-agent",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Installer for GoMarble, the AI agent for paid media teams, in Claude Code and Codex CLI. Diagnose, analyze creative, research competitors, cut waste, shift budget, launch and report across Meta, Google, TikTok, LinkedIn and Microsoft Ads. 60 skills built on GoMarble's playbooks, OAuth-secured live data.",
   "type": "module",
   "bin": {
