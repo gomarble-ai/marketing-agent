@@ -16,5 +16,5 @@ plugins/gomarble/
 ├── .codex-plugin/plugin.json    # Codex manifest
 ├── .mcp.json                    # GoMarble connector: https://apps.gomarble.ai/mcp-api/mcp (OAuth)
 ├── skills/                      # skills, read by Claude, ChatGPT and Codex
-└── assets/icon.png
+└── assets/                      # plugin icon
 ```
