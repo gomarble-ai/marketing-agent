@@ -17,6 +17,7 @@ import { fileURLToPath } from 'url';
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const { tools } = JSON.parse(readFileSync(join(ROOT, 'scripts', 'connector-tools.json'), 'utf-8'));
 const toolSet = new Set(tools);
+const PLUGIN = join(ROOT, 'plugins', 'gomarble');
 
 // Tool names that may appear in skills even though the connector doesn't expose them.
 // Keep this to explicit "never call X" warnings. Anything that tells the model to CALL a
@@ -38,14 +39,14 @@ function walk(dir) {
   });
 }
 
-const files = walk(join(ROOT, 'skills'));
+const files = walk(join(PLUGIN, 'skills'));
 const coveredBy = new Map(tools.map((t) => [t, new Set()]));
 const unknown = new Map();
 const PREFIX = /^(ads_library|bing_ads|facebook|gdrive|google_ads|google_analytics|google_drive|gsc|impact|instagram|klaviyo|linkedin|shopify|snowflake|tiktok)[-_]/;
 
 for (const file of files) {
   const text = readFileSync(file, 'utf-8');
-  const owner = relative(ROOT, file).split('/').slice(0, 2).join('/');
+  const owner = relative(PLUGIN, file).split('/').slice(0, 2).join('/');
   for (const m of text.matchAll(/`([a-z][a-z0-9]*(?:[_-][a-z0-9]+)+)`/g)) {
     const name = m[1];
     if (toolSet.has(name)) coveredBy.get(name).add(owner);

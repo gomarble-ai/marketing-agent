@@ -41,9 +41,11 @@ jobs:
         # Pinned: an unpinned npx can reuse an older Claude Code from the runner image, and
         # versions before 2.1.281 warn on the directory listing fields (icon, supportUrl, ...),
         # which --strict turns into a failure.
+        # Checks the marketplace at the root and the plugin in plugins/gomarble (the directory's submission path).
         run: |
           npx --yes @anthropic-ai/claude-code@2.1.292 --version
           npx --yes @anthropic-ai/claude-code@2.1.292 plugin validate --strict .
+          npx --yes @anthropic-ai/claude-code@2.1.292 plugin validate --strict plugins/gomarble
 
       - name: Build the OpenAI upload ZIP and re-validate its contents
         run: |
@@ -58,7 +60,7 @@ jobs:
           python3 - <<'EOF'
           import json
           z = json.load(open('/tmp/upload/.mcp.json'))['mcpServers']
-          r = json.load(open('.mcp.json'))['mcpServers']
+          r = json.load(open('plugins/gomarble/.mcp.json'))['mcpServers']
           assert z.keys() == r.keys(), (z.keys(), r.keys())
           for k in z:
               assert z[k] == {'type': 'streamable-http', 'url': r[k]['url']}, z[k]
@@ -70,13 +72,14 @@ jobs:
         run: |
           npm pack --dry-run 2>&1 | tee /tmp/pack.txt
           grep -q "installer/install.mjs" /tmp/pack.txt
+          grep -q "plugins/gomarble/.codex-plugin/plugin.json" /tmp/pack.txt
           ! grep -qE " (commands|dist|bin)/" /tmp/pack.txt
 
       - name: Listing links are live
         run: |
           python3 - <<'EOF'
           import json, subprocess, sys
-          m = json.load(open('.codex-plugin/plugin.json'))
+          m = json.load(open('plugins/gomarble/.codex-plugin/plugin.json'))
           urls = {m['homepage'], m['author']['url']}
           urls |= {m['interface'][k] for k in ('websiteURL', 'supportURL', 'privacyPolicyURL', 'termsOfServiceURL')}
           bad = []

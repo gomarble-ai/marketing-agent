@@ -29,7 +29,7 @@ import { dirname, join, relative, resolve } from 'path';
 import { fileURLToPath } from 'url';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const SKILLS_DIR = join(ROOT, 'skills');
+const SKILLS_DIR = join(ROOT, 'plugins', 'gomarble', 'skills');
 
 const catalogPath = process.argv[2];
 if (!catalogPath) {

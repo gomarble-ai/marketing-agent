@@ -7,7 +7,7 @@ description: "Use for any TikTok Ads work that isn't a new launch: performance a
 
 Read, analyze and operate TikTok Ads through GoMarble. For new launches, use `launch-campaigns` (which follows `tiktok-create-master-skill`).
 
-> **Beta, and no applied changes through the connector.** Tools marked (β) are part of a TikTok tools beta. Accounts outside the beta don't see them at all; if the user asks for something that needs one, say it's in GoMarble's TikTok beta (they can contact GoMarble support). **TikTok changes can't be applied through the connector today** — the connector can't be granted TikTok write permission. For accounts in the beta, the propose tools still work in dry-run mode, which validates the change; then give the user the exact edit to make in TikTok Ads Manager or the GoMarble web app.
+> **Beta, and no applied changes through the connector.** Tools marked (β) are part of a TikTok tools beta. Accounts outside the beta don't see them at all; if the user asks for something that needs one, say it's in GoMarble's TikTok beta (they can contact GoMarble support). **TikTok changes can't be applied through the connector today** — AI app connections can't make TikTok changes yet. For accounts in the beta, the propose tools still work in dry-run mode, which validates the change; then give the user the exact edit to make in TikTok Ads Manager or the GoMarble web app.
 
 ## Setup and conventions
 
@@ -26,7 +26,7 @@ Read, analyze and operate TikTok Ads through GoMarble. For new launches, use `la
 | Age, gender, location and other audience segments | `tiktok_get_audience_report` |
 | Spend and engagement per creative | `tiktok_get_creative_report` (β), and `tiktok_get_ad_creative_url` for the media itself |
 | What changed in the account | `tiktok_get_change_log` (β). Async, at most 30 days per request. |
-| Account balance, or active ad group quota | `tiktok_get_account_finance` (β): `BALANCE` needs `bc_id`; `QUOTA` needs the advertiser ID |
+| Account balance, or active ad group quota | `tiktok_get_account_finance` (β): `resource: "BALANCE"` needs `bc_id`; `resource: "QUOTA"` needs `advertiser_id` |
 | Why ads were rejected, and how to fix them | `tiktok_get_ad_review_info` (β). Pass up to 100 ad IDs in one call. |
 | Automated rules and their history | `tiktok_get_automated_rules` (β). Check before proposing budget or status changes so a rule doesn't undo them. Rules can only be created in TikTok Ads Manager. |
 | Tracking setup | `tiktok_list_pixels` (β) and `tiktok_list_custom_conversions` (β). Offline event sets: `tiktok_get_offline_event_sets` (β). |
@@ -51,7 +51,7 @@ Use these to prepare a TikTok change and validate it as a dry run (`mode: "dryru
 | Split tests: create, reschedule, end | `tiktok_propose_manage_split_test` | **Creating a test overwrites both ad groups' budgets.** Ending is irreversible. Read results with `tiktok_get_split_test` at least 24 hours after the test ends. |
 | Reach & Frequency campaigns and ad groups | `tiktok_propose_manage_reach_frequency` | Estimate first with `tiktok_get_reach_frequency`. **Approving an R&F ad group reserves real budget** and can't be paused; the only undo is cancelling the order. Say so before asking for approval. |
 | Appeal a rejected ad, or create or update an offline event set | `tiktok_propose_manage_review_and_events` | An appeal is one-shot per rejection, so fix what `tiktok_get_ad_review_info` suggests first. |
-| Upload a video or image to the asset library | `tiktok_upload_asset` | A direct write with no dry run, so it needs TikTok write permission and isn't available to AI app connections today. |
+| Upload a video or image to the asset library | `tiktok_upload_asset` | A direct write with no dry run, so it isn't available to AI app connections today. |
 
 ## Put it on a schedule
 
