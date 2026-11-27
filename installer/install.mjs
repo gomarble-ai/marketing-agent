@@ -31,6 +31,8 @@ import { spawnSync } from 'child_process';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const PACKAGE_ROOT = resolve(__dirname, '..');
+// The plugin itself lives in its own folder, so the Claude directory reads only the plugin's files.
+const PLUGIN_ROOT = join(PACKAGE_ROOT, 'plugins', 'gomarble');
 const NPM_NAME = 'marketing-agent';        // the npx command (npm package name is unchanged)
 const PLUGIN_NAME = 'gomarble';
 const DISPLAY_NAME = 'GoMarble';
@@ -90,7 +92,7 @@ function copyPlugin(target) {
   if (existsSync(target)) rmSync(target, { recursive: true, force: true });
   mkdirSync(target, { recursive: true });
   for (const entry of COPY_ENTRIES) {
-    const src = join(PACKAGE_ROOT, entry);
+    const src = join(PLUGIN_ROOT, entry);
     if (!existsSync(src)) continue;
     cpSync(src, join(target, entry), { recursive: true });
   }

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Validate the plugin package against the OpenAI plugin directory rules and the Agent Skills /
-Codex skill rules. Run from the repo root (or pass a path, e.g. an unzipped upload):
+Codex skill rules. Checks plugins/gomarble by default (or pass a path, e.g. an unzipped upload):
 
     python3 scripts/validate_plugin.py [plugin_root]
 
@@ -17,7 +17,8 @@ import sys
 
 import yaml
 
-ROOT = os.path.abspath(sys.argv[1] if len(sys.argv) > 1 else ".")
+DEFAULT_ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "plugins", "gomarble")
+ROOT = os.path.abspath(sys.argv[1] if len(sys.argv) > 1 else DEFAULT_ROOT)
 errors, warnings = [], []
 
 

@@ -228,16 +228,19 @@ GoMarble's privacy policy: [gomarble.ai/privacy](https://www.gomarble.ai/privacy
 ```text
 marketing-agent/
 ├── .claude-plugin/
-│   ├── plugin.json          # Claude manifest (plugin name: gomarble)
-│   └── marketplace.json     # marketplace for /plugin marketplace add
-├── .codex-plugin/
-│   └── plugin.json          # Codex manifest
-├── .mcp.json                # GoMarble connector (mcpServers, read by Claude and Codex)
-├── skills/                  # 60 skills, read by Claude, ChatGPT and Codex
-├── scripts/                 # maintainer tools: skill sync and coverage check
+│   └── marketplace.json     # marketplace for /plugin marketplace add (Claude and Codex), source ./plugins/gomarble
+├── plugins/gomarble/        # the plugin itself, and the folder submitted to the Claude directory
+│   ├── .claude-plugin/plugin.json   # Claude manifest (plugin name: gomarble)
+│   ├── .codex-plugin/plugin.json    # Codex manifest
+│   ├── .mcp.json            # GoMarble connector (mcpServers, read by Claude and Codex)
+│   ├── skills/              # 60 skills, read by Claude, ChatGPT and Codex
+│   └── assets/icon.png
+├── scripts/                 # maintainer tools: skill sync, coverage check, OpenAI ZIP build, validation
 ├── installer/install.mjs    # the npx installer
 └── README.md
 ```
+
+The plugin lives in `plugins/gomarble/` so that the Claude plugin directory, which reads only the submitted folder, sees just the plugin's markdown, JSON and icon. Maintainer tools stay at the root.
 
 ---
 
@@ -261,11 +264,11 @@ node scripts/check-coverage.mjs
 
 **Other skills** (use cases, channels, creative strategy, business frameworks) live here. Keep each `SKILL.md` under about 3,000 words and put detail in `references/`.
 
-Raise `version` in `.claude-plugin/plugin.json`, `.codex-plugin/plugin.json` and `package.json` with every release.
+Raise `version` in `plugins/gomarble/.claude-plugin/plugin.json`, `plugins/gomarble/.codex-plugin/plugin.json` and `package.json` with every release.
 
 **Skills stay provider-neutral.** They run in Claude, ChatGPT and Codex, so write "the model" rather than a product name, and keep product names only for product-specific steps such as how to sign in.
 
-**OpenAI plugin directory.** The OpenAI listing, review test cases and publication settings live in `.codex-plugin/plugin.json`. Build the upload with `npm run pack:openai`, which writes `dist/gomarble-openai-<version>.zip`, and upload it at [platform.openai.com/plugins](https://platform.openai.com/plugins) with **With MCP**.
+**OpenAI plugin directory.** The OpenAI listing, review test cases and publication settings live in `plugins/gomarble/.codex-plugin/plugin.json`. Build the upload with `npm run pack:openai`, which writes `dist/gomarble-openai-<version>.zip`, and upload it at [platform.openai.com/plugins](https://platform.openai.com/plugins) with **With MCP**.
 
 ---
 

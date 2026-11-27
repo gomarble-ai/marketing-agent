@@ -11,7 +11,7 @@
     {
       "name": "gomarble",
       "displayName": "GoMarble",
-      "source": "./",
+      "source": "./plugins/gomarble",
       "description": "Diagnose performance, analyze creative, research competitor ads, write briefs, cut wasted spend and shift budget across Meta, Google, TikTok, LinkedIn and Microsoft Ads, with GA4, Shopify, Klaviyo and Search Console data. Launch and edit Meta and Google campaigns, build reports, and schedule agents that watch your accounts. Changes are applied only after you approve them.",
       "category": "marketing",
       "keywords": [

@@ -4,8 +4,8 @@
  *
  *   npm run pack:openai
  *
- * Packs the committed tree (git archive HEAD), so commit first. The ZIP holds only what OpenAI reads:
- * .codex-plugin/plugin.json, .mcp.json, skills/, assets/ and LICENSE. .claude-plugin/ is left out so
+ * Packs the committed plugin folder (git archive HEAD:plugins/gomarble), so commit first. The ZIP holds
+ * only what OpenAI reads: .codex-plugin/plugin.json, .mcp.json, skills/, assets/ and LICENSE. .claude-plugin/ is left out so
  * the portal uses the Codex manifest rather than converting the Claude one.
  *
  * The ZIP's .mcp.json is written in OpenAI's remote-server form ("type": "streamable-http" + url),
@@ -21,10 +21,11 @@ import { dirname, join, resolve } from 'path';
 import { fileURLToPath } from 'url';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
+const PLUGIN = join(ROOT, 'plugins', 'gomarble');
 const INCLUDE = ['.codex-plugin', '.mcp.json', 'skills', 'assets', 'LICENSE'];
 
-const { name, version } = JSON.parse(readFileSync(join(ROOT, '.codex-plugin', 'plugin.json'), 'utf-8'));
-const dirty = execFileSync('git', ['status', '--porcelain', '--', ...INCLUDE], { cwd: ROOT, encoding: 'utf-8' }).trim();
+const { name, version } = JSON.parse(readFileSync(join(PLUGIN, '.codex-plugin', 'plugin.json'), 'utf-8'));
+const dirty = execFileSync('git', ['status', '--porcelain', '--', ...INCLUDE], { cwd: PLUGIN, encoding: 'utf-8' }).trim();
 if (dirty) {
   console.error(`Uncommitted changes in packaged paths; commit them first:\n${dirty}`);
   process.exit(1);
@@ -47,7 +48,7 @@ rmSync(out, { force: true });
 const stage = mkdtempSync(join(tmpdir(), 'pack-openai-'));
 try {
   const tar = join(stage, 'package.tar');
-  execFileSync('git', ['archive', '--format=tar', '-o', tar, 'HEAD', '--', ...INCLUDE], { cwd: ROOT });
+  execFileSync('git', ['archive', '--format=tar', '-o', tar, 'HEAD:plugins/gomarble', '--', ...INCLUDE], { cwd: ROOT });
   execFileSync('tar', ['-xf', tar, '-C', stage]);
   rmSync(tar);
   const repoMcp = JSON.parse(readFileSync(join(stage, '.mcp.json'), 'utf-8'));
